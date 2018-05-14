@@ -1,10 +1,10 @@
 TODO
 
-- logo
-- connect metamask / basic wallet object
-- receiving qr code
-- sending
+ - connect metamask / basic wallet object
+ - receiving qr code
+ - sending
 
 DONE
 
-* favicon
+ * favicon
+ * logo

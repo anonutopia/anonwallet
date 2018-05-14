@@ -30,17 +30,17 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
-<body class="hold-transition skin-black sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini" onresize="resized()" onload="resized()">
 <!-- Site wrapper -->
 <div class="wrapper">
 
     <header class="main-header">
         <!-- Logo -->
-        <a href="/index2.html" class="logo">
+        <a href="/" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>A</b>LT</span>
+            <span class="logo-mini"><img src="/dist/img/logo-icon.png" alt="Kriptokuna Logo" width="50px"></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Admin</b>LTE</span>
+            <span class="logo-lg"><img src="/dist/img/logo-alt.png" alt="Kriptokuna Logo" width="200px" style="margin-left: -10px;"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -126,7 +126,7 @@
                 </div>
                 <div class="col-md-4">
                     <!-- Default box -->
-                    <div class="box">
+                    <div class="box box-info">
                             <div class="box-header with-border">
                                 <h3 class="box-title">Stanje računa</h3>
                             </div>
