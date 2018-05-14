@@ -74,6 +74,7 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">NAVIGACIJA</li>
                 <li class="active"><a href="/"><i class="fa fa-dashboard"></i> <span>Novčanik</span></a></li>
+                <li><a href="/"><i class="fa fa-exchange"></i> <span>Kupi / Prodaj</span></a></li>
                 <li><a href="https://www.kriptokuna.com"><i class="fa fa-rebel"></i> <span>Naslovnica</span></a></li>
             </ul>
         </section>
@@ -104,12 +105,53 @@
                             <h3 class="box-title">Primanje na račun</h3>
                         </div>
                         <div class="box-body">
-                            Start creating your amazing application!
+                            <p><strong>QR Kod</strong></p>
+                            <p><img src="/dist/img/qr.png" alt="" class="center-block"></p>
+                            <p><strong>Adresa (broj računa)</strong></p>
+                            <p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control input-lg" id="exampleInputAmount" value="0x6d534D15e48bb22cFAbC08dFC30CF0ea4c36563F" readonly>
+                                    <div class="input-group-addon"><a href="javascript:;"><i class="fa fa-copy fa-lg"></i></a></div>
+                                </div>
+                            </p>
                         </div>
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
+
+                <div class="col-md-4">
+                        <!-- Default box -->
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                <i class="fa fa-area-chart"></i>
+                                <h3 class="box-title">Stanje računa</h3>
+                            </div>
+                            <div class="box-body">
+                                    <table class="table">
+                                            <tr>
+                                              <th>Račun / Valuta</th>
+                                              <th style="width: 200px">Stanje</th>
+                                            </tr>
+                                            <tr>
+                                              <td>Kriptokuna (KKN)</td>
+                                              <td><span class="badge bg-red">1520.000 KKN</span></td>
+                                            </tr>
+                                            <tr>
+                                              <td>Ether (ETH)</td>
+                                              <td><span class="badge bg-red">1.023 ETH</span></td>
+                                            </tr>
+                                            <tr>
+                                              <td>Bitcoin (BTC)</td>
+                                              <td><span class="badge bg-red">0.213 BTC</span></td>
+                                            </tr>
+                                          </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                </div>
+
                 <div class="col-md-4">
                     <!-- Default box -->
                     <div class="box box-danger">
@@ -118,20 +160,25 @@
                                 <h3 class="box-title">Slanje s računa</h3>
                             </div>
                             <div class="box-body">
-                                Start creating your amazing application!
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /.box -->
-                </div>
-                <div class="col-md-4">
-                    <!-- Default box -->
-                    <div class="box box-info">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Stanje računa</h3>
-                            </div>
-                            <div class="box-body">
-                                Start creating your amazing application!
+                                <form>
+                                        <div class="form-group">
+                                                <label for="exampleInputFile" class="text-lg-left">Valuta</label>
+                                <select class="form-control input-lg">
+                                        <option>Kriptokuna (KKN)</option>
+                                        <option>Ether (ETH)</option>
+                                        <option>Bitcoin (BTC)</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Na račun</label>
+                                        <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Iznos</label>
+                                        <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                    </div>
+                                    <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger">
+                                </form>
                             </div>
                             <!-- /.box-body -->
                         </div>

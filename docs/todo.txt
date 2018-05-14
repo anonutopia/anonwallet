@@ -1,5 +1,6 @@
 TODO
 
+ - deploy
  - connect metamask / basic wallet object
  - receiving qr code
  - sending
