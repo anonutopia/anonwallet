@@ -1,6 +1,5 @@
 TODO
 
- - deploy
  - connect metamask / basic wallet object
  - receiving qr code
  - sending
@@ -9,3 +8,5 @@ DONE
 
  * favicon
  * logo
+ * deploy
+ * deploy script

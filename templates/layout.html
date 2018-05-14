@@ -40,7 +40,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><img src="/dist/img/logo-icon.png" alt="Kriptokuna Logo" width="50px"></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><img src="/dist/img/logo-alt.png" alt="Kriptokuna Logo" width="200px" style="margin-left: -10px;"></span>
+            <span class="logo-lg"><img src="/dist/img/logo-alt.png" alt="Kriptokuna Logo" width="200px" style="margin-left: -10px; vertical-align: top; margin-top: 5px;"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -106,7 +106,7 @@
                         </div>
                         <div class="box-body">
                             <p><strong>QR Kod</strong></p>
-                            <p><img src="/dist/img/qr.png" alt="" class="center-block"></p>
+                            <p><img src="/dist/img/qr.png" alt="" class="center-block" width="220px;"></p>
                             <p><strong>Adresa (broj računa)</strong></p>
                             <p>
                                 <div class="input-group">
@@ -128,24 +128,24 @@
                                 <h3 class="box-title">Stanje računa</h3>
                             </div>
                             <div class="box-body">
-                                    <table class="table">
-                                            <tr>
-                                              <th>Račun / Valuta</th>
-                                              <th style="width: 200px">Stanje</th>
-                                            </tr>
-                                            <tr>
-                                              <td>Kriptokuna (KKN)</td>
-                                              <td><span class="badge bg-red">1520.000 KKN</span></td>
-                                            </tr>
-                                            <tr>
-                                              <td>Ether (ETH)</td>
-                                              <td><span class="badge bg-red">1.023 ETH</span></td>
-                                            </tr>
-                                            <tr>
-                                              <td>Bitcoin (BTC)</td>
-                                              <td><span class="badge bg-red">0.213 BTC</span></td>
-                                            </tr>
-                                          </table>
+                                <table class="table">
+                                    <tr>
+                                        <th>Račun / Valuta</th>
+                                        <th style="width: 150px">Stanje</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Kriptokuna (KKN)</td>
+                                        <td><span class="badge bg-green">1520.000 KKN</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ether (ETH)</td>
+                                        <td><span class="badge bg-green">1.023 ETH</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bitcoin (BTC)</td>
+                                        <td><span class="badge bg-green">0.213 BTC</span></td>
+                                    </tr>
+                                </table>
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -161,23 +161,27 @@
                             </div>
                             <div class="box-body">
                                 <form>
+                                    <div class="box-body">
                                         <div class="form-group">
-                                                <label for="exampleInputFile" class="text-lg-left">Valuta</label>
-                                <select class="form-control input-lg">
-                                        <option>Kriptokuna (KKN)</option>
-                                        <option>Ether (ETH)</option>
-                                        <option>Bitcoin (BTC)</option>
-                                      </select>
+                                            <label for="exampleInputFile" class="text-lg-left">Valuta</label>
+                                            <select class="form-control input-lg">
+                                                <option>Kriptokuna (KKN)</option>
+                                                <option>Ether (ETH)</option>
+                                                <option>Bitcoin (BTC)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Na račun</label>
+                                            <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Iznos</label>
+                                            <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Na račun</label>
-                                        <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                    <div class="box-footer">
+                                        <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Iznos</label>
-                                        <input type="text" class="form-control input-lg" id="exampleInputEmail1">
-                                    </div>
-                                    <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger">
                                 </form>
                             </div>
                             <!-- /.box-body -->
