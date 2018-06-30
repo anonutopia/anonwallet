@@ -19,6 +19,8 @@ function Wallet() {
 
         var anote = web3js.eth.contract(contractAbi).at(contractAddress);
 
+        setValue('address', web3js.eth.coinbase);
+
         web3js.eth.getBalance(web3js.eth.coinbase, function(error, result) {
             var balance = parseFloat(web3js.fromWei(parseInt(result))).toFixed(5);
             setHTML('balanceEth', balance);
@@ -38,6 +40,11 @@ function Wallet() {
     // Sets HTML for element
     function setHTML(id, html) {
         getEl(id).innerHTML = html;
+    }
+
+    // Sets value for element
+    function setValue(id, value) {
+        getEl(id).value = value;
     }
 
     // Binds event the right way
