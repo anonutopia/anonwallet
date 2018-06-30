@@ -134,17 +134,17 @@
                                         <th style="width: 150px">Stanje</th>
                                     </tr>
                                     <tr>
-                                        <td>Kriptokuna (KKN)</td>
-                                        <td><span class="badge bg-green">1520.000 KKN</span></td>
+                                        <td>ANOTE (ANT)</td>
+                                        <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> ANT</span></td>
                                     </tr>
                                     <tr>
                                         <td>Ether (ETH)</td>
-                                        <td><span class="badge bg-green">1.023 ETH</span></td>
+                                        <td><span class="badge bg-green"><span id="balanceEth">0.00000</span> ETH</span></td>
                                     </tr>
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Bitcoin (BTC)</td>
                                         <td><span class="badge bg-green">0.213 BTC</span></td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td>Kuna (HRK)</td>
                                         <td><span class="badge bg-red">uskoro</span></td>
@@ -172,7 +172,7 @@
                                 <h3 class="box-title">Slanje s računa</h3>
                             </div>
                             <div class="box-body">
-                                <form>
+                                <form action="javascript:;">
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label for="exampleInputFile" class="text-lg-left">Valuta</label>
@@ -192,7 +192,7 @@
                                         </div>
                                     </div>
                                     <div class="box-footer">
-                                        <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger">
+                                        <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger" id="payButton">
                                     </div>
                                 </form>
                             </div>
@@ -228,6 +228,9 @@
 <script src="/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/dist/js/demo.js"></script>
+<!-- Web3 library -->
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+<script src="/dist/js/wallet.js"></script>
 <script>
     $(document).ready(function () {
         $('.sidebar-menu').tree()
