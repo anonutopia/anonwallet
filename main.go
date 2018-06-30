@@ -8,10 +8,14 @@ import (
 
 var m *macaron.Macaron
 
+var conf *config
+
 func main() {
 	m = initMacaron()
 
-	m.Get("/", homeView)
+	conf = initConfig()
+
+	m.Get("/", newPageData, homeView)
 
 	// m.Run()
 	log.Println("Server is running...")

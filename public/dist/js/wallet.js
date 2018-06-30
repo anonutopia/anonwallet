@@ -14,7 +14,11 @@ function Wallet() {
         if (typeof web3 !== 'undefined') {
             web3js = new Web3(web3.currentProvider);
             if (web3js.eth.coinbase) {
-                initSuccess();
+                if (web3js.version.network == networkVersion) {
+                    initSuccess();
+                } else {
+                    initWrongNetwork();
+                }                
             } else {
                 initNotSignedIn();
             }
@@ -57,6 +61,13 @@ function Wallet() {
     function initNotSignedIn() {
         $('#loader').fadeOut(function() {
             $('#notsignedin').fadeIn();
+        });
+    }
+
+    // Inits if user is using the wrong network
+    function initWrongNetwork() {
+        $('#loader').fadeOut(function() {
+            $('#wrongnetwork').fadeIn();
         });
     }
 
