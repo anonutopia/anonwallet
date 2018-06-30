@@ -351,8 +351,8 @@ $(function () {
 function resized() {
   var width = window.innerWidth || document.body.clientWidth;
   if (width <= 767) {
-    $('.logo-lg > img').attr('src', '/dist/img/logo-alt.png');
+    $('.logo-lg > img').attr('src', '/dist/img/logo-alt.png?v=1.0.0');
   } else {
-    $('.logo-lg > img').attr('src', '/dist/img/logo.png');
+    $('.logo-lg > img').attr('src', '/dist/img/logo.png?v=1.0.0');
   }
 }
