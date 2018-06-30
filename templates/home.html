@@ -1,0 +1,129 @@
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Kriptokunski Novčanik
+                <small>Vaše Internet bankarstvo</small>
+            </h1>
+        </section>
+
+        <section class="content" id="loader">
+            <p class="bg-primary" style="padding: 20px 20px 20px 60px;;">
+                <i class="fa fa-spinner fa-spin" style="font-size: 2em; margin-top: -5px; position: absolute; margin-left: -45px;"></i> Vaš novčanik se učitava. Molimo vas za strpljenje!
+            </p>            
+        </section>
+
+        <!-- Main content -->
+        <section class="content" id="content" style="display: none;">
+
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- Default box -->
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <i class="fa fa-arrow-down"></i>
+                            <h3 class="box-title">Primanje na račun</h3>
+                        </div>
+                        <div class="box-body">
+                            <p><strong>QR Kod</strong></p>
+                            <p><img src="/dist/img/qr.png" alt="" class="center-block" width="220px;"></p>
+                            <p><strong>Adresa (broj računa)</strong></p>
+                            <p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control input-lg" id="address" value="0x0000000000000000000000000000000000000000" readonly>
+                                    <div class="input-group-addon"><a href="javascript:;"><i class="fa fa-copy fa-lg"></i></a></div>
+                                </div>
+                            </p>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+                <div class="col-md-4">
+                        <!-- Default box -->
+                        <div class="box box-warning">
+                            <div class="box-header with-border">
+                                <i class="fa fa-area-chart"></i>
+                                <h3 class="box-title">Stanje računa</h3>
+                            </div>
+                            <div class="box-body">
+                                <table class="table">
+                                    <tr>
+                                        <th>Račun / Valuta</th>
+                                        <th style="width: 150px">Stanje</th>
+                                    </tr>
+                                    <tr>
+                                        <td>ANOTE (ANT)</td>
+                                        <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> ANT</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ether (ETH)</td>
+                                        <td><span class="badge bg-green"><span id="balanceEth">0.00000</span> ETH</span></td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td>Bitcoin (BTC)</td>
+                                        <td><span class="badge bg-green">0.213 BTC</span></td>
+                                    </tr> -->
+                                    <tr>
+                                        <td>Kuna (HRK)</td>
+                                        <td><span class="badge bg-red">uskoro</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Euro (EUR)</td>
+                                        <td><span class="badge bg-red">uskoro</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dolar (USD)</td>
+                                        <td><span class="badge bg-red">uskoro</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Default box -->
+                    <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <i class="fa fa-arrow-up"></i>
+                                <h3 class="box-title">Slanje s računa</h3>
+                            </div>
+                            <div class="box-body">
+                                <form action="javascript:;">
+                                    <div class="box-body">
+                                        <div class="form-group">
+                                            <label for="exampleInputFile" class="text-lg-left">Valuta</label>
+                                            <select class="form-control input-lg">
+                                                <option>Kriptokuna (KKN)</option>
+                                                <option>Ether (ETH)</option>
+                                                <!-- <option>Bitcoin (BTC)</option> -->
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Na račun</label>
+                                            <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Iznos</label>
+                                            <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                        <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger" id="payButton">
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                </div>
+            </div>
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->

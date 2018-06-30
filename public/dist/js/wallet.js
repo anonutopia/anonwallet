@@ -1,5 +1,7 @@
 function Wallet() {
 
+    var componentCounter = 0;
+
     // Payment method
     this.pay = function() {
         console.log('payment');
@@ -24,12 +26,23 @@ function Wallet() {
         web3js.eth.getBalance(web3js.eth.coinbase, function(error, result) {
             var balance = parseFloat(web3js.fromWei(parseInt(result))).toFixed(5);
             setHTML('balanceEth', balance);
+            updateCounter();
         });
 
         anote.balanceOf(web3js.eth.coinbase, function(error, result){
             var antBalance = parseFloat(web3js.fromWei(parseInt(result))).toFixed(5);
             setHTML('balanceAnt', antBalance);
+            updateCounter();
         });
+    }
+
+    function updateCounter() {
+        componentCounter++;
+        if (componentCounter == 2) {
+            $('#loader').fadeOut(function() {
+                $('#content').fadeIn();
+            });
+        }
     }
 
     // Gets DOM element
