@@ -67,6 +67,8 @@ function Wallet() {
             setHTML('balanceAnt', antBalance);
             updateCounter();
         });
+
+        timeout = setTimeout(initSuccess, 1000);
     }
 
     // Inits if there's no MetaMask
@@ -181,6 +183,7 @@ function Wallet() {
                 web3js.eth.getTransaction(res, function(err, res) {
                     if (res.blockNumber) {
                         clearInterval(interval);
+                        clearTimeout(timeout);
                         initSuccess();
                         $('#transactionInProgress').fadeOut(function() {
                             $('#transactionSuccess').fadeIn(function() {
