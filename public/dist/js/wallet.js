@@ -83,6 +83,12 @@ function Wallet() {
     function updateCounter() {
         componentCounter++;
         if (componentCounter == 2) {
+            var qr = new QRious({
+                size: 300,
+                element: document.getElementById('qr'),
+                value: web3js.eth.coinbase
+            });
+
             $('#loader').fadeOut(function() {
                 $('#content').fadeIn();
             });
