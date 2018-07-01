@@ -63,13 +63,13 @@ function Wallet() {
         setValue('address', web3js.eth.coinbase);
 
         web3js.eth.getBalance(web3js.eth.coinbase, function(error, result) {
-            var balance = parseFloat(web3js.fromWei(parseInt(result))).toFixed(5);
+            var balance = parseFloat(web3js.fromWei(result)).toFixed(5);
             setHTML('balanceEth', balance);
             updateCounter();
         });
 
         anote.balanceOf(web3js.eth.coinbase, function(error, result){
-            var antBalance = parseFloat(web3js.fromWei(parseInt(result))).toFixed(5);
+            var antBalance = parseFloat(web3js.fromWei(result)).toFixed(5);
             setHTML('balanceAnt', antBalance);
             updateCounter();
         });
