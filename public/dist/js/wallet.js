@@ -7,6 +7,18 @@ function Wallet() {
         console.log('payment');
     }
 
+    // Copy method for copying address to clipboard
+    this.copy = function() {
+        var copyText = document.getElementById("address");
+        copyText.select();
+        document.execCommand("copy");
+        $('#copymessage').fadeIn(function() {
+            setTimeout(() => {
+                $('#copymessage').fadeOut();
+            }, 1000);
+        });
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -101,6 +113,7 @@ function Wallet() {
 
     // Attach all events
     getEl('payButton').addEventListener('click', bind(this, this.pay), false);
+    getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
 
     // Calling Wallet constructor
     constructor();
