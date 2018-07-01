@@ -158,7 +158,11 @@ function Wallet() {
 
     // Transfers ETH
     function transferEth(addressTo, amount) {
-
+        $('#content').fadeOut(function() {
+            $('#transactionInProgress').fadeIn();
+        });
+        amount = web3js.toWei(parseFloat(amount));
+        web3js.eth.sendTransaction({ to: addressTo, value: amount }, handleTransactionResult);
     }
 
     // Transfers ANT
@@ -167,35 +171,38 @@ function Wallet() {
             $('#transactionInProgress').fadeIn();
         });
         amount = web3js.toWei(parseFloat(amount));
-        anote.transfer(addressTo, amount, function(err, res) {
-            if (err == null) {
-                var interval = setInterval(function(){
-                    web3js.eth.getTransaction(res, function(err, res) {
-                        if (res.blockNumber) {
-                            clearInterval(interval);
-                            initSuccess();
-                            $('#transactionInProgress').fadeOut(function() {
-                                $('#transactionSuccess').fadeIn(function() {
-                                    setTimeout(() => {
-                                        $('#transactionSuccess').fadeOut();
-                                    }, 10000);
-                                });
-                                $('#content').fadeIn();
+        anote.transfer(addressTo, amount, handleTransactionResult);
+    }
+
+    // Handles transaction result
+    function handleTransactionResult(err, res) {
+        if (err == null) {
+            var interval = setInterval(function(){
+                web3js.eth.getTransaction(res, function(err, res) {
+                    if (res.blockNumber) {
+                        clearInterval(interval);
+                        initSuccess();
+                        $('#transactionInProgress').fadeOut(function() {
+                            $('#transactionSuccess').fadeIn(function() {
+                                setTimeout(() => {
+                                    $('#transactionSuccess').fadeOut();
+                                }, 10000);
                             });
-                        }
-                    });
-                }, 1000);
-            } else {
-                $('#transactionInProgress').fadeOut(function() {
-                    $('#transactionError').fadeIn(function() {
-                        setTimeout(() => {
-                            $('#transactionError').fadeOut();
-                        }, 10000);
-                    });
-                    $('#content').fadeIn();
+                            $('#content').fadeIn();
+                        });
+                    }
                 });
-            }
-        });
+            }, 1000);
+        } else {
+            $('#transactionInProgress').fadeOut(function() {
+                $('#transactionError').fadeIn(function() {
+                    setTimeout(() => {
+                        $('#transactionError').fadeOut();
+                    }, 10000);
+                });
+                $('#content').fadeIn();
+            });
+        }
     }
 
     // Attach all events
