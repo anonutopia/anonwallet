@@ -7,7 +7,8 @@ import (
 )
 
 type config struct {
-	EthNetwork uint `json:"eth_network"`
+	EthNetwork   uint   `json:"eth_network"`
+	AnoteAddress string `json:"anote_address"`
 }
 
 func (sc *config) Load(configFile string) error {
