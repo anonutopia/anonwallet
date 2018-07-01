@@ -4,7 +4,18 @@ function Wallet() {
 
     // Payment method
     this.pay = function() {
-        console.log('payment');
+        var addressTo = getEl('addressTo').value;
+        var amount = getEl('amount').value;
+        var currency = getEl('paymentCurrency').selectedIndex;
+        if (validatePaymentFields(addressTo, amount)) {
+            switch (currency) {
+                case 1:
+                    transferEth(addressTo, amount);
+                    break;
+                default:
+                    transferAnt(addressTo, amount);
+            }
+        }
     }
 
     // Copy method for copying address to clipboard
@@ -15,7 +26,7 @@ function Wallet() {
         $('#copymessage').fadeIn(function() {
             setTimeout(() => {
                 $('#copymessage').fadeOut();
-            }, 1000);
+            }, 2000);
         });
     }
 
@@ -41,7 +52,7 @@ function Wallet() {
 
     // Successful init
     function initSuccess() {
-        var anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
+        anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
 
         setValue('address', web3js.eth.coinbase);
 
@@ -115,6 +126,76 @@ function Wallet() {
         return function() {
             return fn.apply(scope, arguments);
         }
+    }
+
+    // Checks and validates fields for payments
+    function validatePaymentFields(addressTo, amount) {
+        var validates = true;
+
+        if (addressTo.length == 0) {
+            $('#addressToGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (amount.length == 0) {
+            $('#amountGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (!validates) {
+            setHTML('errorMessagePayment', 'Oba polja su nužna za slanje.');
+            $('#errorMessagePayment').fadeIn(function() {
+            setTimeout(() => {
+                $('#errorMessagePayment').fadeOut();
+                $('#amountGroup').removeClass('has-error');
+                $('#addressToGroup').removeClass('has-error');
+            }, 2000);
+        });
+        }
+
+        return validates;
+    }
+
+    // Transfers ETH
+    function transferEth(addressTo, amount) {
+
+    }
+
+    // Transfers ANT
+    function transferAnt(addressTo, amount) {
+        $('#content').fadeOut(function() {
+            $('#transactionInProgress').fadeIn();
+        });
+        amount = web3js.toWei(parseFloat(amount));
+        anote.transfer(addressTo, amount, function(err, res) {
+            if (err == null) {
+                var interval = setInterval(function(){
+                    web3js.eth.getTransaction(res, function(err, res) {
+                        if (res.blockNumber) {
+                            clearInterval(interval);
+                            initSuccess();
+                            $('#transactionInProgress').fadeOut(function() {
+                                $('#transactionSuccess').fadeIn(function() {
+                                    setTimeout(() => {
+                                        $('#transactionSuccess').fadeOut();
+                                    }, 10000);
+                                });
+                                $('#content').fadeIn();
+                            });
+                        }
+                    });
+                }, 1000);
+            } else {
+                $('#transactionInProgress').fadeOut(function() {
+                    $('#transactionError').fadeIn(function() {
+                        setTimeout(() => {
+                            $('#transactionError').fadeOut();
+                        }, 10000);
+                    });
+                    $('#content').fadeIn();
+                });
+            }
+        });
     }
 
     // Attach all events

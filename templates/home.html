@@ -9,10 +9,7 @@
         </section>
 
         <section class="content" id="loader">
-            <!-- <p class="bg-primary" style="padding: 20px 20px 20px 60px;">
-                <i class="fa fa-spinner fa-spin" style="font-size: 2em; margin-top: -5px; position: absolute; margin-left: -45px;"></i> Novčanik se učitava. Molimo pričekajte!
-            </p>             -->
-            <div class="callout bg-light-blue">
+            <div class="callout bg-light-blue" style="border: none;">
                 <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
                 <p>Novčanik se učitava. Molimo pričekajte!</p>
             </div>
@@ -39,10 +36,25 @@
             </div>
         </section>
 
-
+        <section class="content" id="transactionInProgress" style="display: none;">
+            <div class="callout bg-light-blue" style="border: none;">
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
+                <p>Transakcija je u tijeku. Molimo pričekajte!</p>
+            </div>
+        </section>
 
         <!-- Main content -->
         <section class="content" id="content" style="display: none;">
+            <div class="callout callout-danger" id="transactionError" style="display: none;">
+                <h4>Transakcija nije prošla!</h4>
+                <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
+            </div>
+
+            <div class="callout callout-success" id="transactionSuccess" style="display: none;">
+                <h4>Transakcija je uspješna!</h4>
+                <p>Vaša transakcija je uspješno izvršena.</p>
+            </div>
+
             <div class="row">
                 <div class="col-md-4">
                     <!-- Default box -->
@@ -124,20 +136,21 @@
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label for="exampleInputFile" class="text-lg-left">Valuta</label>
-                                            <select class="form-control input-lg">
-                                                <option>Anote (ANT)</option>
-                                                <option>Ether (ETH)</option>
+                                            <select class="form-control input-lg" id="paymentCurrency">
+                                                <option value="ANT" selected>Anote (ANT)</option>
+                                                <option value="ETH">Ether (ETH)</option>
                                                 <!-- <option>Bitcoin (BTC)</option> -->
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Na račun</label>
-                                            <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                        <div class="form-group" id="addressToGroup">
+                                            <label for="addressTo">Na račun</label>
+                                            <input type="text" class="form-control input-lg" id="addressTo" placeholder="0x0000000000000000000000000000000000000000">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Iznos</label>
-                                            <input type="text" class="form-control input-lg" id="exampleInputEmail1">
+                                        <div class="form-group" id="amountGroup">
+                                            <label for="amount">Iznos</label>
+                                            <input type="text" class="form-control input-lg" id="amount" placeholder="1.234">
                                         </div>
+                                        <p class="text-red" style="margin: 0; display: none;" id="errorMessagePayment"></p>
                                     </div>
                                     <div class="box-footer">
                                         <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger" id="payButton">
