@@ -16,6 +16,7 @@ func main() {
 	conf = initConfig()
 
 	m.Get("/", newPageData, homeView)
+	m.Get("/profile/", newPageData, profileView)
 
 	// m.Run()
 	log.Println("Server is running...")

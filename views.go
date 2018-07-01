@@ -7,3 +7,7 @@ import (
 func homeView(ctx *macaron.Context) {
 	ctx.HTML(200, "home")
 }
+
+func profileView(ctx *macaron.Context) {
+	ctx.HTML(200, "profile")
+}

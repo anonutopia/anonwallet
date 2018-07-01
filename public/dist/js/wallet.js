@@ -34,6 +34,12 @@ function Wallet() {
 
     // Constructor method
     function constructor() {
+        $(".sidebar-menu a").each(function() {
+            if ($(this).attr('href') == window.location.pathname) {
+                $(this).parent().addClass('active');
+            }
+        });
+
         if (typeof web3 !== 'undefined') {
             web3js = new Web3(web3.currentProvider);
             if (web3js.eth.coinbase) {
@@ -209,8 +215,10 @@ function Wallet() {
     }
 
     // Attach all events
-    getEl('payButton').addEventListener('click', bind(this, this.pay), false);
-    getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+    try {
+        getEl('payButton').addEventListener('click', bind(this, this.pay), false);
+        getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+    } catch (e) {}
 
     // Calling Wallet constructor
     constructor();
