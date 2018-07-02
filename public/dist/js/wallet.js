@@ -2,8 +2,6 @@ function Wallet() {
 
     var componentCounter = 0;
 
-    var loadingCounter = 0;
-
     // Payment method
     this.pay = function() {
         var addressTo = getEl('addressTo').value;
@@ -83,7 +81,7 @@ function Wallet() {
             web3js = new Web3(web3.currentProvider);
             web3js.eth.getCoinbase(function(error, result) {
                 if (error == null) {
-                    if (result.length) {
+                    if (result && result.length) {
                         if (web3js.version.network == networkVersion) {
                             switch (window.location.pathname) {
                                 case '/':
@@ -111,15 +109,23 @@ function Wallet() {
                 }
             });
         } else {
+            var queryDict = {};
+            location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
+            var loadingCounter = parseInt(queryDict['c']);
+            if (!loadingCounter) {
+                loadingCounter = 0;
+            }
             loadingCounter++;
-            if (loadingCounter == 100) {
+            if (loadingCounter == 20) {
                 initNoMetaMask();
             } else {
                 // nasty hack because web3 is sometimes missing (web3 is not defined)
-                var script = document.createElement('script');
-                script.src = '/dist/js/web3.min.js?v=' + loadingCounter;
-                document.getElementsByTagName("body")[0].appendChild(script);
-                setTimeout(constructor, 300);
+                // var script = document.createElement('script');
+                // script.src = '/dist/js/web3.min.js?v=' + loadingCounter;
+                // document.getElementsByTagName("head")[0].appendChild(script);
+                setTimeout(function() {
+                    window.location.search = 'c=' + loadingCounter;
+                }, 2000);
             }
         }
     }
