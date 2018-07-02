@@ -49,37 +49,12 @@ function Wallet() {
             $('#content').fadeOut(function() {
                 $('#transactionInProgress').fadeIn();
             });
-            if (selectedCurrency == 0) {
-                anote.ethToAnt(referral, { from: web3js.eth.coinbase, value: web3js.toWei(amount) }, function(error, result) {
-                    if (error == null) {
-                        var interval = setInterval(function(){
-                            web3js.eth.getTransaction(result, function(err, res) {
-                                if (res.blockNumber) {
-                                    clearInterval(interval);
-                                    clearTimeout(timeout);
-                                    initSuccessExchange();
-                                    $('#transactionInProgress').fadeOut(function() {
-                                        $('#transactionSuccess').fadeIn(function() {
-                                            setTimeout(() => {
-                                                $('#transactionSuccess').fadeOut();
-                                            }, 10000);
-                                        });
-                                        $('#content').fadeIn();
-                                    });
-                                }
-                            });
-                        }, 1000);
-                    } else {
-                        $('#transactionInProgress').fadeOut(function() {
-                            $('#transactionError').fadeIn(function() {
-                                setTimeout(() => {
-                                    $('#transactionError').fadeOut();
-                                }, 10000);
-                            });
-                            $('#content').fadeIn();
-                        });
-                    }
-                });
+            switch (selectedCurrency) {
+                case 1:
+                    anote.antToEth(web3js.toWei(amount), handleExchangeTransactionResult);
+                    break;
+                default:
+                    anote.ethToAnt(referral, { from: web3js.eth.coinbase, value: web3js.toWei(amount) }, handleExchangeTransactionResult);
             }
         }
     }
@@ -338,6 +313,38 @@ function Wallet() {
                         clearInterval(interval);
                         clearTimeout(timeout);
                         initSuccess();
+                        $('#transactionInProgress').fadeOut(function() {
+                            $('#transactionSuccess').fadeIn(function() {
+                                setTimeout(() => {
+                                    $('#transactionSuccess').fadeOut();
+                                }, 10000);
+                            });
+                            $('#content').fadeIn();
+                        });
+                    }
+                });
+            }, 1000);
+        } else {
+            $('#transactionInProgress').fadeOut(function() {
+                $('#transactionError').fadeIn(function() {
+                    setTimeout(() => {
+                        $('#transactionError').fadeOut();
+                    }, 10000);
+                });
+                $('#content').fadeIn();
+            });
+        }
+    }
+
+    // Handles exchange transaction result
+    function handleExchangeTransactionResult(error, result) {
+        if (error == null) {
+            var interval = setInterval(function(){
+                web3js.eth.getTransaction(result, function(err, res) {
+                    if (res.blockNumber) {
+                        clearInterval(interval);
+                        clearTimeout(timeout);
+                        initSuccessExchange();
                         $('#transactionInProgress').fadeOut(function() {
                             $('#transactionSuccess').fadeIn(function() {
                                 setTimeout(() => {
