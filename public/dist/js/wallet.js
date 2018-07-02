@@ -30,6 +30,18 @@ function Wallet() {
         });
     }
 
+    this.save = function() {
+        var nickname = getEl('nickname').value;
+        if (validateNicknameFields(nickname)) {
+            anonutopia.setNickname(nickname, function(error, result) {
+                console.log(error);
+            });
+        }
+        anonutopia.getNickname(function(error, result) {
+            console.log(result);
+        });
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -44,7 +56,13 @@ function Wallet() {
             web3js = new Web3(web3.currentProvider);
             if (web3js.eth.coinbase) {
                 if (web3js.version.network == networkVersion) {
-                    initSuccess();
+                    switch (window.location.pathname) {
+                        case '/profile/':
+                            initSuccessProfile();
+                            break;
+                        default:
+                            initSuccess();
+                    }
                 } else {
                     initWrongNetwork();
                 }                
@@ -59,8 +77,15 @@ function Wallet() {
     // Successful init
     function initSuccess() {
         anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
+        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
 
         setValue('address', web3js.eth.coinbase);
+
+        anonutopia.getNickname(function(error, result) {
+            if (result.length) {
+                setHTML('nicknameTag', result);
+            }
+        });
 
         web3js.eth.getBalance(web3js.eth.coinbase, function(error, result) {
             var balance = parseFloat(web3js.fromWei(result)).toFixed(5);
@@ -75,6 +100,21 @@ function Wallet() {
         });
 
         timeout = setTimeout(initSuccess, 1000);
+    }
+
+    // Successful init for profile page
+    function initSuccessProfile() {
+        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
+        anonutopia.getNickname(function(error, result) {
+            if (result.length) {
+                setHTML('nicknameTag', result);
+                setValue('nickname', result);
+            }
+            updateCounter();
+        });
+        updateCounter();
+
+        timeout = setTimeout(initSuccessProfile, 1000);
     }
 
     // Inits if there's no MetaMask
@@ -164,6 +204,28 @@ function Wallet() {
         return validates;
     }
 
+    // Checks and validates fields for nickname form
+    function validateNicknameFields(nickname) {
+        var validates = true;
+
+        if (nickname.length == 0) {
+            $('#nicknameGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (!validates) {
+            setHTML('errorMessageNickname', 'Polje ne može biti prazno.');
+            $('#errorMessageNickname').fadeIn(function() {
+            setTimeout(() => {
+                $('#errorMessageNickname').fadeOut();
+                $('#nicknameGroup').removeClass('has-error');
+            }, 2000);
+        });
+        }
+
+        return validates;
+    }
+
     // Transfers ETH
     function transferEth(addressTo, amount) {
         $('#content').fadeOut(function() {
@@ -215,10 +277,14 @@ function Wallet() {
     }
 
     // Attach all events
-    try {
-        getEl('payButton').addEventListener('click', bind(this, this.pay), false);
-        getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
-    } catch (e) {}
+    switch (window.location.pathname) {
+        case '/profile/':
+            getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+            break;
+        default:
+            getEl('payButton').addEventListener('click', bind(this, this.pay), false);
+            getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+    }
 
     // Calling Wallet constructor
     constructor();

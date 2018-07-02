@@ -33,6 +33,8 @@
         networkVersion = {{ .NetworkVersion }};
         anoteAddress = '{{ .AnoteAddress }}';
         anoteAbi = {{ .AnoteAbi }};
+        anonutopiaAddress = '{{ .AnonutopiaAddress }}';
+        anonutopiaAbi = {{ .AnonutopiaAbi }};
 
     </script>
 </head>
@@ -72,7 +74,7 @@
                     <img src="/dist/img/user9-300x300.jpg" class="img-circle" alt="User Image">
                 </div>
                 <div class="pull-left info">
-                    <p>Anonymous</p>
+                    <p id="nicknameTag">Anonymous</p>
                     <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
             </div>
@@ -118,7 +120,7 @@
 <!-- QR Codes -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <!-- Wallet -->
-<script src="/dist/js/wallet.js?v=1.0.8"></script>
+<script src="/dist/js/wallet.js?v=1.0.9"></script>
 <script>
     $(document).ready(function () {
         $('.sidebar-menu').tree()
