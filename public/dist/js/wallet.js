@@ -2,6 +2,8 @@ function Wallet() {
 
     var componentCounter = 0;
 
+    var loadingCounter = 0;
+
     // Payment method
     this.pay = function() {
         var addressTo = getEl('addressTo').value;
@@ -78,31 +80,47 @@ function Wallet() {
         });
 
         if (typeof web3 !== 'undefined') {
-            web3js = new Web3(web3.currentProvider || "ws://localhost:8546");
-            if (web3js.eth.coinbase) {
-                if (web3js.version.network == networkVersion) {
-                    switch (window.location.pathname) {
-                        case '/':
-                            initSuccess();
-                            break;
-                        case '/profit/':
-                            initSuccessProfit();
-                            break;        
-                        case '/profile/':
-                            initSuccessProfile();
-                            break;
-                        case '/exchange/':
-                            initSuccessExchange();
-                            break;         
+            web3js = new Web3(web3.currentProvider);
+            web3js.eth.getCoinbase(function(error, result) {
+                if (error == null) {
+                    if (result.length) {
+                        if (web3js.version.network == networkVersion) {
+                            switch (window.location.pathname) {
+                                case '/':
+                                    initSuccess();
+                                    break;
+                                case '/profit/':
+                                    initSuccessProfit();
+                                    break;        
+                                case '/profile/':
+                                    initSuccessProfile();
+                                    break;
+                                case '/exchange/':
+                                    initSuccessExchange();
+                                    break;         
+                            }
+                        } else {
+                            initWrongNetwork();
+                        }                
+                    } else {
+                        console.log(web3js);
+                        initNotSignedIn();
                     }
                 } else {
-                    initWrongNetwork();
-                }                
-            } else {
-                initNotSignedIn();
-            }
+                    console.log(error);
+                }
+            });
         } else {
-            initNoMetaMask();
+            loadingCounter++;
+            if (loadingCounter == 100) {
+                initNoMetaMask();
+            } else {
+                // nasty hack because web3 is sometimes missing (web3 is not defined)
+                var script = document.createElement('script');
+                script.src = '/dist/js/web3.min.js?v=' + loadingCounter;
+                document.getElementsByTagName("body")[0].appendChild(script);
+                setTimeout(constructor, 300);
+            }
         }
     }
 
