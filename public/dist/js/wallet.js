@@ -59,6 +59,14 @@ function Wallet() {
         }
     }
 
+    // Withdraw ANT profit
+    this.withdraw = function() {
+        $('#content').fadeOut(function() {
+            $('#transactionInProgress').fadeIn();
+        });
+        anote.withdrawProfit(handleProfitTransactionResult);
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -69,7 +77,7 @@ function Wallet() {
             }
         });
 
-        if (typeof web3 !== 'undefined') {
+        try {
             web3js = new Web3(web3.currentProvider);
             if (web3js.eth.coinbase) {
                 if (web3js.version.network == networkVersion) {
@@ -77,6 +85,9 @@ function Wallet() {
                         case '/':
                             initSuccess();
                             break;
+                        case '/profit/':
+                            initSuccessProfit();
+                            break;        
                         case '/profile/':
                             initSuccessProfile();
                             break;
@@ -90,7 +101,7 @@ function Wallet() {
             } else {
                 initNotSignedIn();
             }
-        } else {
+        } catch (e) {
             initNoMetaMask();
         }
     }
@@ -153,6 +164,25 @@ function Wallet() {
         updateCounter();
 
         timeout = setTimeout(initSuccessExchange, 1000);
+    }
+
+    // Successful init for profit page
+    function initSuccessProfit() {
+        anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
+        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
+        anonutopia.getNickname(function(error, result) {
+            if (result.length) {
+                setHTML('nicknameTag', result);
+            }
+            updateCounter();
+        });
+        anote.balanceProfitOf(web3js.eth.coinbase, function(error, result) {
+            var balanceProfit = parseFloat(web3js.fromWei(result)).toFixed(5);
+            setHTML('profit', balanceProfit);
+            updateCounter();
+        });
+
+        timeout = setTimeout(initSuccessProfit, 1000);
     }
 
     // Inits if there's no MetaMask
@@ -368,6 +398,38 @@ function Wallet() {
         }
     }
 
+    // Handles profit transaction result
+    function handleProfitTransactionResult(error, result) {
+        if (error == null) {
+            var interval = setInterval(function(){
+                web3js.eth.getTransaction(result, function(err, res) {
+                    if (res.blockNumber) {
+                        clearInterval(interval);
+                        clearTimeout(timeout);
+                        initSuccessProfit();
+                        $('#transactionInProgress').fadeOut(function() {
+                            $('#transactionSuccess').fadeIn(function() {
+                                setTimeout(() => {
+                                    $('#transactionSuccess').fadeOut();
+                                }, 10000);
+                            });
+                            $('#content').fadeIn();
+                        });
+                    }
+                });
+            }, 1000);
+        } else {
+            $('#transactionInProgress').fadeOut(function() {
+                $('#transactionError').fadeIn(function() {
+                    setTimeout(() => {
+                        $('#transactionError').fadeOut();
+                    }, 10000);
+                });
+                $('#content').fadeIn();
+            });
+        }
+    }
+
     // Handling currency select changed state
     function exchangeCurrencyChanged() {
         var selectedCurrency = getEl('currency').selectedIndex;
@@ -383,6 +445,9 @@ function Wallet() {
         case '/':
             getEl('payButton').addEventListener('click', bind(this, this.pay), false);
             getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+            break;
+        case '/profit/':
+            getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
             break;
         case '/profile/':
             getEl('saveButton').addEventListener('click', bind(this, this.save), false);

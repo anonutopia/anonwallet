@@ -1,0 +1,98 @@
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Vaš ANOTE Profit
+                <small>holdanje ANT-a se isplati</small>
+            </h1>
+        </section>
+
+        <section class="content" id="loader">
+            <div class="callout bg-light-blue" style="border: none;">
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
+                <p>Sadržaj se učitava. Molimo pričekajte!</p>
+            </div>
+        </section>
+
+        <section class="content" id="nometamask" style="display: none;">
+            <div class="callout callout-danger">
+                <h4>MetaMask nije instaliran!</h4>
+                <p>Vaš browser nema DApp mogućnosti. Molimo vas da novčanik otvorite u <a href="https://trustwalletapp.com/" target="_blank">Trust</a> aplikaciji ili da instalirate <a href="https://metamask.io/" target="_blank">MetaMask</a> ekstenziju.</p>
+            </div>
+        </section>
+
+        <section class="content" id="notsignedin" style="display: none;">
+            <div class="callout callout-danger">
+                <h4>Niste ulogirani u MetaMask!</h4>
+                <p>Za daljnje korištenje novčanika, molimo vas da se ulogirate u MetaMask ekstenziju (u pregledniku gore desno).</p>
+            </div>
+        </section>
+
+        <section class="content" id="wrongnetwork" style="display: none;">
+            <div class="callout callout-danger">
+                <h4>Kriva Ethereum mreža!</h4>
+                <p>Koristite krivu Ethereum mrežu. Promijenite ju na glavnu mrežu u MetaMask / Trust postavkama.</p>
+            </div>
+        </section>
+
+        <section class="content" id="transactionInProgress" style="display: none;">
+            <div class="callout bg-light-blue" style="border: none;">
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
+                <p>Transakcija je u tijeku. Molimo pričekajte!</p>
+            </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content" style="display: none;" id="content">
+
+            <div class="callout callout-danger" id="transactionError" style="display: none;">
+                <h4>Transakcija nije prošla!</h4>
+                <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
+            </div>
+
+            <div class="callout callout-success" id="transactionSuccess" style="display: none;">
+                <h4>Transakcija je uspješna!</h4>
+                <p>Vaša transakcija je uspješno izvršena.</p>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <!-- Default box -->
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-line-chart"></i>
+                            <h3 class="box-title">Trenutna Zarada</h3>
+                        </div>
+                        <div class="box-body">
+                            <h1 class="text-center text-green"><strong><span id="profit">0.00000</span> ETH</strong></h1>
+                            <br>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+                <div class="col-md-6">
+                    <!-- Default box -->
+                    <div class="box box-danger">
+                        <div class="box-header with-border">
+                            <i class="fa fa-download"></i>
+                            <h3 class="box-title">Podizanje Profita</h3>
+                        </div>
+                        <form action="javascript:;">
+                            <div class="box-footer">
+                                <input type="submit" value="Povuci profit u svoj novčanik" class="btn btn-block btn-danger btn-lg" id="withdrawButton">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+            </div>
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->

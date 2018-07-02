@@ -15,3 +15,7 @@ func profileView(ctx *macaron.Context) {
 func exchangeView(ctx *macaron.Context) {
 	ctx.HTML(200, "exchange")
 }
+
+func profitView(ctx *macaron.Context) {
+	ctx.HTML(200, "profit")
+}
