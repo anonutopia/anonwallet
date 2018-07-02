@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"net/http"
 
 	"gopkg.in/macaron.v1"
 )
@@ -20,6 +22,5 @@ func main() {
 
 	// m.Run()
 	log.Println("Server is running...")
-	// http.ListenAndServe("0.0.0.0:4001", m)
-	m.Run()
+	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", conf.Port), m)
 }

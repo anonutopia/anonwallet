@@ -37,9 +37,6 @@ function Wallet() {
                 console.log(error);
             });
         }
-        anonutopia.getNickname(function(error, result) {
-            console.log(result);
-        });
     }
 
     // PRIVATE METHODS
@@ -108,7 +105,9 @@ function Wallet() {
         anonutopia.getNickname(function(error, result) {
             if (result.length) {
                 setHTML('nicknameTag', result);
-                setValue('nickname', result);
+                if (!getEl('nickname').value.length) {
+                    setValue('nickname', result);
+                }
             }
             updateCounter();
         });
