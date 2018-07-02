@@ -77,8 +77,8 @@ function Wallet() {
             }
         });
 
-        try {
-            web3js = new Web3(web3.currentProvider);
+        if (typeof web3 !== 'undefined') {
+            web3js = new Web3(web3.currentProvider || "ws://localhost:8546");
             if (web3js.eth.coinbase) {
                 if (web3js.version.network == networkVersion) {
                     switch (window.location.pathname) {
@@ -101,7 +101,7 @@ function Wallet() {
             } else {
                 initNotSignedIn();
             }
-        } catch (e) {
+        } else {
             initNoMetaMask();
         }
     }
@@ -460,8 +460,4 @@ function Wallet() {
 
     // Calling Wallet constructor
     constructor();
-} 
-
-window.addEventListener('load', function() {
-    var wallet = new Wallet();
-});
+}
