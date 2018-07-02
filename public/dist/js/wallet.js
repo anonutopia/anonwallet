@@ -30,12 +30,57 @@ function Wallet() {
         });
     }
 
+    // Saves user's nickname to blockchain
     this.save = function() {
         var nickname = getEl('nickname').value;
         if (validateNicknameFields(nickname)) {
             anonutopia.setNickname(nickname, function(error, result) {
                 console.log(error);
             });
+        }
+    }
+
+    // Exchange currencies
+    this.exchange = function() {
+        var selectedCurrency = getEl('currency').selectedIndex;
+        var amount = getEl('amount').value;
+        var referral = getEl('referral').value;
+        if (validateExchangeFields(selectedCurrency, amount, referral)) {
+            $('#content').fadeOut(function() {
+                $('#transactionInProgress').fadeIn();
+            });
+            if (selectedCurrency == 0) {
+                anote.ethToAnt(referral, { from: web3js.eth.coinbase, value: web3js.toWei(amount) }, function(error, result) {
+                    if (error == null) {
+                        var interval = setInterval(function(){
+                            web3js.eth.getTransaction(result, function(err, res) {
+                                if (res.blockNumber) {
+                                    clearInterval(interval);
+                                    clearTimeout(timeout);
+                                    initSuccessExchange();
+                                    $('#transactionInProgress').fadeOut(function() {
+                                        $('#transactionSuccess').fadeIn(function() {
+                                            setTimeout(() => {
+                                                $('#transactionSuccess').fadeOut();
+                                            }, 10000);
+                                        });
+                                        $('#content').fadeIn();
+                                    });
+                                }
+                            });
+                        }, 1000);
+                    } else {
+                        $('#transactionInProgress').fadeOut(function() {
+                            $('#transactionError').fadeIn(function() {
+                                setTimeout(() => {
+                                    $('#transactionError').fadeOut();
+                                }, 10000);
+                            });
+                            $('#content').fadeIn();
+                        });
+                    }
+                });
+            }
         }
     }
 
@@ -122,6 +167,7 @@ function Wallet() {
 
     // Successful init for exchange page
     function initSuccessExchange() {
+        anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
         anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
         anonutopia.getNickname(function(error, result) {
             if (result.length) {
@@ -233,11 +279,33 @@ function Wallet() {
         if (!validates) {
             setHTML('errorMessageNickname', 'Polje ne može biti prazno.');
             $('#errorMessageNickname').fadeIn(function() {
-            setTimeout(() => {
-                $('#errorMessageNickname').fadeOut();
-                $('#nicknameGroup').removeClass('has-error');
-            }, 2000);
-        });
+                setTimeout(() => {
+                    $('#errorMessageNickname').fadeOut();
+                    $('#nicknameGroup').removeClass('has-error');
+                }, 2000);
+            });
+        }
+
+        return validates;
+    }
+
+    // Checks and validates fields for exchange form
+    function validateExchangeFields(selectedCurrency, amount, referral) {
+        var validates = true;
+
+        if (amount.length == 0) {
+            $('#amountGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (!validates) {
+            setHTML('errorMessageExchange', 'Polje ne može biti prazno.');
+            $('#errorMessageExchange').fadeIn(function() {
+                setTimeout(() => {
+                    $('#errorMessageExchange').fadeOut();
+                    $('#amountGroup').removeClass('has-error');
+                }, 2000);
+            });
         }
 
         return validates;
@@ -293,6 +361,16 @@ function Wallet() {
         }
     }
 
+    // Handling currency select changed state
+    function exchangeCurrencyChanged() {
+        var selectedCurrency = getEl('currency').selectedIndex;
+        if (selectedCurrency == 0) {
+            $('#referralGroup').fadeIn();
+        } else {
+            $('#referralGroup').fadeOut();
+        }
+    }
+
     // Attach all events
     switch (window.location.pathname) {
         case '/':
@@ -301,7 +379,11 @@ function Wallet() {
             break;
         case '/profile/':
             getEl('saveButton').addEventListener('click', bind(this, this.save), false);
-            break;            
+            break;
+        case '/exchange/':
+            getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
+            getEl('currency').addEventListener('change', bind(this, exchangeCurrencyChanged), false);
+            break;
     }
 
     // Calling Wallet constructor

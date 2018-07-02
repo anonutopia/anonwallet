@@ -36,12 +36,29 @@
             </div>
         </section>
 
+        <section class="content" id="transactionInProgress" style="display: none;">
+            <div class="callout bg-light-blue" style="border: none;">
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
+                <p>Transakcija je u tijeku. Molimo pričekajte!</p>
+            </div>
+        </section>
+
         <!-- Main content -->
         <section class="content" style="display: none;" id="content">
 
+            <div class="callout callout-danger" id="transactionError" style="display: none;">
+                <h4>Transakcija nije prošla!</h4>
+                <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
+            </div>
+
+            <div class="callout callout-success" id="transactionSuccess" style="display: none;">
+                <h4>Transakcija je uspješna!</h4>
+                <p>Vaša transakcija je uspješno izvršena.</p>
+            </div>
+
             <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <!-- Default box -->
                     <div class="box box-warning">
                         <div class="box-header with-border">
@@ -52,13 +69,15 @@
                             <table class="table">
                                 <tr>
                                     <th>Valuta</th>
-                                    <th style="width: 150px">Kupovna</th>
-                                    <th style="width: 150px">Prodajna</th>
+                                    <th style="width: 130px">Kupovna</th>
+                                    <th style="width: 130px">Prodajna</th>
                                 </tr>
                                 <tr>
                                     <td>ANOTE (ANT)</td>
-                                    <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td>
-                                    <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td>
+                                    <!-- <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td>
+                                    <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td> -->
+                                    <td><span class="badge bg-red">uskoro</span></td>
+                                    <td><span class="badge bg-red">uskoro</span></td>
                                 </tr>
                                 <tr>
                                     <td>Kuna (HRK)</td>
@@ -82,38 +101,7 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-4">
-                    <!-- Default box -->
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-dollar"></i>
-                            <h3 class="box-title">Valute</h3>
-                        </div>
-                        <form action="javascript:;">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label for="exampleInputFile" class="text-lg-left">Iz Valute</label>
-                                    <select class="form-control input-lg" id="paymentCurrency">
-                                        <option value="ANT">Anote (ANT)</option>
-                                        <option value="ETH" selected>Ether (ETH)</option>
-                                        <!-- <option>Bitcoin (BTC)</option> -->
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputFile" class="text-lg-left">U Valutu</label>
-                                    <select class="form-control input-lg" id="paymentCurrency">
-                                        <option value="ANT" selected>Anote (ANT)</option>
-                                        <option value="ETH">Ether (ETH)</option>
-                                        <!-- <option>Bitcoin (BTC)</option> -->
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <!-- Default box -->
                     <div class="box box-danger">
                         <div class="box-header with-border">
@@ -122,18 +110,26 @@
                         </div>
                         <form action="javascript:;">
                             <div class="box-body">
-                                <div class="form-group" id="nicknameGroup">
-                                    <label for="nickname">Iznos Zamjene</label>
-                                    <input type="text" class="form-control input-lg" id="nickname" placeholder="1.234">
+                                <div class="form-group">
+                                    <label for="currency" class="text-lg-left">Valute</label>
+                                    <select class="form-control input-lg" id="currency">
+                                        <option selected>Ether (ETH) -> Anote (ANT)</option>
+                                        <option>Anote (ANT) -> Ether (ETH)</option>
+                                        <!-- <option>Bitcoin (BTC)</option> -->
+                                    </select>
                                 </div>
-                                <div class="form-group" id="nicknameGroup">
-                                    <label for="nickname">Referal</label>
-                                    <input type="text" class="form-control input-lg" id="nickname" placeholder="0x0000000000000000000000000000000000000000">
+                                <div class="form-group" id="amountGroup">
+                                    <label for="amount">Iznos Zamjene</label>
+                                    <input type="text" class="form-control input-lg" id="amount" placeholder="1.234">
                                 </div>
-                                <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p>
+                                <div class="form-group" id="referralGroup">
+                                    <label for="referral">Referal</label>
+                                    <input type="text" class="form-control input-lg" id="referral" placeholder="0x0000000000000000000000000000000000000000">
+                                </div>
+                                <p class="text-red" style="margin: 0; display: none;" id="errorMessageExchange"></p>
                             </div>
                             <div class="box-footer">
-                                <input type="submit" value="Napravi Zamjenu" class="btn btn-block btn-danger btn-lg" id="saveButton">
+                                <input type="submit" value="Napravi Zamjenu" class="btn btn-block btn-danger btn-lg" id="exchangeButton">
                             </div>
                         </form>
                     </div>
