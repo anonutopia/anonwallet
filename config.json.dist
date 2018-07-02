@@ -1,5 +1,6 @@
 {
     "eth_network":                  4,
-    "anote_address":                "0x56Aa5ca18D8E651C47FA67B1c8782F9C4dDB731B"
-    
+    "anote_address":                "0x56Aa5ca18D8E651C47FA67B1c8782F9C4dDB731B",
+    "anonutopia_address":           "0x70C50FD67A359dC098fC058B6abCA5cC249f33D1",
+    "port":                         4002
 }
