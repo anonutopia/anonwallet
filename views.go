@@ -11,3 +11,7 @@ func homeView(ctx *macaron.Context) {
 func profileView(ctx *macaron.Context) {
 	ctx.HTML(200, "profile")
 }
+
+func exchangeView(ctx *macaron.Context) {
+	ctx.HTML(200, "exchange")
+}

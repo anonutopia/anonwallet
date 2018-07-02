@@ -19,6 +19,7 @@ func main() {
 
 	m.Get("/", newPageData, homeView)
 	m.Get("/profile/", newPageData, profileView)
+	m.Get("/exchange/", newPageData, exchangeView)
 
 	// m.Run()
 	log.Println("Server is running...")

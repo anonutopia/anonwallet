@@ -54,11 +54,15 @@ function Wallet() {
             if (web3js.eth.coinbase) {
                 if (web3js.version.network == networkVersion) {
                     switch (window.location.pathname) {
+                        case '/':
+                            initSuccess();
+                            break;
                         case '/profile/':
                             initSuccessProfile();
                             break;
-                        default:
-                            initSuccess();
+                        case '/exchange/':
+                            initSuccessExchange();
+                            break;         
                     }
                 } else {
                     initWrongNetwork();
@@ -114,6 +118,20 @@ function Wallet() {
         updateCounter();
 
         timeout = setTimeout(initSuccessProfile, 1000);
+    }
+
+    // Successful init for exchange page
+    function initSuccessExchange() {
+        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
+        anonutopia.getNickname(function(error, result) {
+            if (result.length) {
+                setHTML('nicknameTag', result);
+            }
+            updateCounter();
+        });
+        updateCounter();
+
+        timeout = setTimeout(initSuccessExchange, 1000);
     }
 
     // Inits if there's no MetaMask
@@ -277,12 +295,13 @@ function Wallet() {
 
     // Attach all events
     switch (window.location.pathname) {
-        case '/profile/':
-            getEl('saveButton').addEventListener('click', bind(this, this.save), false);
-            break;
-        default:
+        case '/':
             getEl('payButton').addEventListener('click', bind(this, this.pay), false);
             getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+            break;
+        case '/profile/':
+            getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+            break;            
     }
 
     // Calling Wallet constructor
