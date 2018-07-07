@@ -183,9 +183,12 @@ function Wallet() {
             if (result.length) {
                 setHTML('nicknameTag', result);
             }
+        });
+        anote.priceBuy(function(error, result) {
+            var price = parseFloat(web3js.fromWei(result)).toFixed(5);
+            setHTML('priceBuy', price);
             updateCounter();
         });
-        updateCounter();
 
         timeout = setTimeout(initSuccessExchange, 1000);
     }
