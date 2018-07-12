@@ -8,7 +8,7 @@
             </h1>
         </section>
 
-        <section class="content" id="loader">
+        <section class="content" id="loader" style="display: none;">
             <div class="callout bg-light-blue" style="border: none;">
                 <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
                 <p>Sadržaj se učitava. Molimo pričekajte!</p>
@@ -44,7 +44,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content" style="display: none;" id="content">
+        <section class="content" id="content">
 
             <div class="callout callout-danger" id="transactionError" style="display: none;">
                 <h4>Transakcija nije prošla!</h4>
@@ -76,7 +76,7 @@
                                     <td>ANOTE (ANT)</td>
                                     <!-- <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td>
                                     <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td> -->
-                                    <td><span id="priceBuy">0.00000</span> EUR</td>
+                                    <td><span id="priceBuy">0.01000</span> EUR</td>
                                     <td><span class="badge bg-red">uskoro</span></td>
                                 </tr>
                                 <tr>
@@ -113,8 +113,8 @@
                                 <div class="form-group">
                                     <label for="currency" class="text-lg-left">Valute</label>
                                     <select class="form-control input-lg" id="currency">
-                                        <option selected>Ether (ETH) -> Anote (ANT)</option>
-                                        <option>Anote (ANT) -> Ether (ETH)</option>
+                                        <option selected>Waves (WAV) -> ANOTE (ANT)</option>
+                                        <option>ANOTE (ANT) -> Waves (WAV)</option>
                                         <!-- <option>Bitcoin (BTC)</option> -->
                                     </select>
                                 </div>

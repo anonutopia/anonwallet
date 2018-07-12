@@ -62,10 +62,10 @@ function Wallet() {
             });
             switch (selectedCurrency) {
                 case 1:
-                    anote.antToEth(web3js.toWei(amount), handleExchangeTransactionResult);
+                    anoToWav(amount);
                     break;
                 default:
-                    anote.ethToAnt(referral, { from: web3js.eth.coinbase, value: web3js.toWei(amount) }, handleExchangeTransactionResult);
+                    wavToAno(referral, amount);
             }
         }
     }
@@ -170,6 +170,9 @@ function Wallet() {
             switch(window.location.pathname) {
                 case '/profit/':
                     initSuccessProfit();
+                    break;
+                case '/exchange/':
+                    // initSuccessProfit();
                     break;
                 default:
                     initSuccess();
@@ -586,6 +589,16 @@ function Wallet() {
         } else {
             $('#referralGroup').fadeOut();
         }
+    }
+
+    // Exchange ANO to WAV
+    function anoToWav(amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf');
+    }
+
+    // Exchange WAV to ANO
+    function wavToAno(referral, amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES');
     }
 
     // Attach all events
