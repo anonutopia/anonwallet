@@ -38,7 +38,7 @@
 
     </script>
 </head>
-<body class="hold-transition skin-black sidebar-mini" onresize="resized()" onload="resized()">
+<body class="hold-transition skin-black sidebar-mini" onresize="resized()" onload="resized()" style="display: none;">
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -85,7 +85,7 @@
                 <li><a href="/profit/"><i class="fa fa-pie-chart"></i> <span>Profit</span></a></li>
                 <li><a href="/exchange/"><i class="fa fa-exchange"></i> <span>Mjenjačnica</span></a></li>
                 <!-- <li><a href="/profile/"><i class="fa fa-user"></i> <span>Profil</span></a></li> -->
-                <li><a href="https://www.kriptokuna.com"><i class="fa fa-sign-out"></i> <span>Izađi</span></a></li>
+                <li><a href="javascript:wallet.signOut();"><i class="fa fa-sign-out"></i> <span>Izađi</span></a></li>
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -152,7 +152,7 @@
 <script>
     $(document).ready(function () {
         $('.sidebar-menu').tree();
-        var wallet = new Wallet();
+        wallet = new Wallet();
     })
 </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->

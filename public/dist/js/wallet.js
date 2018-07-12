@@ -6,6 +6,10 @@ function Wallet() {
 
     var Waves = null;
 
+    var newShown = false;
+
+    var importShown = false;
+
     // Payment method
     this.pay = function() {
         var addressTo = getEl('addressTo').value;
@@ -91,6 +95,45 @@ function Wallet() {
         }
     }
 
+    // Sign out method
+    this.signOut = function() {
+        Cookies.remove('seed');
+        window.location = '/sign-in/';
+    }
+
+    // New wallet method
+    this.newWallet = function() {
+        if (newShown) {
+            var pass = getEl('password').value;
+            if (validatePasswordField(pass)) {
+                var seed = Waves.Seed.create();
+                Cookies.set('seed', seed, { expires: 1 });
+                Cookies.set('encrypted', seed.encrypt(pass), { expires: 365 });
+                window.location = "/";
+            }
+        } else {
+            $('#newGroup').fadeIn();
+            newShown = true;
+        }
+    }
+
+    // Import wallet method
+    this.importWallet = function() {
+        if (importShown) {
+            var pass = getEl('passwordImport').value;
+            var seed = getEl('seed').value;
+            if (validateImportFields(pass, seed)) {
+                var newSeed = Waves.Seed.fromExistingPhrase(seed);
+                Cookies.set('seed', seed, { expires: 1 });
+                Cookies.set('encrypted', newSeed.encrypt(pass), { expires: 365 });
+                window.location = "/";
+            }
+        } else {
+            $('#importGroup').fadeIn();
+            importShown = true;
+        }
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -103,20 +146,30 @@ function Wallet() {
 
         Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
         var restoredPhrase = Cookies.get('seed');
+        var encrypted = Cookies.get('encrypted');
 
-        if (!restoredPhrase) {
-            if (window.location.pathname != '/sign-in/') {
-                window.location = '/sign-in/';
-                return;
+        if (restoredPhrase) {
+            seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
+            Cookies.set('seed', restoredPhrase, { expires: 1 });
+            initSuccess();
+        } else {
+            if (encrypted) {
+                if (window.location.pathname != '/sign-in/') {
+                    window.location = '/sign-in/';
+                }
             } else {
-                return;
+                if (window.location.pathname != '/sign-up/') {
+                    window.location = '/sign-up/';
+                }
             }
+            // if (window.location.pathname != '/sign-in/' && encrypted) {
+            //     console.log(window.location.pathname);
+            //     // window.location = '/sign-in/';
+            // } else if (window.location.pathname != '/sign-up/') {
+            //     console.log(window.location.pathname);
+            //     // window.location = '/sign-up/';
+            // }
         }
-
-        seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-        Cookies.set('seed', restoredPhrase, { expires: 1 });
-
-        initSuccess();
     }
 
     // Successful init
@@ -323,6 +376,34 @@ function Wallet() {
         return validates;
     }
 
+    // Checks and validates field for password form
+    function validateImportFields(password, seed) {
+        var validates = true;
+
+        if (password.length == 0) {
+            $('#passwordGroupImport').addClass('has-error');
+            validates = false;
+        }
+
+        if (seed.length == 0) {
+            $('#seedGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (!validates) {
+            setHTML('requiredImport', 'Oba polja su obavezna.');
+            $('#requiredImport').fadeIn(function() {
+                setTimeout(() => {
+                    $('#requiredImport').fadeOut();
+                    $('#passwordGroupImport').removeClass('has-error');
+                    $('#seedGroup').removeClass('has-error');
+                }, 2000);
+            });
+        }
+
+        return validates;
+    }
+
     // Checks and validates fields for exchange form
     function validateExchangeFields(selectedCurrency, amount, referral) {
         var validates = true;
@@ -500,6 +581,10 @@ function Wallet() {
             break;
         case '/sign-in/':
             getEl('signInButton').addEventListener('click', bind(this, this.signIn), false);
+            break;
+        case '/sign-up/':
+            getEl('newWalletButton').addEventListener('click', bind(this, this.newWallet), false);
+            getEl('importWalletButton').addEventListener('click', bind(this, this.importWallet), false);
             break;
     }
 

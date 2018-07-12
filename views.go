@@ -23,3 +23,7 @@ func profitView(ctx *macaron.Context) {
 func signInView(ctx *macaron.Context) {
 	ctx.HTMLSet(200, "login", "signin")
 }
+
+func signUpView(ctx *macaron.Context) {
+	ctx.HTMLSet(200, "login", "signup")
+}

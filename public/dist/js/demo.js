@@ -349,6 +349,7 @@ $(function () {
 })
 
 function resized() {
+    document.body.style.display = '';
   var width = window.innerWidth || document.body.clientWidth;
   if (width <= 767) {
     $('.logo-lg > img').attr('src', '/dist/img/logo-alt.png?v=1.0.0');
