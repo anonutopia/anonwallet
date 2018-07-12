@@ -8,7 +8,7 @@
             </h1>
         </section>
 
-        <section class="content" id="loader">
+        <section class="content" id="loader" style="display: none;">
             <div class="callout bg-light-blue" style="border: none;">
                 <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
                 <p>Novčanik se učitava. Molimo pričekajte!</p>
@@ -44,7 +44,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content" id="content" style="display: none;">
+        <section class="content" id="content">
             <div class="callout callout-danger" id="transactionError" style="display: none;">
                 <h4>Transakcija nije prošla!</h4>
                 <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
@@ -70,7 +70,7 @@
                             <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
                             <p>
                                 <div class="input-group">
-                                    <input type="text" class="form-control input-lg" id="address" value="0x0000000000000000000000000000000000000000" readonly>
+                                    <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
                                     <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
                                 </div>
                             </p>
@@ -144,7 +144,7 @@
                                         </div>
                                         <div class="form-group" id="addressToGroup">
                                             <label for="addressTo">Na račun</label>
-                                            <input type="text" class="form-control input-lg" id="addressTo" placeholder="0x0000000000000000000000000000000000000000">
+                                            <input type="text" class="form-control input-lg" id="addressTo" placeholder="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2">
                                         </div>
                                         <div class="form-group" id="amountGroup">
                                             <label for="amount">Iznos</label>

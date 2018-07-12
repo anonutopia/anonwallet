@@ -30,7 +30,9 @@ func initMacaron() *macaron.Macaron {
 		}},
 	}
 
-	m.Use(macaron.Renderer(ro))
+	// m.Use(macaron.Renderer(ro, "login:templates/login"))
+
+	m.Use(macaron.Renderers(ro, "login:templates/login"))
 
 	m.Use(session.Sessioner(session.Options{
 		Provider:       "redis",

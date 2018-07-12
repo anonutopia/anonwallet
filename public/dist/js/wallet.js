@@ -2,6 +2,10 @@ function Wallet() {
 
     var componentCounter = 0;
 
+    var seed = null;
+
+    var Waves = null;
+
     // Payment method
     this.pay = function() {
         var addressTo = getEl('addressTo').value;
@@ -67,6 +71,26 @@ function Wallet() {
         anote.withdrawProfit(handleProfitTransactionResult);
     }
 
+    // Sign in method
+    this.signIn = function() {
+        var pass = getEl('password').value;
+        if (validatePasswordField(pass)) {
+            try {
+                var restoredPhrase = Waves.Seed.decryptSeedPhrase(Cookies.get('encrypted'), pass);
+                Cookies.set('seed', restoredPhrase, { expires: 1 });
+                window.location = '/';
+            } catch (e) {
+                setHTML('required', e);
+                $('#required').fadeIn(function() {
+                    setTimeout(() => {
+                        $('#required').fadeOut();
+                        $('#passwordGroup').removeClass('has-error');
+                    }, 2000);
+                });
+            }
+        }
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -77,81 +101,37 @@ function Wallet() {
             }
         });
 
-        if (typeof web3 !== 'undefined') {
-            web3js = new Web3(web3.currentProvider);
-            web3js.eth.getCoinbase(function(error, result) {
-                if (error == null) {
-                    if (result && result.length) {
-                        if (web3js.version.network == networkVersion) {
-                            switch (window.location.pathname) {
-                                case '/':
-                                    initSuccess();
-                                    break;
-                                case '/profit/':
-                                    initSuccessProfit();
-                                    break;        
-                                case '/profile/':
-                                    initSuccessProfile();
-                                    break;
-                                case '/exchange/':
-                                    initSuccessExchange();
-                                    break;         
-                            }
-                        } else {
-                            initWrongNetwork();
-                        }                
-                    } else {
-                        console.log(web3js);
-                        initNotSignedIn();
-                    }
-                } else {
-                    console.log(error);
-                }
-            });
-        } else {
-            var queryDict = {};
-            location.search.substr(1).split("&").forEach(function(item) {queryDict[item.split("=")[0]] = item.split("=")[1]});
-            var loadingCounter = parseInt(queryDict['c']);
-            if (!loadingCounter) {
-                loadingCounter = 0;
-            }
-            loadingCounter++;
-            if (loadingCounter == 20) {
-                initNoMetaMask();
+        Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
+        var restoredPhrase = Cookies.get('seed');
+
+        if (!restoredPhrase) {
+            if (window.location.pathname != '/sign-in/') {
+                window.location = '/sign-in/';
+                return;
             } else {
-                // nasty hack because web3 is sometimes missing (web3 is not defined)
-                // var script = document.createElement('script');
-                // script.src = '/dist/js/web3.min.js?v=' + loadingCounter;
-                // document.getElementsByTagName("head")[0].appendChild(script);
-                setTimeout(function() {
-                    window.location.search = 'c=' + loadingCounter;
-                }, 2000);
+                return;
             }
         }
+
+        seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
+        Cookies.set('seed', restoredPhrase, { expires: 1 });
+
+        initSuccess();
     }
 
     // Successful init
     function initSuccess() {
-        anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
-        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
+        setValue('address', seed.address);
 
-        setValue('address', web3js.eth.coinbase);
-
-        anonutopia.getNickname(function(error, result) {
-            if (result.length) {
-                setHTML('nicknameTag', result);
-            }
-        });
-
-        web3js.eth.getBalance(web3js.eth.coinbase, function(error, result) {
-            var balance = parseFloat(web3js.fromWei(result)).toFixed(5);
-            setHTML('balanceEth', balance);
+        Waves.API.Node.v1.assets.balance(seed.address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf").then((balance) => {
+            var antBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
+            setHTML('balanceAnt', antBalance);
             updateCounter();
         });
 
-        anote.balanceOf(web3js.eth.coinbase, function(error, result){
-            var antBalance = parseFloat(web3js.fromWei(result)).toFixed(5);
-            setHTML('balanceAnt', antBalance);
+        Waves.API.Node.v1.assets.balance(seed.address, "4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53").then((balance) => {
+            var ethBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
+            setHTML('balanceEth', ethBalance);
             updateCounter();
         });
 
@@ -240,7 +220,7 @@ function Wallet() {
             var qr = new QRious({
                 size: 300,
                 element: document.getElementById('qr'),
-                value: web3js.eth.coinbase
+                value: 'waves://' + seed.address
             });
 
             $('#loader').fadeOut(function() {
@@ -321,6 +301,28 @@ function Wallet() {
         return validates;
     }
 
+    // Checks and validates field for password form
+    function validatePasswordField(password) {
+        var validates = true;
+
+        if (password.length == 0) {
+            $('#passwordGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (!validates) {
+            setHTML('required', 'Polje ne može biti prazno.');
+            $('#required').fadeIn(function() {
+                setTimeout(() => {
+                    $('#required').fadeOut();
+                    $('#passwordGroup').removeClass('has-error');
+                }, 2000);
+            });
+        }
+
+        return validates;
+    }
+
     // Checks and validates fields for exchange form
     function validateExchangeFields(selectedCurrency, amount, referral) {
         var validates = true;
@@ -354,11 +356,24 @@ function Wallet() {
 
     // Transfers ANT
     function transferAnt(addressTo, amount) {
-        $('#content').fadeOut(function() {
-            $('#transactionInProgress').fadeIn();
+        // $('#content').fadeOut(function() {
+        //     $('#transactionInProgress').fadeIn();
+        // });
+        // amount = web3js.toWei(parseFloat(amount));
+        // anote.transfer(addressTo, amount, handleTransactionResult);
+        const transferData = {
+            recipient: addressTo,
+            assetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
+            amount: amount * 10**8,
+            feeAssetId: 'WAVES',
+            fee: 100000,
+            attachment: '',
+            timestamp: Date.now()
+        };
+
+        Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
+            console.log(responseData);
         });
-        amount = web3js.toWei(parseFloat(amount));
-        anote.transfer(addressTo, amount, handleTransactionResult);
     }
 
     // Handles transaction result
@@ -482,6 +497,9 @@ function Wallet() {
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
             getEl('currency').addEventListener('change', bind(this, exchangeCurrencyChanged), false);
+            break;
+        case '/sign-in/':
+            getEl('signInButton').addEventListener('click', bind(this, this.signIn), false);
             break;
     }
 

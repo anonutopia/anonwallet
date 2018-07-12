@@ -11,6 +11,7 @@ type config struct {
 	AnoteAddress      string `json:"anote_address"`
 	AnonutopiaAddress string `json:"anonutopia_address"`
 	Port              uint   `json:"port"`
+	Debug             bool   `json:"debug"`
 }
 
 func (sc *config) Load(configFile string) error {
