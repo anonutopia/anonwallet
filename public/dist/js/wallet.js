@@ -21,7 +21,7 @@ function Wallet() {
                     transfer(addressTo, amount, 'WAVES');
                     break;
                 case 2:
-                    // transfer(addressTo, amount);
+                    transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53');
                     break;
                 default:
                     transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf');
@@ -435,32 +435,8 @@ function Wallet() {
         return validates;
     }
 
-    // Transfers WAV
-    function transferWav(addressTo, amount) {
-        $('#content').fadeOut(function() {
-            $('#transactionInProgress').fadeIn();
-        });
-        amount = web3js.toWei(parseFloat(amount));
-        web3js.eth.sendTransaction({ to: addressTo, value: amount }, handleTransactionResult);
-    }
-
-    // Transfers ETH
-    function transferEth(addressTo, amount) {
-        $('#content').fadeOut(function() {
-            $('#transactionInProgress').fadeIn();
-        });
-        amount = web3js.toWei(parseFloat(amount));
-        web3js.eth.sendTransaction({ to: addressTo, value: amount }, handleTransactionResult);
-    }
-
-    // Transfers ANT
+    // Transfers any token
     function transfer(addressTo, amount, assetId) {
-        // $('#content').fadeOut(function() {
-        //     $('#transactionInProgress').fadeIn();
-        // });
-        // amount = web3js.toWei(parseFloat(amount));
-        // anote.transfer(addressTo, amount, handleTransactionResult);
-
         $('#content').fadeOut(function() {
             $('#transactionInProgress').fadeIn(function() {
                 const transferData = {
