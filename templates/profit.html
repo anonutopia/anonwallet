@@ -8,7 +8,7 @@
             </h1>
         </section>
 
-        <section class="content" id="loader">
+        <section class="content" id="loader" style="display: none;">
             <div class="callout bg-light-blue" style="border: none;">
                 <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
                 <p>Sadržaj se učitava. Molimo pričekajte!</p>
@@ -44,7 +44,7 @@
         </section>
 
         <!-- Main content -->
-        <section class="content" style="display: none;" id="content">
+        <section class="content" id="content">
 
             <div class="callout callout-danger" id="transactionError" style="display: none;">
                 <h4>Transakcija nije prošla!</h4>
@@ -63,10 +63,12 @@
                     <div class="box">
                         <div class="box-header with-border">
                             <i class="fa fa-line-chart"></i>
-                            <h3 class="box-title">Trenutna Zarada</h3>
+                            <h3 class="box-title">Ukupna Zarada</h3>
                         </div>
                         <div class="box-body">
-                            <h1 class="text-center text-green"><strong><span id="profit">0.00000</span> ETH</strong></h1>
+                            <h1 class="text-center text-green"><strong><span id="profitWav">{{ .User.ProfitWavString }}</span> WAV</strong></h1>
+                            <h1 class="text-center text-green"><strong><span id="profitBtc">{{ .User.ProfitBtcString }}</span> BTC</strong></h1>
+                            <h1 class="text-center text-green"><strong><span id="profitEth">{{ .User.ProfitEthString }}</span> ETH</strong></h1>
                             <br>
                         </div>
                         <!-- /.box-body -->
@@ -74,21 +76,19 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-6">
-                    <!-- Default box -->
-                    <div class="box box-danger">
-                        <div class="box-header with-border">
-                            <i class="fa fa-download"></i>
-                            <h3 class="box-title">Podizanje Profita</h3>
-                        </div>
-                        <form action="javascript:;">
-                            <div class="box-footer">
-                                <input type="submit" value="Povuci profit u svoj novčanik" class="btn btn-block btn-danger btn-lg" id="withdrawButton">
+                    <!-- <div class="col-md-6">
+                        <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <i class="fa fa-download"></i>
+                                <h3 class="box-title">Podizanje Profita</h3>
                             </div>
-                        </form>
-                    </div>
-                    <!-- /.box -->
-                </div>
+                            <form action="javascript:;">
+                                <div class="box-footer">
+                                    <input type="submit" value="Povuci profit u svoj novčanik" class="btn btn-block btn-danger btn-lg" id="withdrawButton">
+                                </div>
+                            </form>
+                        </div>
+                    </div> -->
 
             </div>
 

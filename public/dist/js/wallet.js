@@ -85,6 +85,8 @@ function Wallet() {
             try {
                 var restoredPhrase = Waves.Seed.decryptSeedPhrase(Cookies.get('encrypted'), pass);
                 Cookies.set('seed', restoredPhrase, { expires: 1 });
+                seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
+                Cookies.set('address', seed.address, { expires: 1 });
                 window.location = '/';
             } catch (e) {
                 setHTML('required', e);
@@ -129,6 +131,7 @@ function Wallet() {
                 var newSeed = Waves.Seed.fromExistingPhrase(seed);
                 Cookies.set('seed', seed, { expires: 1 });
                 Cookies.set('encrypted', newSeed.encrypt(pass), { expires: 365 });
+                Cookies.set('address', newSeed.address, { expires: 1 });
                 window.location = "/";
             }
         } else {
@@ -154,7 +157,13 @@ function Wallet() {
         if (restoredPhrase) {
             seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
             Cookies.set('seed', restoredPhrase, { expires: 1 });
-            initSuccess();
+            switch(window.location.pathname) {
+                case '/profit/':
+                    initSuccessProfit();
+                    break;
+                default:
+                    initSuccess();
+            }
         } else {
             if (encrypted) {
                 if (window.location.pathname != '/sign-in/') {
@@ -237,21 +246,21 @@ function Wallet() {
 
     // Successful init for profit page
     function initSuccessProfit() {
-        anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
-        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
-        anonutopia.getNickname(function(error, result) {
-            if (result.length) {
-                setHTML('nicknameTag', result);
-            }
-            updateCounter();
-        });
-        anote.balanceProfitOf(web3js.eth.coinbase, function(error, result) {
-            var balanceProfit = parseFloat(web3js.fromWei(result)).toFixed(5);
-            setHTML('profit', balanceProfit);
-            updateCounter();
-        });
+        // anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
+        // anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
+        // anonutopia.getNickname(function(error, result) {
+        //     if (result.length) {
+        //         setHTML('nicknameTag', result);
+        //     }
+        //     updateCounter();
+        // });
+        // anote.balanceProfitOf(web3js.eth.coinbase, function(error, result) {
+        //     var balanceProfit = parseFloat(web3js.fromWei(result)).toFixed(5);
+        //     setHTML('profit', balanceProfit);
+        //     updateCounter();
+        // });
 
-        timeout = setTimeout(initSuccessProfit, 1000);
+        // timeout = setTimeout(initSuccessProfit, 1000);
     }
 
     // Inits if there's no MetaMask
@@ -576,7 +585,7 @@ function Wallet() {
             getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profit/':
-            getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
+            // getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
             break;
         case '/profile/':
             getEl('saveButton').addEventListener('click', bind(this, this.save), false);
