@@ -18,10 +18,13 @@ function Wallet() {
         if (validatePaymentFields(addressTo, amount)) {
             switch (currency) {
                 case 1:
-                    transferEth(addressTo, amount);
+                    transfer(addressTo, amount, 'WAVES');
+                    break;
+                case 2:
+                    // transfer(addressTo, amount);
                     break;
                 default:
-                    transferAnt(addressTo, amount);
+                    transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf');
             }
         }
     }
@@ -188,6 +191,12 @@ function Wallet() {
             updateCounter();
         });
 
+        Waves.API.Node.v1.addresses.balance(seed.address).then((balance) => {
+            var wavBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
+            setHTML('balanceWav', wavBalance);
+            updateCounter();
+        });
+
         timeout = setTimeout(initSuccess, 1000);
     }
 
@@ -269,7 +278,7 @@ function Wallet() {
     // Updates counter for loading purposes
     function updateCounter() {
         componentCounter++;
-        if (componentCounter == 2) {
+        if (componentCounter == 3) {
             var qr = new QRious({
                 size: 300,
                 element: document.getElementById('qr'),
@@ -426,6 +435,15 @@ function Wallet() {
         return validates;
     }
 
+    // Transfers WAV
+    function transferWav(addressTo, amount) {
+        $('#content').fadeOut(function() {
+            $('#transactionInProgress').fadeIn();
+        });
+        amount = web3js.toWei(parseFloat(amount));
+        web3js.eth.sendTransaction({ to: addressTo, value: amount }, handleTransactionResult);
+    }
+
     // Transfers ETH
     function transferEth(addressTo, amount) {
         $('#content').fadeOut(function() {
@@ -436,7 +454,7 @@ function Wallet() {
     }
 
     // Transfers ANT
-    function transferAnt(addressTo, amount) {
+    function transfer(addressTo, amount, assetId) {
         // $('#content').fadeOut(function() {
         //     $('#transactionInProgress').fadeIn();
         // });
@@ -447,7 +465,7 @@ function Wallet() {
             $('#transactionInProgress').fadeIn(function() {
                 const transferData = {
                     recipient: addressTo,
-                    assetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
+                    assetId: assetId,
                     amount: amount * 10**8,
                     feeAssetId: 'WAVES',
                     fee: 100000,
