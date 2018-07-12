@@ -108,7 +108,12 @@ function Wallet() {
 
     // New wallet method
     this.newWallet = function() {
-        if (newShown) {
+        if (importShown) {
+            $('#importGroup').fadeOut(function() {
+                importShown = false;
+                wallet.newWallet();
+            });
+        } else if (newShown) {
             var pass = getEl('password').value;
             if (validatePasswordField(pass)) {
                 var seed = Waves.Seed.create();
@@ -124,7 +129,12 @@ function Wallet() {
 
     // Import wallet method
     this.importWallet = function() {
-        if (importShown) {
+        if (newShown) {
+            $('#newGroup').fadeOut(function() {
+                newShown = false;
+                wallet.importWallet();
+            });
+        } else if (importShown) {
             var pass = getEl('passwordImport').value;
             var seed = getEl('seed').value;
             if (validateImportFields(pass, seed)) {
