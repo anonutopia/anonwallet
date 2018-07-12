@@ -442,18 +442,30 @@ function Wallet() {
         // });
         // amount = web3js.toWei(parseFloat(amount));
         // anote.transfer(addressTo, amount, handleTransactionResult);
-        const transferData = {
-            recipient: addressTo,
-            assetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
-            amount: amount * 10**8,
-            feeAssetId: 'WAVES',
-            fee: 100000,
-            attachment: '',
-            timestamp: Date.now()
-        };
 
-        Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
-            console.log(responseData);
+        $('#content').fadeOut(function() {
+            $('#transactionInProgress').fadeIn(function() {
+                const transferData = {
+                    recipient: addressTo,
+                    assetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
+                    amount: amount * 10**8,
+                    feeAssetId: 'WAVES',
+                    fee: 100000,
+                    attachment: '',
+                    timestamp: Date.now()
+                };
+
+                Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
+                    $('#transactionInProgress').fadeOut(function() {
+                        $('#transactionSuccess').fadeIn(function() {
+                            setTimeout(() => {
+                                $('#transactionSuccess').fadeOut();
+                            }, 10000);
+                        });
+                        $('#content').fadeIn();
+                    });
+                });
+            });
         });
     }
 
