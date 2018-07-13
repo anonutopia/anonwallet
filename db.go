@@ -7,8 +7,12 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
+const (
+	dbname = "../anote.db"
+)
+
 func initDb() *gorm.DB {
-	db, err := gorm.Open("sqlite3", DBNAME)
+	db, err := gorm.Open("sqlite3", dbname)
 
 	if err != nil {
 		log.Printf("[initDb] error: %s", err)

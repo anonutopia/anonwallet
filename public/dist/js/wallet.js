@@ -18,13 +18,13 @@ function Wallet() {
         if (validatePaymentFields(addressTo, amount)) {
             switch (currency) {
                 case 1:
-                    transfer(addressTo, amount, 'WAVES');
+                    transfer(addressTo, amount, 'WAVES', '');
                     break;
                 case 2:
-                    transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53');
+                    transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '');
                     break;
                 default:
-                    transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf');
+                    transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '');
             }
         }
     }
@@ -72,10 +72,14 @@ function Wallet() {
 
     // Withdraw ANT profit
     this.withdraw = function() {
-        $('#content').fadeOut(function() {
-            $('#transactionInProgress').fadeIn();
+        // $('#content').fadeOut(function() {
+        //     $('#transactionInProgress').fadeIn();
+        // });
+        $('#withdrawmessage').fadeIn(function() {
+            setTimeout(() => {
+                $('#withdrawmessage').fadeOut();
+            }, 2000);
         });
-        anote.withdrawProfit(handleProfitTransactionResult);
     }
 
     // Sign in method
@@ -159,6 +163,12 @@ function Wallet() {
                 $(this).parent().addClass('active');
             }
         });
+
+        var referral = getReferralFromUrl();
+
+        if (referral) {
+            Cookies.set('referral', referral, { expires: 30, domain: getDomainName(window.location.hostname) });
+        }
 
         Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
         var restoredPhrase = Cookies.get('seed');
@@ -458,7 +468,7 @@ function Wallet() {
     }
 
     // Transfers any token
-    function transfer(addressTo, amount, assetId) {
+    function transfer(addressTo, amount, assetId, attachment) {
         $('#content').fadeOut(function() {
             $('#transactionInProgress').fadeIn(function() {
                 const transferData = {
@@ -467,7 +477,7 @@ function Wallet() {
                     amount: amount * 10**8,
                     feeAssetId: 'WAVES',
                     fee: 100000,
-                    attachment: '',
+                    attachment: attachment,
                     timestamp: Date.now()
                 };
 
@@ -593,12 +603,25 @@ function Wallet() {
 
     // Exchange ANO to WAV
     function anoToWav(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf');
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '');
     }
 
     // Exchange WAV to ANO
     function wavToAno(referral, amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES');
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', referral);
+    }
+
+    // Gets referral from url
+    function getReferralFromUrl(){
+        var k = 'r';
+        var p={};
+        location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,k,v){p[k]=v})
+        return k?p[k]:p;
+    }
+
+    // Gets domain name from url
+    function getDomainName(hostName) {
+        return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
     }
 
     // Attach all events
@@ -608,7 +631,8 @@ function Wallet() {
             getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profit/':
-            // getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
+            getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
+            getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profile/':
             getEl('saveButton').addEventListener('click', bind(this, this.save), false);
