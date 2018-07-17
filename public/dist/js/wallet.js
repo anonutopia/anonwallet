@@ -139,7 +139,7 @@ function Wallet() {
     }
 
     // Sign out copy method
-    this.signUpCopy = function() {s
+    this.signUpCopy = function() {
         var copyText = document.getElementById("seedinput");
         copyText.select();
         document.execCommand("copy");

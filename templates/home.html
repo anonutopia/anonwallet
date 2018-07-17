@@ -57,27 +57,67 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <!-- Default box -->
-                    <div class="box box-success">
-                        <div class="box-header with-border">
-                            <i class="fa fa-arrow-down"></i>
-                            <h3 class="box-title">Primanje na račun</h3>
+                    <!-- Custom Tabs -->
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_1" data-toggle="tab">Primanje na račun</a></li>
+                            <li><a href="#tab_2" data-toggle="tab">Bitcoin</a></li>
+                            <li><a href="#tab_3" data-toggle="tab">Ether</a></li>
+                            <li><a href="#tab_4" data-toggle="tab">Banka</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
+                                <p><strong>QR Kod</strong></p>
+                                <p><canvas id="qr" class="center-block"></canvas></p>
+                                <p><strong>Adresa (broj računa)</strong></p>
+                                <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p>
+                                    <div class="input-group">
+                                            <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
+                                            <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
+                                    </div>
+                                </p>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_2">
+                                <p><strong>Bitcoin QR Kod</strong></p>
+                                <p><canvas id="qrbitcoin" class="center-block"></canvas></p>
+                                <p><strong>Bitcoin Adresa</strong></p>
+                                <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p>
+                                    <div class="input-group">
+                                            <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
+                                            <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
+                                    </div>
+                                </p>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_3">
+                                <p><strong>Ethereum QR Kod</strong></p>
+                                <p><canvas id="qrether" class="center-block"></canvas></p>
+                                <p><strong>Bitcoin Adresa</strong></p>
+                                <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p>
+                                    <div class="input-group">
+                                            <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
+                                            <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
+                                    </div>
+                                </p>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_4">
+                                <p><strong>Uplata iz banke</strong></p>
+                                <p>Ova mogućnost je u izradi.</p>
+                            </div>
+                            <!-- /.tab-pane -->
                         </div>
-                        <div class="box-body">
-                            <p><strong>QR Kod</strong></p>
-                            <p><canvas id="qr" class="center-block"></canvas></p>
-                            <p><strong>Adresa (broj računa)</strong></p>
-                            <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
-                            <p>
-                                <div class="input-group">
-                                    <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
-                                    <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
-                                </div>
-                            </p>
-                        </div>
-                        <!-- /.box-body -->
+                        <!-- /.tab-content -->
                     </div>
-                    <!-- /.box -->
+                    <!-- nav-tabs-custom -->
+
+
+
                 </div>
 
                 <div class="col-md-4">
