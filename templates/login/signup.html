@@ -7,37 +7,17 @@
         <p class="login-box-msg">Napravi ili vrati novčanik</p>
 
         <form action="javascript:;" method="post">
-            <div id="newGroup" style="display: none;">
-                <p class="text-green">Popuni lozinku i opet klikni "Novi".</p>
-                <div class="form-group has-feedback" id="passwordGroup">
-                    <input type="password" class="form-control input-lg" placeholder="Password" id="password">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <p class="text-red" style="display: none;" id="required">Ovo polje je obavezno.</p>
-            </div>
-            <div id="importGroup" style="display: none;">
-                <p class="text-green">Popuni lozinku i seed i opet klikni "Vrati".</p>
-                <div class="form-group has-feedback" id="passwordGroupImport">
-                    <input type="password" class="form-control input-lg" placeholder="Password" id="passwordImport">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback" id="seedGroup">
-                    <!-- <input type="password" class="form-control input-lg" placeholder="Password" id="password">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span> -->
-                    <textarea class="form-control input-lg" rows="3" placeholder="Seed" id="seed"></textarea>
-                </div>
-                <p class="text-red" style="display: none;" id="requiredImport">Ovo polje je obavezno.</p>
-            </div>
             <div class="row">
                 <div class="col-xs-5">
-                    <button type="submit" class="btn btn-success btn-block btn-flat btn-lg" id="newWalletButton">Novi</button>
+                    <!-- <button type="submit" class="btn btn-success btn-block btn-flat btn-lg" id="newWalletButton">Novi</button> -->
+                    <a href="/sign-up-new/" class="btn btn-success btn-block btn-flat btn-lg">Novi</a>
                 </div>
                 <div class="col-xs-2">
                     <p class="text-center" style="margin: 12px 0;">ili</p>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-5">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat btn-lg" id="importWalletButton">Vrati</button>
+                    <a href="/sign-up-import/" class="btn btn-primary btn-block btn-flat btn-lg">Vrati</a>
                 </div>
                 <!-- /.col -->
             </div>

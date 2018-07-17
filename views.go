@@ -27,3 +27,11 @@ func signInView(ctx *macaron.Context) {
 func signUpView(ctx *macaron.Context) {
 	ctx.HTMLSet(200, "login", "signup")
 }
+
+func signUpNewView(ctx *macaron.Context) {
+	ctx.HTMLSet(200, "login", "signupnew")
+}
+
+func signUpImportView(ctx *macaron.Context) {
+	ctx.HTMLSet(200, "login", "signupimport")
+}

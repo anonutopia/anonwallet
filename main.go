@@ -28,6 +28,8 @@ func main() {
 	m.Get("/profit/", newPageData, profitView)
 	m.Get("/sign-in/", newPageData, signInView)
 	m.Get("/sign-up/", newPageData, signUpView)
+	m.Get("/sign-up-new/", newPageData, signUpNewView)
+	m.Get("/sign-up-import/", newPageData, signUpImportView)
 
 	// m.Run()
 	log.Println("Server is running...")
