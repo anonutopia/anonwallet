@@ -19,6 +19,9 @@ function Wallet() {
                     transfer(addressTo, amount, 'WAVES', '');
                     break;
                 case 2:
+                    transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '');
+                    break;
+                case 3:
                     transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '');
                     break;
                 default:
