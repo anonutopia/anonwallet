@@ -12,6 +12,7 @@ type config struct {
 	AnonutopiaAddress string `json:"anonutopia_address"`
 	Port              uint   `json:"port"`
 	Debug             bool   `json:"debug"`
+	BtcMasterKey      string `json:"btc_master_key"`
 }
 
 func (sc *config) Load(configFile string) error {

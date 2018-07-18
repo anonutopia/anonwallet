@@ -15,12 +15,20 @@ var conf *config
 
 var db *gorm.DB
 
+var bg *BitcoinGenerator
+
+var bam *BitcoinAddressMonitor
+
 func main() {
 	m = initMacaron()
 
 	conf = initConfig()
 
 	db = initDb()
+
+	bg = initBtcGen()
+
+	bam = initMonitor()
 
 	m.Get("/", newPageData, homeView)
 	m.Get("/profile/", newPageData, profileView)
@@ -32,6 +40,7 @@ func main() {
 	m.Get("/sign-up-import/", newPageData, signUpImportView)
 
 	// m.Run()
-	log.Println("Server is running...")
-	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", conf.Port), m)
+	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)
+	log.Printf("Server is running on: %s", addr)
+	http.ListenAndServe(addr, m)
 }

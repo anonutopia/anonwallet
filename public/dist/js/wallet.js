@@ -28,13 +28,13 @@ function Wallet() {
     }
 
     // Copy method for copying address to clipboard
-    this.copy = function() {
-        var copyText = document.getElementById("address");
+    this.copy = function(elId) {
+        var copyText = document.getElementById(elId);
         copyText.select();
         document.execCommand("copy");
-        $('#copymessage').fadeIn(function() {
+        $('#copymessage' + elId).fadeIn(function() {
             setTimeout(() => {
-                $('#copymessage').fadeOut();
+                $('#copymessage' + elId).fadeOut();
             }, 2000);
         });
     }
@@ -306,10 +306,16 @@ function Wallet() {
     function updateCounter() {
         componentCounter++;
         if (componentCounter == 3) {
-            var qr = new QRious({
+            new QRious({
                 size: 300,
                 element: document.getElementById('qr'),
                 value: 'waves://' + seed.address
+            });
+
+            new QRious({
+                size: 300,
+                element: document.getElementById('qrbitcoin'),
+                value: 'bitcoin://' + getEl('addressBitcoin').value
             });
 
             $('#loader').fadeOut(function() {
@@ -631,7 +637,7 @@ function Wallet() {
     switch (window.location.pathname) {
         case '/':
             getEl('payButton').addEventListener('click', bind(this, this.pay), false);
-            getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+            // getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);

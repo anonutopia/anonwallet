@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/go-macaron/session"
 	"gopkg.in/macaron.v1"
 )
@@ -19,6 +21,14 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 				u.Referral = r
 			}
 			db.Create(u)
+		}
+		if u.ID != 0 && len(u.BitcoinAddr) == 0 {
+			var err error
+			u.BitcoinAddr, err = bg.getAddress(uint32(u.ID))
+			if err != nil {
+				log.Printf("Error in bg.getAddress: %s", err)
+			}
+			db.Save(u)
 		}
 		ctx.Data["User"] = u
 	}

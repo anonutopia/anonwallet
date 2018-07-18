@@ -62,7 +62,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tab_1" data-toggle="tab">Primanje na račun</a></li>
                             <li><a href="#tab_2" data-toggle="tab">Bitcoin</a></li>
-                            <li><a href="#tab_3" data-toggle="tab">Ether</a></li>
+                            <!-- <li><a href="#tab_3" data-toggle="tab">Ether</a></li> -->
                             <li><a href="#tab_4" data-toggle="tab">Banka</a></li>
                         </ul>
                         <div class="tab-content">
@@ -70,11 +70,11 @@
                                 <p><strong>QR Kod</strong></p>
                                 <p><canvas id="qr" class="center-block"></canvas></p>
                                 <p><strong>Adresa (broj računa)</strong></p>
-                                <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p class="text-green" id="copymessageaddress" style="display: none;">Adresa je kopirana u clipboard.</p>
                                 <p>
                                     <div class="input-group">
                                             <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
-                                            <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
+                                            <div class="input-group-addon"><a href="javascript:wallet.copy('address');"><i class="fa fa-copy fa-lg"></i></a></div>
                                     </div>
                                 </p>
                             </div>
@@ -83,11 +83,11 @@
                                 <p><strong>Bitcoin QR Kod</strong></p>
                                 <p><canvas id="qrbitcoin" class="center-block"></canvas></p>
                                 <p><strong>Bitcoin Adresa</strong></p>
-                                <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p class="text-green" id="copymessageaddressBitcoin" style="display: none;">Adresa je kopirana u clipboard.</p>
                                 <p>
                                     <div class="input-group">
-                                            <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
-                                            <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
+                                            <input type="text" class="form-control input-lg" id="addressBitcoin" value="{{ .User.BitcoinAddr }}" readonly>
+                                            <div class="input-group-addon"><a href="javascript:wallet.copy('addressBitcoin');"><i class="fa fa-copy fa-lg"></i></a></div>
                                     </div>
                                 </p>
                             </div>
@@ -96,11 +96,11 @@
                                 <p><strong>Ethereum QR Kod</strong></p>
                                 <p><canvas id="qrether" class="center-block"></canvas></p>
                                 <p><strong>Bitcoin Adresa</strong></p>
-                                <p class="text-green" id="copymessage" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p class="text-green" id="copymessageaddressEthereum" style="display: none;">Adresa je kopirana u clipboard.</p>
                                 <p>
                                     <div class="input-group">
-                                            <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
-                                            <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
+                                            <input type="text" class="form-control input-lg" id="addressEthereum" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
+                                            <div class="input-group-addon"><a href="javascript:wallet.copy('addressEthereum');"><i class="fa fa-copy fa-lg"></i></a></div>
                                     </div>
                                 </p>
                             </div>
