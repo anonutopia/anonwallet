@@ -94,29 +94,25 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <!-- Default box -->
                     <div class="box">
                         <div class="box-header with-border">
-                            <i class="fa fa-link"></i>
-                            <h3 class="box-title">Referral Program</h3>
+                            <i class="fa fa-bank"></i>
+                            <h3 class="box-title">Bankster Zarada</h3>
                         </div>
                         <div class="box-body">
-                            <p><strong>Vaš referral link</strong></p>
-                            <p class="text-green" id="copymessage" style="display: none;">Link je kopiran u clipboard.</p>
-                            <p>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="address" value="https://www.kriptokuna.com/?r={{ .User.Address }}" readonly>
-                                    <div class="input-group-addon"><a href="javascript:;" id="copyButton"><i class="fa fa-copy fa-lg"></i></a></div>
-                                </div>
-                            </p>
+                            <h1 class="text-center text-green"><strong><span id="profitWav">{{ .User.ReferralProfitWavString }}</span> WAV</strong></h1>
+                            <h1 class="text-center text-green"><strong><span id="profitBtc">{{ .User.ReferralProfitBtcString }}</span> BTC</strong></h1>
+                            <h1 class="text-center text-green"><strong><span id="profitEth">{{ .User.ReferralProfitEthString }}</span> ETH</strong></h1>
+                            <br>
                         </div>
                         <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <!-- Default box -->
                     <div class="box">
                         <div class="box-header with-border">
@@ -136,20 +132,30 @@
                     <!-- /.box -->
                 </div>
 
-                    <!-- <div class="col-md-6">
-                        <div class="box box-danger">
-                            <div class="box-header with-border">
-                                <i class="fa fa-download"></i>
-                                <h3 class="box-title">Podizanje Profita</h3>
-                            </div>
-                            <form action="javascript:;">
-                                <div class="box-footer">
-                                    <input type="submit" value="Povuci profit u svoj novčanik" class="btn btn-block btn-danger btn-lg" id="withdrawButton">
-                                </div>
-                            </form>
-                        </div>
-                    </div> -->
+            </div>
 
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- Default box -->
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-link"></i>
+                            <h3 class="box-title">Referral Program</h3>
+                        </div>
+                        <div class="box-body">
+                            <p><strong>Vaš referral link</strong></p>
+                            <p class="text-green" id="copymessageaddress" style="display: none;">Link je kopiran u clipboard.</p>
+                            <p>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="address" value="https://www.kriptokuna.com/?r={{ .User.Address }}" readonly>
+                                    <div class="input-group-addon"><a href="javascript:wallet.copy('address');"><i class="fa fa-copy fa-lg"></i></a></div>
+                                </div>
+                            </p>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
             </div>
 
         </section>

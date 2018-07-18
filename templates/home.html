@@ -60,9 +60,9 @@
                     <!-- Custom Tabs -->
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab_1" data-toggle="tab">Primanje na račun</a></li>
+                            <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-arrow-down"></i> Uplata na račun</a></li>
                             <li><a href="#tab_2" data-toggle="tab">Bitcoin</a></li>
-                            <!-- <li><a href="#tab_3" data-toggle="tab">Ether</a></li> -->
+                            <li><a href="#tab_3" data-toggle="tab">Ether</a></li>
                             <li><a href="#tab_4" data-toggle="tab">Banka</a></li>
                         </ul>
                         <div class="tab-content">
@@ -93,7 +93,7 @@
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="tab_3">
-                                <p><strong>Ethereum QR Kod</strong></p>
+                                <!-- <p><strong>Ethereum QR Kod</strong></p>
                                 <p><canvas id="qrether" class="center-block"></canvas></p>
                                 <p><strong>Bitcoin Adresa</strong></p>
                                 <p class="text-green" id="copymessageaddressEthereum" style="display: none;">Adresa je kopirana u clipboard.</p>
@@ -102,7 +102,9 @@
                                             <input type="text" class="form-control input-lg" id="addressEthereum" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
                                             <div class="input-group-addon"><a href="javascript:wallet.copy('addressEthereum');"><i class="fa fa-copy fa-lg"></i></a></div>
                                     </div>
-                                </p>
+                                </p> -->
+                                <p><strong>Uplata Ethera</strong></p>
+                                <p>Ova mogućnost je u izradi.</p>
                             </div>
                             <!-- /.tab-pane -->
                             <!-- /.tab-pane -->
@@ -140,6 +142,10 @@
                                     <tr>
                                         <td>Waves (WAV)</td>
                                         <td><span class="badge bg-green"><span id="balanceWav">0.00000</span> WAV</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bitcoin (BTC)</td>
+                                        <td><span class="badge bg-green"><span id="balanceBtc">0.00000</span> BTC</span></td>
                                     </tr>
                                     <tr>
                                         <td>Ether (ETH)</td>

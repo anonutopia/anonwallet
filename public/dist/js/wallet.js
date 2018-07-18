@@ -233,6 +233,12 @@ function Wallet() {
             updateCounter();
         });
 
+        Waves.API.Node.v1.assets.balance(seed.address, "7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs").then((balance) => {
+            var btcBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
+            setHTML('balanceBtc', btcBalance);
+            updateCounter();
+        });
+
         Waves.API.Node.v1.assets.balance(seed.address, "4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53").then((balance) => {
             var ethBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
             setHTML('balanceEth', ethBalance);
@@ -305,7 +311,7 @@ function Wallet() {
     // Updates counter for loading purposes
     function updateCounter() {
         componentCounter++;
-        if (componentCounter == 3) {
+        if (componentCounter == 4) {
             new QRious({
                 size: 300,
                 element: document.getElementById('qr'),
@@ -641,7 +647,7 @@ function Wallet() {
             break;
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
-            getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
+            // getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profile/':
             getEl('saveButton').addEventListener('click', bind(this, this.save), false);
