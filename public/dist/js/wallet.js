@@ -229,8 +229,6 @@ function Wallet() {
                     window.location = '/sign-up/';
                 } else if (window.location.pathname == '/sign-up-new/') {
                     newWallet();
-                } else if (window.location.pathname == '/sign-up-import/') {
-                    importWallet();
                 }
             }
         }
@@ -641,57 +639,30 @@ function Wallet() {
 
     // New wallet method
     function newWallet() {
-        // if (importShown) {
-        //     $('#importGroup').fadeOut(function() {
-        //         importShown = false;
-        //         wallet.newWallet();
-        //     });
-        // } else if (newShown) {
-        //     var pass = getEl('password').value;
-        //     if (validatePasswordField(pass)) {
-        //         var seed = Waves.Seed.create();
-        //         Cookies.set('seed', seed, { expires: 1 });
-        //         Cookies.set('encrypted', seed.encrypt(pass), { expires: 365 });
-        //         window.location = "/";
-        //     }
-        // } else {
-        //     $('#newGroup').fadeIn();
-        //     newShown = true;
-        // }
         seed = Waves.Seed.create();
         setHTML('seed', seed.phrase);
         setValue('seedinput', seed.phrase);
         $('#newGroup').fadeIn();
     }
 
-    // Import wallet method
-    function importWallet() {
-        console.log('import');
-    }
-
     // Attach all events
     switch (window.location.pathname) {
         case '/':
             getEl('payButton').addEventListener('click', bind(this, this.pay), false);
-            // getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
-            // getEl('copyButton').addEventListener('click', bind(this, this.copy), false);
             break;
         case '/profile/':
             getEl('saveButton').addEventListener('click', bind(this, this.save), false);
             break;
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
-            // getEl('currency').addEventListener('change', bind(this, exchangeCurrencyChanged), false);
             break;
         case '/sign-in/':
             getEl('signInButton').addEventListener('click', bind(this, this.signIn), false);
             break;
         case '/sign-up/':
-            // getEl('newWalletButton').addEventListener('click', bind(this, this.newWallet), false);
-            // getEl('importWalletButton').addEventListener('click', bind(this, this.importWallet), false);
             break;
         case '/sign-up-new/':
             getEl('signupnext').addEventListener('click', bind(this, this.signUpNext), false);
