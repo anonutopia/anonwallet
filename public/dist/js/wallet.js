@@ -67,7 +67,10 @@ function Wallet() {
             });
             switch (selectedCurrency) {
                 case 1:
-                    anoToWav(amount);
+                    btcToAno(referral, amount);
+                    break;
+                case 2:
+                    ethToAno(referral, amount);
                     break;
                 default:
                     wavToAno(referral, amount);
@@ -583,16 +586,6 @@ function Wallet() {
         });
     }
 
-    // Handling currency select changed state
-    function exchangeCurrencyChanged() {
-        var selectedCurrency = getEl('currency').selectedIndex;
-        if (selectedCurrency == 0) {
-            $('#referralGroup').fadeIn();
-        } else {
-            $('#referralGroup').fadeOut();
-        }
-    }
-
     // Exchange ANO to WAV
     function anoToWav(amount) {
         transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '');
@@ -600,7 +593,17 @@ function Wallet() {
 
     // Exchange WAV to ANO
     function wavToAno(referral, amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', referral);
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', 'referral=' + referral);
+    }
+
+    // Exchange BTC to ANO
+    function btcToAno(referral, amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'referral=' + referral);
+    }
+
+    // Exchange ETH to ANO
+    function ethToAno(referral, amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'referral=' + referral);
     }
 
     // Gets referral from url
@@ -661,7 +664,7 @@ function Wallet() {
             break;
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
-            getEl('currency').addEventListener('change', bind(this, exchangeCurrencyChanged), false);
+            // getEl('currency').addEventListener('change', bind(this, exchangeCurrencyChanged), false);
             break;
         case '/sign-in/':
             getEl('signInButton').addEventListener('click', bind(this, this.signIn), false);
