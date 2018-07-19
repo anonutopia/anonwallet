@@ -17,7 +17,11 @@ var db *gorm.DB
 
 var bg *BitcoinGenerator
 
+var eg *EthereumGenerator
+
 var bam *BitcoinAddressMonitor
+
+var eam *EthereumAddressMonitor
 
 func main() {
 	m = initMacaron()
@@ -28,7 +32,11 @@ func main() {
 
 	bg = initBtcGen()
 
-	bam = initMonitor()
+	eg = initEthGen()
+
+	bam = initBaMonitor()
+
+	eam = initEaMonitor()
 
 	m.Get("/", newPageData, homeView)
 	m.Get("/profile/", newPageData, profileView)

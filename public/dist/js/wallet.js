@@ -333,6 +333,12 @@ function Wallet() {
                 value: 'bitcoin://' + getEl('addressBitcoin').value
             });
 
+            new QRious({
+                size: 300,
+                element: document.getElementById('qrethereum'),
+                value: getEl('addressEthereum').value
+            });
+
             $('#loader').fadeOut(function() {
                 $('#content').fadeIn();
             });

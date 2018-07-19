@@ -15,6 +15,9 @@ type User struct {
 	BitcoinAddr             string `sql:"size:255"`
 	BitcoinBalanceNew       int    `sql:"DEFAULT:0"`
 	BitcoinBalanceProcessed int    `sql:"DEFAULT:0"`
+	EtherAddr               string `sql:"size:255"`
+	EtherBalanceNew         int    `sql:"DEFAULT:0"`
+	EtherBalanceProcessed   int    `sql:"DEFAULT:0"`
 	ProfitEth               uint64
 	ProfitWav               uint64
 	ProfitBtc               uint64

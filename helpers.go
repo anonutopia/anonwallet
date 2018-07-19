@@ -30,6 +30,14 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 			}
 			db.Save(u)
 		}
+		if u.ID != 0 && len(u.EtherAddr) == 0 {
+			var err error
+			u.EtherAddr, err = eg.getAddress(uint32(u.ID))
+			if err != nil {
+				log.Printf("Error in eg.getAddress: %s", err)
+			}
+			db.Save(u)
+		}
 		ctx.Data["User"] = u
 	}
 }
