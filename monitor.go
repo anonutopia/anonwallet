@@ -132,15 +132,6 @@ func (e *EthereumAddressMonitor) checkAddressesRequest(address string) int {
 
 	json.Unmarshal(body, b)
 
-	log.Println(b)
-
-	// balance, err := strconv.Atoi(string(body))
-	// if err == nil {
-	// 	return balance
-	// } else {
-	// 	log.Printf("[EthereumAddressMonitor.checkAdressesRequest] strconv err: %s", err)
-	// }
-
 	balance, err := strconv.Atoi(b.Result)
 	if err != nil {
 		return 0
