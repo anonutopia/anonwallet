@@ -60,20 +60,19 @@ function Wallet() {
     this.exchange = function() {
         var selectedCurrency = getEl('currency').selectedIndex;
         var amount = getEl('amount').value;
-        var referral = getEl('referral').value;
-        if (validateExchangeFields(selectedCurrency, amount, referral)) {
+        if (validateExchangeFields(selectedCurrency, amount)) {
             $('#content').fadeOut(function() {
                 $('#transactionInProgress').fadeIn();
             });
             switch (selectedCurrency) {
                 case 1:
-                    btcToAno(referral, amount);
+                    btcToAno(amount);
                     break;
                 case 2:
-                    ethToAno(referral, amount);
+                    ethToAno(amount);
                     break;
                 default:
-                    wavToAno(referral, amount);
+                    wavToAno(amount);
             }
         }
     }
@@ -463,7 +462,7 @@ function Wallet() {
     }
 
     // Checks and validates fields for exchange form
-    function validateExchangeFields(selectedCurrency, amount, referral) {
+    function validateExchangeFields(selectedCurrency, amount) {
         var validates = true;
 
         if (amount.length == 0) {
@@ -573,10 +572,21 @@ function Wallet() {
                 };
 
                 Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
+                    console.log('responseData');
                     $('#transactionInProgress').fadeOut(function() {
                         $('#transactionSuccess').fadeIn(function() {
                             setTimeout(() => {
                                 $('#transactionSuccess').fadeOut();
+                            }, 10000);
+                        });
+                        $('#content').fadeIn();
+                    });
+                }).catch((err) => {
+                    setHTML('errorMessage', err);
+                    $('#transactionInProgress').fadeOut(function() {
+                        $('#transactionError').fadeIn(function() {
+                            setTimeout(() => {
+                                $('#transactionError').fadeOut();
                             }, 10000);
                         });
                         $('#content').fadeIn();
@@ -592,18 +602,18 @@ function Wallet() {
     }
 
     // Exchange WAV to ANO
-    function wavToAno(referral, amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', 'referral=' + referral);
+    function wavToAno( amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', '');
     }
 
     // Exchange BTC to ANO
-    function btcToAno(referral, amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'referral=' + referral);
+    function btcToAno(amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '');
     }
 
     // Exchange ETH to ANO
-    function ethToAno(referral, amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'referral=' + referral);
+    function ethToAno(amount) {
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '');
     }
 
     // Gets referral from url

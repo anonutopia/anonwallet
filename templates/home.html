@@ -15,27 +15,6 @@
             </div>
         </section>
 
-        <section class="content" id="nometamask" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>MetaMask nije instaliran!</h4>
-                <p>Vaš browser nema DApp mogućnosti. Molimo vas da novčanik otvorite u <a href="https://trustwalletapp.com/" target="_blank">Trust</a> aplikaciji ili da instalirate <a href="https://metamask.io/" target="_blank">MetaMask</a> ekstenziju.</p>
-            </div>
-        </section>
-
-        <section class="content" id="notsignedin" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>Niste ulogirani u MetaMask!</h4>
-                <p>Za daljnje korištenje novčanika, molimo vas da se ulogirate u MetaMask ekstenziju (u pregledniku gore desno).</p>
-            </div>
-        </section>
-
-        <section class="content" id="wrongnetwork" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>Kriva Ethereum mreža!</h4>
-                <p>Koristite krivu Ethereum mrežu. Promijenite ju na glavnu mrežu u MetaMask / Trust postavkama.</p>
-            </div>
-        </section>
-
         <section class="content" id="transactionInProgress" style="display: none;">
             <div class="callout bg-light-blue" style="border: none;">
                 <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
@@ -48,6 +27,7 @@
             <div class="callout callout-danger" id="transactionError" style="display: none;">
                 <h4>Transakcija nije prošla!</h4>
                 <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
+                <p>Error: <span id="errorMessage"></span></p>
             </div>
 
             <div class="callout callout-success" id="transactionSuccess" style="display: none;">
