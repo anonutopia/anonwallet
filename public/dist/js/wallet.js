@@ -573,8 +573,8 @@ function Wallet() {
                     recipient: addressTo,
                     assetId: assetId,
                     amount: amount * 10**8,
-                    feeAssetId: 'WAVES',
-                    fee: 100000,
+                    feeAssetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
+                    fee: 30000000,
                     attachment: attachment,
                     timestamp: Date.now()
                 };
