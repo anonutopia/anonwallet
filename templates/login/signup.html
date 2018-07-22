@@ -4,20 +4,20 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg"><strong>Izrada i vraćanje novčanika</strong></p>
+        <p class="login-box-msg"><strong>{{.i18n.Tr "signUpTitle"}}</strong></p>
 
         <form action="javascript:;" method="post">
             <div class="row">
                 <div class="col-xs-5">
                     <!-- <button type="submit" class="btn btn-success btn-block btn-flat btn-lg" id="newWalletButton">Novi</button> -->
-                    <a href="/sign-up-new/" class="btn btn-success btn-block btn-flat btn-lg">Novi</a>
+                    <a href="/sign-up-new/" class="btn btn-success btn-block btn-flat btn-lg">{{.i18n.Tr "new"}}</a>
                 </div>
                 <div class="col-xs-2">
-                    <p class="text-center" style="margin: 12px 0;">ili</p>
+                    <p class="text-center" style="margin: 12px 0;">{{.i18n.Tr "or"}}</p>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-5">
-                    <a href="/sign-up-import/" class="btn btn-primary btn-block btn-flat btn-lg">Vrati</a>
+                    <a href="/sign-up-import/" class="btn btn-primary btn-block btn-flat btn-lg">{{.i18n.Tr "import"}}</a>
                 </div>
                 <!-- /.col -->
             </div>
