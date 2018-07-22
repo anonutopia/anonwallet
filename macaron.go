@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/go-macaron/cache"
+	"github.com/go-macaron/i18n"
 	"github.com/go-macaron/session"
 	"gopkg.in/macaron.v1"
 
@@ -18,6 +19,11 @@ const (
 func initMacaron() *macaron.Macaron {
 	m := macaron.Classic()
 
+	m.Use(i18n.I18n(i18n.Options{
+		Langs: []string{"hr-HR", "en-US"},
+		Names: []string{"Hrvatski", "English"},
+	}))
+
 	ro := macaron.RenderOptions{
 		Layout: "layout",
 		Funcs: []template.FuncMap{map[string]interface{}{
@@ -29,8 +35,6 @@ func initMacaron() *macaron.Macaron {
 			},
 		}},
 	}
-
-	// m.Use(macaron.Renderer(ro, "login:templates/login"))
 
 	m.Use(macaron.Renderers(ro, "login:templates/login"))
 

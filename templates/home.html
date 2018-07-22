@@ -3,36 +3,36 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Kriptokunski Novčanik
-                <small>Vaše Internet bankarstvo</small>
+                {{.i18n.Tr "homeTitle"}}
+                <small>{{.i18n.Tr "homeSubtitle"}}</small>
             </h1>
         </section>
 
         <section class="content" id="loader">
             <div class="callout bg-light-blue" style="border: none;">
-                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
-                <p>Novčanik se učitava. Molimo pričekajte!</p>
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> {{.i18n.Tr "loading"}}</h4>
+                <p>{{.i18n.Tr "loadingMessage"}}</p>
             </div>
         </section>
 
         <section class="content" id="transactionInProgress" style="display: none;">
             <div class="callout bg-light-blue" style="border: none;">
-                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
-                <p>Transakcija je u tijeku. Molimo pričekajte!</p>
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> {{.i18n.Tr "progress"}}</h4>
+                <p>{{.i18n.Tr "progressMessage"}}</p>
             </div>
         </section>
 
         <!-- Main content -->
         <section class="content" id="content" style="display: none;">
             <div class="callout callout-danger" id="transactionError" style="display: none;">
-                <h4>Transakcija nije prošla!</h4>
-                <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
+                <h4>{{.i18n.Tr "transactionErr"}}</h4>
+                <p>{{.i18n.Tr "transactionErrMsg"}}</p>
                 <p>Error: <span id="errorMessage"></span></p>
             </div>
 
             <div class="callout callout-success" id="transactionSuccess" style="display: none;">
-                <h4>Transakcija je uspješna!</h4>
-                <p>Vaša transakcija je uspješno izvršena.</p>
+                <h4>{{.i18n.Tr "transactionScc"}}</h4>
+                <p>{{.i18n.Tr "transactionSccMsg"}}</p>
             </div>
 
             <div class="row">
@@ -40,7 +40,7 @@
                     <!-- Custom Tabs -->
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-arrow-down"></i> Uplata na račun</a></li>
+                            <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-arrow-down"></i> {{.i18n.Tr "paymentIn"}}</a></li>
                             <li><a href="#tab_2" data-toggle="tab">Bitcoin</a></li>
                             <li><a href="#tab_3" data-toggle="tab">Ether</a></li>
                             <li><a href="#tab_4" data-toggle="tab">Banka</a></li>
@@ -49,8 +49,8 @@
                             <div class="tab-pane active" id="tab_1">
                                 <p><strong>QR Kod</strong></p>
                                 <p><canvas id="qr" class="center-block"></canvas></p>
-                                <p><strong>Adresa (broj računa)</strong></p>
-                                <p class="text-green" id="copymessageaddress" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p><strong>{{.i18n.Tr "address"}}</strong></p>
+                                <p class="text-green" id="copymessageaddress" style="display: none;">{{.i18n.Tr "addressCopied"}}</p>
                                 <p>
                                     <div class="input-group">
                                             <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
@@ -62,8 +62,8 @@
                             <div class="tab-pane" id="tab_2">
                                 <p><strong>Bitcoin QR Kod</strong></p>
                                 <p><canvas id="qrbitcoin" class="center-block"></canvas></p>
-                                <p><strong>Bitcoin Adresa</strong></p>
-                                <p class="text-green" id="copymessageaddressBitcoin" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p><strong>{{.i18n.Tr "btcAddress"}}</strong></p>
+                                <p class="text-green" id="copymessageaddressBitcoin" style="display: none;">{{.i18n.Tr "addressCopied"}}</p>
                                 <p>
                                     <div class="input-group">
                                             <input type="text" class="form-control input-lg" id="addressBitcoin" value="{{ .User.BitcoinAddr }}" readonly>
@@ -75,8 +75,8 @@
                             <div class="tab-pane" id="tab_3">
                                 <p><strong>Ethereum QR Kod</strong></p>
                                 <p><canvas id="qrethereum" class="center-block"></canvas></p>
-                                <p><strong>Bitcoin Adresa</strong></p>
-                                <p class="text-green" id="copymessageaddressEthereum" style="display: none;">Adresa je kopirana u clipboard.</p>
+                                <p><strong>{{.i18n.Tr "ethAddress"}}</strong></p>
+                                <p class="text-green" id="copymessageaddressEthereum" style="display: none;">{{.i18n.Tr "addressCopied"}}</p>
                                 <p>
                                     <div class="input-group">
                                             <input type="text" class="form-control input-lg" id="addressEthereum" value="{{ .User.EtherAddr }}" readonly>
@@ -87,8 +87,8 @@
                             <!-- /.tab-pane -->
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="tab_4">
-                                <p><strong>Uplata iz banke</strong></p>
-                                <p>Ova mogućnost je u izradi.</p>
+                                <p><strong>{{.i18n.Tr "bankTransfer"}}</strong></p>
+                                <p>{{.i18n.Tr "featureInDev"}}</p>
                             </div>
                             <!-- /.tab-pane -->
                         </div>
@@ -105,13 +105,13 @@
                         <div class="box box-warning">
                             <div class="box-header with-border">
                                 <i class="fa fa-area-chart"></i>
-                                <h3 class="box-title">Stanje računa</h3>
+                                <h3 class="box-title">{{.i18n.Tr "balances"}}</h3>
                             </div>
                             <div class="box-body">
                                 <table class="table">
                                     <tr>
-                                        <th>Račun / Valuta</th>
-                                        <th style="width: 150px">Stanje</th>
+                                        <th>{{.i18n.Tr "currency2"}}</th>
+                                        <th style="width: 150px">{{.i18n.Tr "balance"}}</th>
                                     </tr>
                                     <tr>
                                         <td>ANOTE (ANO)</td>
@@ -135,15 +135,15 @@
                                     </tr> -->
                                     <tr>
                                         <td>Kuna (HRK)</td>
-                                        <td><span class="badge bg-red">uskoro</span></td>
+                                        <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                     </tr>
                                     <tr>
                                         <td>Euro (EUR)</td>
-                                        <td><span class="badge bg-red">uskoro</span></td>
+                                        <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                     </tr>
                                     <tr>
                                         <td>Dolar (USD)</td>
-                                        <td><span class="badge bg-red">uskoro</span></td>
+                                        <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                     </tr>
                                 </table>
                             </div>
@@ -157,13 +157,13 @@
                     <div class="box box-danger">
                             <div class="box-header with-border">
                                 <i class="fa fa-arrow-up"></i>
-                                <h3 class="box-title">Slanje s računa</h3>
+                                <h3 class="box-title">{{.i18n.Tr "paymentOut"}}</h3>
                             </div>
                             <div class="box-body">
                                 <form action="javascript:;">
                                     <div class="box-body">
                                         <div class="form-group">
-                                            <label for="exampleInputFile" class="text-lg-left">Valuta</label>
+                                            <label for="exampleInputFile" class="text-lg-left">{{.i18n.Tr "currency2"}}</label>
                                             <select class="form-control input-lg" id="paymentCurrency">
                                                 <option value="ANT" selected>ANOTE (ANO)</option>
                                                 <option value="WAV">Waves (WAV)</option>
@@ -173,17 +173,17 @@
                                             </select>
                                         </div>
                                         <div class="form-group" id="addressToGroup">
-                                            <label for="addressTo">Na račun</label>
+                                            <label for="addressTo">{{.i18n.Tr "addressTo"}}</label>
                                             <input type="text" class="form-control input-lg" id="addressTo" placeholder="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2">
                                         </div>
                                         <div class="form-group" id="amountGroup">
-                                            <label for="amount">Iznos</label>
+                                            <label for="amount">{{.i18n.Tr "amount"}}</label>
                                             <input type="text" class="form-control input-lg" id="amount" placeholder="1.234">
                                         </div>
                                         <p class="text-red" style="margin: 0; display: none;" id="errorMessagePayment"></p>
                                     </div>
                                     <div class="box-footer">
-                                        <input type="submit" value="Izvrši Plaćanje" class="btn btn-block btn-lg btn-danger" id="payButton">
+                                        <input type="submit" value="{{.i18n.Tr "pay"}}" class="btn btn-block btn-lg btn-danger" id="payButton">
                                     </div>
                                 </form>
                             </div>

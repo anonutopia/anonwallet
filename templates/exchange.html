@@ -3,59 +3,13 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Kriptokuna Mjenjačnica
-                <small>vaša Internet mjenjačnica</small>
+                {{.i18n.Tr "exchangeTitle"}}
+                <small>{{.i18n.Tr "exchangeSubitle"}}</small>
             </h1>
-        </section>
-
-        <section class="content" id="loader" style="display: none;">
-            <div class="callout bg-light-blue" style="border: none;">
-                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
-                <p>Sadržaj se učitava. Molimo pričekajte!</p>
-            </div>
-        </section>
-
-        <section class="content" id="nometamask" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>MetaMask nije instaliran!</h4>
-                <p>Vaš browser nema DApp mogućnosti. Molimo vas da novčanik otvorite u <a href="https://trustwalletapp.com/" target="_blank">Trust</a> aplikaciji ili da instalirate <a href="https://metamask.io/" target="_blank">MetaMask</a> ekstenziju.</p>
-            </div>
-        </section>
-
-        <section class="content" id="notsignedin" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>Niste ulogirani u MetaMask!</h4>
-                <p>Za daljnje korištenje novčanika, molimo vas da se ulogirate u MetaMask ekstenziju (u pregledniku gore desno).</p>
-            </div>
-        </section>
-
-        <section class="content" id="wrongnetwork" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>Kriva Ethereum mreža!</h4>
-                <p>Koristite krivu Ethereum mrežu. Promijenite ju na glavnu mrežu u MetaMask / Trust postavkama.</p>
-            </div>
-        </section>
-
-        <section class="content" id="transactionInProgress" style="display: none;">
-            <div class="callout bg-light-blue" style="border: none;">
-                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
-                <p>Transakcija je u tijeku. Molimo pričekajte!</p>
-            </div>
         </section>
 
         <!-- Main content -->
         <section class="content" id="content">
-
-            <div class="callout callout-danger" id="transactionError" style="display: none;">
-                <h4>Transakcija nije prošla!</h4>
-                <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
-                <p>Error: <span id="errorMessage"></span></p>
-            </div>
-
-            <div class="callout callout-success" id="transactionSuccess" style="display: none;">
-                <h4>Transakcija je uspješna!</h4>
-                <p>Vaša transakcija je uspješno izvršena.</p>
-            </div>
 
             <div class="row">
 
@@ -64,36 +18,34 @@
                     <div class="box box-warning">
                         <div class="box-header with-border">
                             <i class="fa fa-line-chart"></i>
-                            <h3 class="box-title">Cijene Valuta</h3>
+                            <h3 class="box-title">{{.i18n.Tr "currencyPrices"}}</h3>
                         </div>
                         <div class="box-body">
                             <table class="table">
                                 <tr>
-                                    <th>Valuta</th>
-                                    <th style="width: 130px">Kupovna</th>
-                                    <th style="width: 130px">Prodajna</th>
+                                    <th>{{.i18n.Tr "currency2"}}</th>
+                                    <th style="width: 130px">{{.i18n.Tr "buyPrice"}}</th>
+                                    <th style="width: 130px">{{.i18n.Tr "sellPrice"}}</th>
                                 </tr>
                                 <tr>
                                     <td>ANOTE (ANT)</td>
-                                    <!-- <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td>
-                                    <td><span class="badge bg-green"><span id="balanceAnt">0.00000</span> EUR</span></td> -->
                                     <td><span id="priceBuy">0.01000</span> EUR</td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                 </tr>
                                 <tr>
                                     <td>Kuna (HRK)</td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                 </tr>
                                 <tr>
                                     <td>Euro (EUR)</td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                 </tr>
                                 <tr>
                                     <td>Dolar (USD)</td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
-                                    <td><span class="badge bg-red">uskoro</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -107,12 +59,12 @@
                     <div class="box box-danger">
                         <div class="box-header with-border">
                             <i class="fa fa-exchange"></i>
-                            <h3 class="box-title">Zamjena Valute</h3>
+                            <h3 class="box-title">{{.i18n.Tr "currencyExchange"}}</h3>
                         </div>
                         <form action="javascript:;">
                             <div class="box-body">
                                 <div class="form-group">
-                                    <label for="currency" class="text-lg-left">Valute</label>
+                                    <label for="currency" class="text-lg-left">{{.i18n.Tr "currencies"}}</label>
                                     <select class="form-control input-lg" id="currency">
                                         <option selected>Waves (WAV) -> ANOTE (ANT)</option>
                                         <option>Bitcoin (BTC) -> ANOTE (ANT)</option>
@@ -122,13 +74,13 @@
                                     </select>
                                 </div>
                                 <div class="form-group" id="amountGroup">
-                                    <label for="amount">Iznos Zamjene</label>
+                                    <label for="amount">{{.i18n.Tr "exchangeAmount"}}</label>
                                     <input type="text" class="form-control input-lg" id="amount" placeholder="1.234">
                                 </div>
                                 <p class="text-red" style="margin: 0; display: none;" id="errorMessageExchange"></p>
                             </div>
                             <div class="box-footer">
-                                <input type="submit" value="Napravi Zamjenu" class="btn btn-block btn-danger btn-lg" id="exchangeButton">
+                                <input type="submit" value="{{.i18n.Tr "doExchange"}}" class="btn btn-block btn-danger btn-lg" id="exchangeButton">
                             </div>
                         </form>
                     </div>

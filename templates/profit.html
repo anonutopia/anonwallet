@@ -3,139 +3,64 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Vaš ANOTE Profit
-                <small>holdanje Anote se isplati</small>
+                {{.i18n.Tr "profitTitle"}}
+                <small>{{.i18n.Tr "profitSubtitle"}}</small>
             </h1>
         </section>
 
         <section class="content" id="loader" style="display: none;">
             <div class="callout bg-light-blue" style="border: none;">
-                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Učitavanje...</h4>
-                <p>Sadržaj se učitava. Molimo pričekajte!</p>
-            </div>
-        </section>
-
-        <section class="content" id="nometamask" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>MetaMask nije instaliran!</h4>
-                <p>Vaš browser nema DApp mogućnosti. Molimo vas da novčanik otvorite u <a href="https://trustwalletapp.com/" target="_blank">Trust</a> aplikaciji ili da instalirate <a href="https://metamask.io/" target="_blank">MetaMask</a> ekstenziju.</p>
-            </div>
-        </section>
-
-        <section class="content" id="notsignedin" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>Niste ulogirani u MetaMask!</h4>
-                <p>Za daljnje korištenje novčanika, molimo vas da se ulogirate u MetaMask ekstenziju (u pregledniku gore desno).</p>
-            </div>
-        </section>
-
-        <section class="content" id="wrongnetwork" style="display: none;">
-            <div class="callout callout-danger">
-                <h4>Kriva Ethereum mreža!</h4>
-                <p>Koristite krivu Ethereum mrežu. Promijenite ju na glavnu mrežu u MetaMask / Trust postavkama.</p>
-            </div>
-        </section>
-
-        <section class="content" id="transactionInProgress" style="display: none;">
-            <div class="callout bg-light-blue" style="border: none;">
-                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> Transakcija u tijeku...</h4>
-                <p>Transakcija je u tijeku. Molimo pričekajte!</p>
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> {{.i18n.Tr "loading"}}</h4>
+                <p>{{.i18n.Tr "loadingMessage2"}}</p>
             </div>
         </section>
 
         <!-- Main content -->
         <section class="content" id="content">
 
-            <div class="callout callout-danger" id="transactionError" style="display: none;">
-                <h4>Transakcija nije prošla!</h4>
-                <p>Dogodio se problem i transakcija nije prošla. Molimo vas da pokušate ponovo!</p>
-            </div>
-
-            <div class="callout callout-success" id="transactionSuccess" style="display: none;">
-                <h4>Transakcija je uspješna!</h4>
-                <p>Vaša transakcija je uspješno izvršena.</p>
-            </div>
-
             <div class="row">
 
-                <div class="col-md-3">
-                    <!-- Default box -->
-                    <div class="box">
+                <div class="col-md-4">
+                        <div class="box">
                         <div class="box-header with-border">
                             <i class="fa fa-line-chart"></i>
-                            <h3 class="box-title">Holding Zarada</h3>
+                            <h4 class="box-title">{{.i18n.Tr "anoteProfit"}}</h4>
                         </div>
                         <div class="box-body">
-                            <h1 class="text-center text-green"><strong><span id="profitWav">{{ .User.ProfitWavString }}</span> WAV</strong></h1>
-                            <h1 class="text-center text-green"><strong><span id="profitBtc">{{ .User.ProfitBtcString }}</span> BTC</strong></h1>
-                            <h1 class="text-center text-green"><strong><span id="profitEth">{{ .User.ProfitEthString }}</span> ETH</strong></h1>
-                            <br>
+                            <table class="table">
+                                <tr>
+                                    <th colspan="3" style="border: none;">{{.i18n.Tr "holdingProfit"}}</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 90px;">WAV</th>
+                                    <th style="width: 90px;">BTC</th>
+                                    <th style="width: 90px;">ETH</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-green"><strong><span id="profitWav">{{ .User.ProfitWavString }}</span></strong></span></td>
+                                    <td><span class="badge bg-green"><strong><span id="profitBtc">{{ .User.ProfitBtcString }}</span></strong></span></td>
+                                    <td><span class="badge bg-green"><strong><span id="profitEth">{{ .User.ProfitEthString }}</span></strong></span></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3">{{.i18n.Tr "referralProfit"}}</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 90px;">WAV</th>
+                                    <th style="width: 90px;">BTC</th>
+                                    <th style="width: 90px;">ETH</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                </tr>
+                            </table><br>
                         </div>
-                        <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-3">
-                    <!-- Default box -->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-pie-chart"></i>
-                            <h3 class="box-title">Referral Zarada</h3>
-                        </div>
-                        <div class="box-body">
-                            <h1 class="text-center text-green"><strong><span id="profitWav">{{ .User.ReferralProfitWavString }}</span> WAV</strong></h1>
-                            <h1 class="text-center text-green"><strong><span id="profitBtc">{{ .User.ReferralProfitBtcString }}</span> BTC</strong></h1>
-                            <h1 class="text-center text-green"><strong><span id="profitEth">{{ .User.ReferralProfitEthString }}</span> ETH</strong></h1>
-                            <br>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-                <div class="col-md-3">
-                    <!-- Default box -->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-bank"></i>
-                            <h3 class="box-title">Bankster Zarada</h3>
-                        </div>
-                        <div class="box-body">
-                            <h1 class="text-center text-green"><strong><span id="profitWav">{{ .User.ReferralProfitWavString }}</span> WAV</strong></h1>
-                            <h1 class="text-center text-green"><strong><span id="profitBtc">{{ .User.ReferralProfitBtcString }}</span> BTC</strong></h1>
-                            <h1 class="text-center text-green"><strong><span id="profitEth">{{ .User.ReferralProfitEthString }}</span> ETH</strong></h1>
-                            <br>
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-                <div class="col-md-3">
-                    <!-- Default box -->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-dollar"></i>
-                            <h3 class="box-title">Isplate</h3>
-                        </div>
-                        <div class="box-body">
-                            <p class="text-green" id="withdrawmessage" style="display: none;">Povlačenje zarade će biti moguće uskoro.</p>
-                        </div>
-                        <form action="javascript:;">
-                                <div class="box-footer">
-                                    <input type="submit" value="Povuci profit u novčanik" class="btn btn-block btn-danger btn-lg" id="withdrawButton">
-                                </div>
-                            </form>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <!-- Default box -->
                     <div class="box">
                         <div class="box-header with-border">
@@ -143,8 +68,8 @@
                             <h3 class="box-title">Referral Program</h3>
                         </div>
                         <div class="box-body">
-                            <p><strong>Vaš referral link</strong></p>
-                            <p class="text-green" id="copymessageaddress" style="display: none;">Link je kopiran u clipboard.</p>
+                            <p style="margin: 0 0 23px 0;"><strong>{{.i18n.Tr "yourRefLink"}}</strong></p>
+                            <p class="text-green" id="copymessageaddress" style="display: none;">{{.i18n.Tr "linkCopied"}}Link je kopiran u clipboard.</p>
                             <p>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="address" value="https://www.kriptokuna.com/?r={{ .User.Address }}" readonly>
@@ -156,6 +81,28 @@
                     </div>
                     <!-- /.box -->
                 </div>
+
+                <div class="col-md-3">
+                    <!-- Default box -->
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-dollar"></i>
+                            <h3 class="box-title">{{.i18n.Tr "payouts"}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <p class="text-green" style="margin: 0;">{{.i18n.Tr "payoutFee"}}</p>
+                            <p class="text-red" id="withdrawmessage" style="display: none; margin: 10px 0 0 0;">{{.i18n.Tr "payoutsSoon"}}</p>
+                        </div>
+                        <form action="javascript:;">
+                                <div class="box-footer">
+                                    <input type="submit" value="{{.i18n.Tr "withdraw"}}" class="btn btn-block btn-danger btn-lg" id="withdrawButton">
+                                </div>
+                            </form>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+
             </div>
 
         </section>
