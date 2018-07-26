@@ -23,6 +23,8 @@ var bam *BitcoinAddressMonitor
 
 var eam *EthereumAddressMonitor
 
+var loc map[string]string
+
 func main() {
 	m = initMacaron()
 
@@ -46,6 +48,7 @@ func main() {
 	m.Get("/sign-up/", newPageData, signUpView)
 	m.Get("/sign-up-new/", newPageData, signUpNewView)
 	m.Get("/sign-up-import/", newPageData, signUpImportView)
+	m.Get("/locales.json", newPageData, localesjsView)
 
 	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)

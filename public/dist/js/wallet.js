@@ -120,7 +120,7 @@ function Wallet() {
 
     // Sign up next method
     this.signUpNext = function() {
-        setValue('seedinput', 'Kopirajte riječi iz backupa.');
+        setValue('seedinput', allLocales.copyAgain);
         var copyText = document.getElementById("seedinput");
         copyText.select();
         document.execCommand("copy");
@@ -384,7 +384,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('errorMessagePayment', 'Oba polja su nužna za slanje.');
+            setHTML('errorMessagePayment', allLocales.bothFields);
             $('#errorMessagePayment').fadeIn(function() {
             setTimeout(() => {
                 $('#errorMessagePayment').fadeOut();
@@ -407,7 +407,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('errorMessageNickname', 'Polje ne može biti prazno.');
+            setHTML('errorMessageNickname', allLocales.jsFieldNotEmpty);
             $('#errorMessageNickname').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageNickname').fadeOut();
@@ -429,7 +429,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('required', 'Polje ne može biti prazno.');
+            setHTML('required', allLocales.jsFieldNotEmpty);
             $('#required').fadeIn(function() {
                 setTimeout(() => {
                     $('#required').fadeOut();
@@ -456,7 +456,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('requiredImport', 'Oba polja su obavezna.');
+            setHTML('requiredImport', allLocales.bothFields);
             $('#requiredImport').fadeIn(function() {
                 setTimeout(() => {
                     $('#requiredImport').fadeOut();
@@ -479,7 +479,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('errorMessageExchange', 'Polje ne može biti prazno.');
+            setHTML('errorMessageExchange', allLocales.jsFieldNotEmpty);
             $('#errorMessageExchange').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageExchange').fadeOut();
@@ -498,7 +498,7 @@ function Wallet() {
         if (seedTa.length == 0) {
             $('#seedGroup').addClass('has-error');
             validates = false;
-            setHTML('errorMessageSeed', 'Polje ne može biti prazno.');
+            setHTML('errorMessageSeed', allLocales.jsFieldNotEmpty);
             $('#errorMessageSeed').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageSeed').fadeOut();
@@ -510,7 +510,7 @@ function Wallet() {
         if (validates && checkSeed && seedTa != seed.phrase) {
             $('#seedGroup').addClass('has-error');
             validates = false;
-            setHTML('errorMessageSeed', 'Niste upisali dobre riječi.');
+            setHTML('errorMessageSeed', allLocales.wrongSeed);
             $('#errorMessageSeed').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageSeed').fadeOut();
@@ -529,7 +529,7 @@ function Wallet() {
         if (p1.length == 0) {
             $('#passwordGroup1').addClass('has-error');
             validates = false;
-            setHTML('errorMessagePassword', 'Oba polja su obavezna.');
+            setHTML('errorMessagePassword', allLocales.bothFields);
             $('#errorMessagePassword').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessagePassword').fadeOut();
@@ -541,7 +541,7 @@ function Wallet() {
         if (p2.length == 0) {
             $('#passwordGroup2').addClass('has-error');
             validates = false;
-            setHTML('errorMessagePassword', 'Oba polja su obavezna.');
+            setHTML('errorMessagePassword', allLocales.bothFields);
             $('#errorMessagePassword').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessagePassword').fadeOut();
@@ -553,7 +553,7 @@ function Wallet() {
         if (validates && p1 != p2) {
             $('#passwordGroup2').addClass('has-error');
             validates = false;
-            setHTML('errorMessagePassword', 'Lozinke nisu iste.');
+            setHTML('errorMessagePassword', allLocales.passNotMatch);
             $('#errorMessagePassword').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessagePassword').fadeOut();

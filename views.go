@@ -35,3 +35,8 @@ func signUpNewView(ctx *macaron.Context) {
 func signUpImportView(ctx *macaron.Context) {
 	ctx.HTMLSet(200, "login", "signupimport")
 }
+
+func localesjsView(ctx *macaron.Context) {
+	loc = initLocale(ctx)
+	ctx.JSON(200, &loc)
+}
