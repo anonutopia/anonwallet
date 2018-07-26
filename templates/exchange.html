@@ -8,8 +8,25 @@
             </h1>
         </section>
 
+        <section class="content" id="transactionInProgress" style="display: none;">
+            <div class="callout bg-light-blue" style="border: none;">
+                <h4 style="padding-left: 30px;"><i class="fa fa-spinner fa-spin" style="font-size: 1.2em; margin-top: -2px; position: absolute; margin-left: -30px;"></i> {{.i18n.Tr "progress"}}</h4>
+                <p>{{.i18n.Tr "progressMessage"}}</p>
+            </div>
+        </section>
+
         <!-- Main content -->
         <section class="content" id="content">
+            <div class="callout callout-danger" id="transactionError" style="display: none;">
+                <h4>{{.i18n.Tr "transactionErr"}}</h4>
+                <p>{{.i18n.Tr "transactionErrMsg"}}</p>
+                <p>Error: <span id="errorMessage"></span></p>
+            </div>
+
+            <div class="callout callout-success" id="transactionSuccess" style="display: none;">
+                <h4>{{.i18n.Tr "transactionScc"}}</h4>
+                <p>{{.i18n.Tr "transactionSccMsg"}}</p>
+            </div>
 
             <div class="row">
 
@@ -33,7 +50,7 @@
                                     <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Kuna (HRK)</td>
+                                    <td>{{.i18n.Tr "mainCurrency"}}</td>
                                     <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                     <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
                                 </tr>

@@ -72,7 +72,7 @@
                             <p class="text-green" id="copymessageaddress" style="display: none;">{{.i18n.Tr "linkCopied"}}</p>
                             <p>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="address" value="https://www.kriptokuna.com/?r={{ .User.Address }}" readonly>
+                                    <input type="text" class="form-control" id="address" value="{{.i18n.Tr "homeLink"}}/?r={{ .User.Address }}" readonly>
                                     <div class="input-group-addon"><a href="javascript:wallet.copy('address');"><i class="fa fa-copy fa-lg"></i></a></div>
                                 </div>
                             </p>

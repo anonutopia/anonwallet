@@ -20,8 +20,8 @@ func initMacaron() *macaron.Macaron {
 	m := macaron.Classic()
 
 	m.Use(i18n.I18n(i18n.Options{
-		Langs: []string{"hr-HR", "en-US"},
-		Names: []string{"Hrvatski", "English"},
+		Langs: []string{"hr", "sr", "en-US"},
+		Names: []string{"Hrvatski", "Srpski", "English"},
 	}))
 
 	ro := macaron.RenderOptions{
