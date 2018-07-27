@@ -407,7 +407,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('errorMessageNickname', allLocales.jsFieldNotEmpty);
+            setHTML('errorMessageNickname', allLocales.jsFieldEmpty);
             $('#errorMessageNickname').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageNickname').fadeOut();
@@ -429,7 +429,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('required', allLocales.jsFieldNotEmpty);
+            setHTML('required', allLocales.jsFieldEmpty);
             $('#required').fadeIn(function() {
                 setTimeout(() => {
                     $('#required').fadeOut();
@@ -479,7 +479,7 @@ function Wallet() {
         }
 
         if (!validates) {
-            setHTML('errorMessageExchange', allLocales.jsFieldNotEmpty);
+            setHTML('errorMessageExchange', allLocales.jsFieldEmpty);
             $('#errorMessageExchange').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageExchange').fadeOut();
@@ -498,7 +498,7 @@ function Wallet() {
         if (seedTa.length == 0) {
             $('#seedGroup').addClass('has-error');
             validates = false;
-            setHTML('errorMessageSeed', allLocales.jsFieldNotEmpty);
+            setHTML('errorMessageSeed', allLocales.jsFieldEmpty);
             $('#errorMessageSeed').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageSeed').fadeOut();

@@ -1,5 +1,5 @@
 var allLocales = {
-    jsFieldNotEmpty :       "Polje ne može biti prazno.",
+    jsFieldEmpty :       "Polje ne može biti prazno.",
     copyAgain :             "Molimo vas da kopirate seed iz backupa.",
     bothFields :            "Oba polja su obavezna.",
     wrongSeed :             "Niste upisali dobre seed riječi.",
