@@ -30,6 +30,7 @@ type User struct {
 	ReferralProfitEthTotal  uint64
 	ReferralProfitWavTotal  uint64
 	ReferralProfitBtcTotal  uint64
+	ReceivedFreeAnote       bool `sql:"DEFAULT:false"`
 }
 
 func (u *User) ProfitWavString() string {
