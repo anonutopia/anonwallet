@@ -31,7 +31,7 @@ type User struct {
 	ReferralProfitWavTotal  uint64
 	ReferralProfitBtcTotal  uint64
 	ReceivedFreeAnote       bool `sql:"DEFAULT:false"`
-	TelegramId              int  `sql:"DEFAULT:0;unique_index"`
+	TelegramId              int  `sql:"DEFAULT:0"`
 }
 
 func (u *User) ProfitWavString() string {
