@@ -30,7 +30,7 @@
 
             <div class="row">
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <!-- Default box -->
                     <div class="box box-warning">
                         <div class="box-header with-border">
@@ -41,28 +41,23 @@
                             <table class="table">
                                 <tr>
                                     <th>{{.i18n.Tr "currency2"}}</th>
-                                    <th style="width: 130px">{{.i18n.Tr "buyPrice"}}</th>
-                                    <th style="width: 130px">{{.i18n.Tr "sellPrice"}}</th>
+                                    <th style="width: 130px">Price</th>
                                 </tr>
                                 <tr>
-                                    <td>ANOTE (ANT)</td>
-                                    <td><span id="priceBuy">0.01000</span> EUR</td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td>EUR</td>
+                                    <td><span class="badge bg-green">0.01000000 EUR</span></td>
                                 </tr>
                                 <tr>
-                                    <td>{{.i18n.Tr "mainCurrency"}}</td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td>WAV</td>
+                                    <td><span class="badge bg-green">{{ .PriceWav }} WAV</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Euro (EUR)</td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td>BTC</td>
+                                    <td><span class="badge bg-green">{{ .PriceBtc }} BTC</span></td>
                                 </tr>
                                 <tr>
-                                    <td>Dolar (USD)</td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
-                                    <td><span class="badge bg-red">{{.i18n.Tr "soon"}}</span></td>
+                                    <td>ETH</td>
+                                    <td><span class="badge bg-green">{{ .PriceEth }} ETH</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -71,7 +66,7 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <!-- Default box -->
                     <div class="box box-danger">
                         <div class="box-header with-border">
@@ -100,6 +95,39 @@
                                 <input type="submit" value="{{.i18n.Tr "doExchange"}}" class="btn btn-block btn-danger btn-lg" id="exchangeButton">
                             </div>
                         </form>
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+                <div class="col-md-4">
+                    <script>
+                        priceWav = parseFloat({{ .PriceWav }});
+                        priceBtc = parseFloat({{ .PriceBtc }});
+                        priceEth = parseFloat({{ .PriceEth }});
+                    </script>
+                    <!-- Default box -->
+                    <div class="box box-warning">
+                        <div class="box-header with-border">
+                            <i class="fa fa-calculator"></i>
+                            <h3 class="box-title">Calculator</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table">
+                                <tr>
+                                    <td>ANOTE Programmed Value</td>
+                                    <td><span class="badge bg-blue">14 EUR</span></td>
+                                </tr>
+                                <tr>
+                                    <td>ANOTE Amount</td>
+                                    <td style="width: 130px"><span class="badge bg-blue"><span id="amountAno">0.00</span> ANO</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Full Programmed Value</td>
+                                    <td><span class="badge bg-blue"><span id="amountEur">0.00</span> EUR</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
                     <!-- /.box -->
                 </div>

@@ -186,6 +186,27 @@ function Wallet() {
         }
     }
 
+    this.updateCalculator = function() {
+        var amount = getEl('amount').value;
+        var sel = getEl('currency').selectedIndex;
+        switch(sel) {
+            case 1:
+                var price = priceBtc;
+                break;
+            case 2:
+                var price = priceEth;
+                break;
+            default:
+                var price = priceWav;
+        }
+
+        var amountAno = (amount / price).toFixed(2);
+        var amountEur = (amountAno * 14).toFixed(2);
+        setHTML('amountAno', amountAno);
+        setHTML('amountEur', amountEur);
+
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -658,6 +679,8 @@ function Wallet() {
             break;
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
+            getEl('currency').addEventListener('change', bind(this, this.updateCalculator), false);
+            getEl('amount').addEventListener('keyup', bind(this, this.updateCalculator), false);
             break;
         case '/sign-in/':
             getEl('signInButton').addEventListener('click', bind(this, this.signIn), false);

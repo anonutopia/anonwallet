@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"gopkg.in/macaron.v1"
 )
 
@@ -13,6 +15,16 @@ func profileView(ctx *macaron.Context) {
 }
 
 func exchangeView(ctx *macaron.Context) {
+	prices, err := pc.DoRequest()
+	if err != nil {
+		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", 0)
+		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", 0)
+		ctx.Data["PriceEth"] = fmt.Sprintf("%.8f", 0)
+	} else {
+		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", prices.WAVES/100)
+		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", prices.BTC/100)
+		ctx.Data["PriceEth"] = fmt.Sprintf("%.8f", prices.ETH/100)
+	}
 	ctx.HTML(200, "exchange")
 }
 

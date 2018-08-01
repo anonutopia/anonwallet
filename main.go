@@ -25,6 +25,8 @@ var eam *EthereumAddressMonitor
 
 var loc map[string]string
 
+var pc *PriceClient
+
 func main() {
 	m = initMacaron()
 
@@ -39,6 +41,8 @@ func main() {
 	bam = initBaMonitor()
 
 	eam = initEaMonitor()
+
+	pc = initPriceClient()
 
 	m.Get("/", newPageData, homeView)
 	m.Get("/profile/", newPageData, profileView)
