@@ -10,7 +10,7 @@ type User struct {
 	gorm.Model
 	Nickname                string `sql:"size:255"`
 	Email                   string `sql:"size:255"`
-	Address                 string `sql:"size:255"`
+	Address                 string `sql:"size:255;unique_index"`
 	Referral                string `sql:"size:255"`
 	BitcoinAddr             string `sql:"size:255"`
 	BitcoinBalanceNew       int    `sql:"DEFAULT:0"`
@@ -30,7 +30,7 @@ type User struct {
 	ReferralProfitEthTotal  uint64
 	ReferralProfitWavTotal  uint64
 	ReferralProfitBtcTotal  uint64
-	ReceivedFreeAnote       bool `sql:"DEFAULT:false"`
+	TelegramId              int `sql:"DEFAULT:0;unique_index"`
 }
 
 func (u *User) ProfitWavString() string {
