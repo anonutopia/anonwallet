@@ -3,3 +3,4 @@ anonwallet
 deploy.sh
 walletnew*
 config.json
+wallets/*
