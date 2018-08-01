@@ -1,18 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
-)
-
-const (
-	dbname = "../anote.db"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func initDb() *gorm.DB {
-	db, err := gorm.Open("sqlite3", dbname)
+	db, err := gorm.Open("postgres", fmt.Sprintf("host=localhost port=5432 user=%s dbname=%s password=%s", conf.DbUser, conf.DbName, conf.DbPass))
 
 	if err != nil {
 		log.Printf("[initDb] error: %s", err)

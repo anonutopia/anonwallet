@@ -13,6 +13,9 @@ type config struct {
 	Port              uint   `json:"port"`
 	Debug             bool   `json:"debug"`
 	BtcMasterKey      string `json:"btc_master_key"`
+	DbName            string `json:"db_name"`
+	DbUser            string `json:"db_user"`
+	DbPass            string `json:"db_pass"`
 }
 
 func (sc *config) Load(configFile string) error {
