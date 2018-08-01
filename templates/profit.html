@@ -18,6 +18,13 @@
         <!-- Main content -->
         <section class="content" id="content">
 
+{{ if not .User.ReceivedFreeAnote }}
+            <div class="callout callout-danger" id="transactionSuccess">
+                <h4>{{.i18n.Tr "telegramTitle"}}</h4>
+                <p>{{.i18n.Tr "telegramMessage"}} <a href="{{.i18n.Tr "homeLink"}}/airdrop/" target="_blank"><strong>{{.i18n.Tr "telegramHere"}}</strong></a>!</p>
+            </div>
+{{ end }}
+
             <div class="row">
 
                 <div class="col-md-4">
