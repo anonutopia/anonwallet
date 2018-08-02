@@ -225,11 +225,13 @@ function Wallet() {
 
         Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
         var restoredPhrase = Cookies.get('seed');
+        var address = Cookies.get('address');
         var encrypted = Cookies.get('encrypted');
 
         if (restoredPhrase) {
             seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
             Cookies.set('seed', restoredPhrase, { expires: 1 });
+            Cookies.set('address', address, { expires: 1 });
             switch(window.location.pathname) {
                 case '/profit/':
                     initSuccessProfit();
