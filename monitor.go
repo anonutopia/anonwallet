@@ -30,7 +30,7 @@ func (b *BitcoinAddressMonitor) checkAddresses() {
 	for _, u := range users {
 		balance := b.checkAddressesRequest(u.BitcoinAddr)
 		amountNew := balance - u.BitcoinBalanceProcessed
-		if amountNew > 100000 {
+		if amountNew > 1000 {
 			u.BitcoinBalanceNew = amountNew
 			db.Save(u)
 		}
