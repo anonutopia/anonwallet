@@ -232,6 +232,9 @@ function Wallet() {
             seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
             Cookies.set('seed', restoredPhrase, { expires: 1 });
             Cookies.set('address', address, { expires: 1 });
+
+            getEl('transactionsButton').href += address;
+
             switch(window.location.pathname) {
                 case '/profit/':
                     initSuccessProfit();
