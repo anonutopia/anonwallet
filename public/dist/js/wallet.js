@@ -35,6 +35,9 @@ function Wallet() {
                 default:
                     transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '');
             }
+
+            getEl('addressTo').value = '';
+            getEl('amount').value = '';
         }
     }
 
@@ -598,15 +601,15 @@ function Wallet() {
                 const transferData = {
                     recipient: addressTo,
                     assetId: assetId,
-                    amount: amount * 10**8,
+                    amount: parseInt(amount * 10**8),
                     feeAssetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
                     fee: 30000000,
                     attachment: attachment,
                     timestamp: Date.now()
                 };
-
+                console.log(transferData);
                 Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
-                    console.log('responseData');
+                    console.log(responseData);
                     $('#transactionInProgress').fadeOut(function() {
                         $('#transactionSuccess').fadeIn(function() {
                             setTimeout(() => {
