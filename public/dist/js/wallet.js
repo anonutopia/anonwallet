@@ -101,16 +101,21 @@ function Wallet() {
 
     // Withdraw ANT profit
     this.withdraw = function() {
-        // $('#withdrawmessage').fadeIn(function() {
-        //     setTimeout(() => {
-        //         $('#withdrawmessage').fadeOut();
-        //     }, 2000);
-        // });
-
-        // $.get("/withdraw/" + seed.address, function(data, status){
-        //     alert("Data: " + data + "\nStatus: " + status);
-        // });
         $("#modalWithdraw").modal();
+    }
+
+    // Withdraw confirmed
+    this.withdrawConfirm = function() {
+        $("#modalWithdraw").modal('hide');
+        var withdrawCurrency = getEl('withdrawFeeCurrency').selectedIndex;
+        if (withdrawCurrency == 0) {
+            var assetId = '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf';
+            var amount = 0.9;
+        } else {
+            var assetId = 'WAVES';
+            var amount = 0.003;
+        }
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, assetId, 'withdraw', withdrawCurrency);
     }
 
     // Sign in method
@@ -717,6 +722,7 @@ function Wallet() {
             break;
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
+            getEl('withdrawConfirmButton').addEventListener('click', bind(this, this.withdrawConfirm), false);
             break;
         case '/settings/':
             // getEl('saveButton').addEventListener('click', bind(this, this.save), false);
