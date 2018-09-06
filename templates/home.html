@@ -216,6 +216,14 @@
             </div>
             <div class="modal-body">
               <p>{{.i18n.Tr "payConfirmMessage"}}</p>
+              <p><a href="javascript:$('#payAdvanced').fadeToggle()">Configure Fee</a></p>
+                <div class="form-group" id="payAdvanced" style="display: none;">
+                    <label>Fee Currency</label>
+                    <select class="form-control" id="payFeeCurrency">
+                      <option>Anote (0.3 ANO)</option>
+                      <option>Waves (0.001 WAV)</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{.i18n.Tr "cancel"}}</button>
