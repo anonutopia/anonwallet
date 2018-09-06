@@ -45,7 +45,7 @@ func main() {
 	pc = initPriceClient()
 
 	m.Get("/", newPageData, homeView)
-	m.Get("/profile/", newPageData, profileView)
+	m.Get("/settings/", newPageData, settingsView)
 	m.Get("/exchange/", newPageData, exchangeView)
 	m.Get("/profit/", newPageData, profitView)
 	m.Get("/sign-in/", newPageData, signInView)

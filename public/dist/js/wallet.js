@@ -225,6 +225,12 @@ function Wallet() {
 
     }
 
+    this.showSeed = function() {
+        // alert(seed.phrase);
+        getEl('seed').innerHTML = seed.phrase;
+        getEl('copySeed').disabled = false;
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -259,6 +265,8 @@ function Wallet() {
                     break;
                 case '/exchange/':
                     // initSuccessProfit();
+                    break;
+                case '/settings/':
                     break;
                 default:
                     initSuccess();
@@ -705,8 +713,9 @@ function Wallet() {
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
             break;
-        case '/profile/':
-            getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+        case '/settings/':
+            // getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+            getEl('showSeed').addEventListener('click', bind(this, this.showSeed), false);
             break;
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
