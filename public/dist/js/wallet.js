@@ -14,6 +14,17 @@ function Wallet() {
         var amount = getEl('amount').value;
         var currency = getEl('paymentCurrency').selectedIndex;
         if (validatePaymentFields(addressTo, amount)) {
+            $("#modalPay").modal();
+        }
+    }
+
+    // Payment method
+    this.payConfirmed = function() {
+        $("#modalPay").modal("hide");
+        var addressTo = getEl('addressTo').value;
+        var amount = getEl('amount').value;
+        var currency = getEl('paymentCurrency').selectedIndex;
+        if (validatePaymentFields(addressTo, amount)) {
             switch (currency) {
                 case 1:
                     transfer(addressTo, amount, 'WAVES', '');
@@ -678,6 +689,7 @@ function Wallet() {
     switch (window.location.pathname) {
         case '/':
             getEl('payButton').addEventListener('click', bind(this, this.pay), false);
+            getEl('payConfirmButton').addEventListener('click', bind(this, this.payConfirmed), false);
             break;
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
