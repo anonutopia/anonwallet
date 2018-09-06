@@ -212,14 +212,14 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Payment Confirmation</h4>
+              <h4 class="modal-title">{{.i18n.Tr "payConfirm"}}</h4>
             </div>
             <div class="modal-body">
-              <p>Are you sure you want to make this payment?</p>
+              <p>{{.i18n.Tr "payConfirmMessage"}}</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-danger" id="payConfirmButton">Send Payment</button>
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{.i18n.Tr "cancel"}}</button>
+              <button type="button" class="btn btn-danger" id="payConfirmButton">{{.i18n.Tr "pay"}}</button>
             </div>
           </div>
           <!-- /.modal-content -->
