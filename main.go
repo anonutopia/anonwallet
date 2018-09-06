@@ -53,6 +53,7 @@ func main() {
 	m.Get("/sign-up-new/", newPageData, signUpNewView)
 	m.Get("/sign-up-import/", newPageData, signUpImportView)
 	m.Get("/locales.json", newPageData, localesjsView)
+	m.Get("/withdraw/:address", newPageData, withdrawView)
 
 	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)

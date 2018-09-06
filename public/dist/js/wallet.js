@@ -101,11 +101,16 @@ function Wallet() {
 
     // Withdraw ANT profit
     this.withdraw = function() {
-        $('#withdrawmessage').fadeIn(function() {
-            setTimeout(() => {
-                $('#withdrawmessage').fadeOut();
-            }, 2000);
-        });
+        // $('#withdrawmessage').fadeIn(function() {
+        //     setTimeout(() => {
+        //         $('#withdrawmessage').fadeOut();
+        //     }, 2000);
+        // });
+
+        // $.get("/withdraw/" + seed.address, function(data, status){
+        //     alert("Data: " + data + "\nStatus: " + status);
+        // });
+        $("#modalWithdraw").modal();
     }
 
     // Sign in method

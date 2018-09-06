@@ -52,3 +52,8 @@ func localesjsView(ctx *macaron.Context) {
 	loc = initLocale(ctx)
 	ctx.JSON(200, &loc)
 }
+
+func withdrawView(ctx *macaron.Context) {
+	jr := &JsonResponse{Success: true}
+	ctx.JSON(200, jr)
+}
