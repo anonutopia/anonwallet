@@ -25,7 +25,7 @@ function Wallet() {
         var amount = getEl('amount').value;
         var currency = getEl('paymentCurrency').selectedIndex;
         var feeCurrency = getEl('payFeeCurrency').selectedIndex;
-        console.log(feeCurrency);
+
         if (validatePaymentFields(addressTo, amount)) {
             switch (currency) {
                 case 1:
@@ -39,6 +39,7 @@ function Wallet() {
                     }
                     break;
                 case 3:
+                    var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
                         transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forward=' + addressTo, feeCurrency);
                     } else {
