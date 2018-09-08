@@ -112,6 +112,12 @@ function Wallet() {
         if (withdrawCurrency == 0) {
             var assetId = '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf';
             var amount = 0.9;
+        } else if (feeCurrency == 2) {
+            var assetId = '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs';
+            var amount = 0.0000012;
+        } else if (feeCurrency == 3) {
+            var assetId = '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53';
+            var amount = 0.000024;
         } else {
             var assetId = 'WAVES';
             var amount = 0.003;

@@ -171,7 +171,7 @@
                                     <div class="box-body">
                                         <div class="form-group">
                                             <label for="exampleInputFile" class="text-lg-left">{{.i18n.Tr "currency2"}}</label>
-                                            <select class="form-control input-lg" id="paymentCurrency">
+                                            <select class="form-control input-lg" id="paymentCurrency" onchange="document.getElementById('payFeeCurrency').selectedIndex = this.selectedIndex;">
                                                 <option value="ANT" selected>ANOTE (ANO)</option>
                                                 <option value="WAV">Waves (WAV)</option>
                                                 <option value="WAV">Bitcoin (BTC)</option>
