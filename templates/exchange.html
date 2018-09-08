@@ -83,7 +83,7 @@
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="currency" class="text-lg-left">{{.i18n.Tr "currencies"}}</label>
-                                    <select class="form-control input-lg" id="currency">
+                                    <select class="form-control input-lg" id="currency" onchange="document.getElementById('exchangeFeeCurrency').selectedIndex = this.selectedIndex + 1;">
                                         <option selected>Waves (WAV) -> ANOTE (ANT)</option>
                                         <option>Bitcoin (BTC) -> ANOTE (ANT)</option>
                                         <option>Ether (ETH) -> ANOTE (ANT)</option>
@@ -144,3 +144,35 @@
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+    <div class="modal fade" id="modalExchange">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">{{.i18n.Tr "payConfirm"}}</h4>
+            </div>
+            <div class="modal-body">
+              <p>{{.i18n.Tr "payConfirmMessage"}}</p>
+              <p style="margin-bottom: 0px;"><a href="javascript:$('#payAdvanced').fadeToggle()">{{.i18n.Tr "configureFee"}}</a></p>
+                <div class="form-group" id="payAdvanced" style="display: none; margin: 10px 0 0 0;">
+                    <label>{{.i18n.Tr "feeCurrency"}}</label>
+                    <select class="form-control" id="exchangeFeeCurrency">
+                      <option>Anote (0.3 ANO)</option>
+                      <option selected>Waves (0.001 WAV)</option>
+                      <option>Bitcoin (0.0000004 BTC)</option>
+                      <option>Ether (0.000008 ETH)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{.i18n.Tr "cancel"}}</button>
+              <button type="button" class="btn btn-danger" id="exchangeConfirmButton">{{.i18n.Tr "doExchange"}}</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->    

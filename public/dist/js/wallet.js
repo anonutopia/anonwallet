@@ -84,6 +84,16 @@ function Wallet() {
         var selectedCurrency = getEl('currency').selectedIndex;
         var amount = getEl('amount').value;
         if (validateExchangeFields(selectedCurrency, amount)) {
+            $("#modalExchange").modal();
+        }
+    }
+
+    // Confirms exchange currencies
+    this.exchangeConfirm = function() {
+        $("#modalExchange").modal('hide');
+        var selectedCurrency = getEl('currency').selectedIndex;
+        var amount = getEl('amount').value;
+        if (validateExchangeFields(selectedCurrency, amount)) {
             $('#content').fadeOut(function() {
                 $('#transactionInProgress').fadeIn();
             });
@@ -743,6 +753,7 @@ function Wallet() {
             break;
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
+            getEl('exchangeConfirmButton').addEventListener('click', bind(this, this.exchangeConfirm), false);
             getEl('currency').addEventListener('change', bind(this, this.updateCalculator), false);
             getEl('amount').addEventListener('keyup', bind(this, this.updateCalculator), false);
             break;
