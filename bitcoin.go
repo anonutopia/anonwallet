@@ -18,7 +18,7 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 }
 
 func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
-	out, err := exec.Command("electrum", "getaddressbalance", address).Output()
+	out, err := exec.Command("electrum", "getaddressbalance", address).CombinedOutput()
 	if err != nil {
 		return 0, err
 	}
