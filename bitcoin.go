@@ -20,7 +20,7 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Println(string(stderr.Bytes()))
+		log.Println("Error in BitcoinGenerator.getAddress: %s" + string(stderr.Bytes()))
 		return "", err
 	}
 	return string(stdout.Bytes()), nil
