@@ -12,7 +12,7 @@ type BitcoinGenerator struct {
 }
 
 func (bg *BitcoinGenerator) getAddress() (string, error) {
-	cmd := exec.Command("electrum", "createnewaddress")
+	cmd := exec.Command("/usr/local/bin/electrum", "createnewaddress")
 	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
 	out, err := cmd.Output()
 	if err != nil {
@@ -25,7 +25,8 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
 	cmd := exec.Command("/usr/local/bin/electrum", "getaddressbalance", address)
 	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
-	out, err := cmd.Output()
+	out, err := cmd.
+		Output()
 	if err != nil {
 		log.Println(string(out))
 		return 0, err
