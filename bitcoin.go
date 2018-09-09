@@ -29,14 +29,17 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
 	cmd := exec.Command("/usr/local/bin/electrum", "getaddressbalance", address)
 	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
-	out, err := cmd.Output()
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
 	if err != nil {
-		log.Println(string(out))
+		log.Println("Error in BitcoinGenerator.getBalance: %s" + string(stderr.Bytes()))
 		return 0, err
 	}
 
 	br := &BalanceResponse{}
-	err = json.Unmarshal([]byte(out), br)
+	err = json.Unmarshal(stdout.Bytes(), br)
 	if err != nil {
 		return 0, err
 	}
