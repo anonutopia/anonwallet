@@ -20,7 +20,7 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Println("Error in BitcoinGenerator.getAddress: %s" + string(stderr.Bytes()))
+		log.Println("Error in BitcoinGenerator.getAddress: " + string(stderr.Bytes()))
 		return "", err
 	}
 	return string(stdout.Bytes()), nil
@@ -34,7 +34,7 @@ func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Println("Error in BitcoinGenerator.getBalance: %s" + string(stderr.Bytes()))
+		log.Printf("Error in BitcoinGenerator.getBalance (address: %s): %s", address, string(stderr.Bytes()))
 		return 0, err
 	}
 
