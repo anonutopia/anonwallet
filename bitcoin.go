@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 )
 
 type BitcoinGenerator struct {
@@ -23,7 +24,7 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 		log.Println("Error in BitcoinGenerator.getAddress: " + string(stderr.Bytes()))
 		return "", err
 	}
-	return string(stdout.Bytes()), nil
+	return strings.TrimRight(string(stdout.Bytes()), "\n"), nil
 }
 
 func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
