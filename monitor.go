@@ -44,7 +44,7 @@ func (b *BitcoinAddressMonitor) checkAddressesRequest(address string) int {
 
 	balance, err := bg.getBalance(address)
 	if err != nil {
-		log.Printf("Error in BitcoinAddressMonitor.checkAddressRequest: %s", err.Error())
+		log.Printf("Error in BitcoinAddressMonitor.checkAddressRequest: %s", err)
 		return 0
 	}
 
