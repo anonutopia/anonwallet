@@ -42,31 +42,13 @@ func (b *BitcoinAddressMonitor) checkAddressesRequest(address string) int {
 		return 0
 	}
 
-	cl := http.Client{}
-
-	url := fmt.Sprintf("https://blockchain.info/q/addressbalance/%s?confirmations=1", address)
-
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	balance, err := bg.getBalance(address)
 	if err != nil {
-		log.Printf("[BitcoinAddressMonitor.checkAdressesRequest] request err %s", err)
+		log.Printf("Error in BitcoinAddressMonitor.checkAddressRequest: %s", err)
 		return 0
 	}
 
-	res, err := cl.Do(req)
-	if err != nil {
-		log.Printf("[BitcoinAddressMonitor.checkAdressesRequest] request do err %s", err)
-		return 0
-	}
-	body, _ := ioutil.ReadAll(res.Body)
-
-	balance, err := strconv.Atoi(string(body))
-	if err == nil {
-		return balance
-	} else {
-		log.Printf("[BitcoinAddressMonitor.checkAdressesRequest] strconv err: %s", err)
-	}
-
-	return 0
+	return int(balance * 100000000)
 }
 
 func initBaMonitor() *BitcoinAddressMonitor {
