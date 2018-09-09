@@ -33,7 +33,7 @@ function Wallet() {
                     break;
                 case 2:
                     if (checkAddress(addressTo)) {
-                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forward=' + addressTo, feeCurrency);
+                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', feeCurrency);
                     }
@@ -41,7 +41,7 @@ function Wallet() {
                 case 3:
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
-                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forward=' + addressTo, feeCurrency);
+                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
                     }
