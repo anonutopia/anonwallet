@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"os"
 	"os/exec"
 	"strconv"
 )
@@ -11,8 +12,11 @@ type BitcoinGenerator struct {
 }
 
 func (bg *BitcoinGenerator) getAddress() (string, error) {
-	out, err := exec.Command("electrum", "createnewaddress").CombinedOutput()
+	cmd := exec.Command("electrum", "createnewaddress")
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
+	out, err := cmd.Output()
 	if err != nil {
+		log.Println(string(out))
 		return "", err
 	}
 	return string(out), nil
