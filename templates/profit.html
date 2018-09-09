@@ -98,7 +98,7 @@
                             <p>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="address" value="{{.i18n.Tr "homeLink"}}/?r={{ .User.Address }}" readonly>
-                                    <div class="input-group-addon"><a href="javascript:wallet.copy('address');"><i class="fa fa-copy fa-lg"></i></a></div>
+                                    <div class="input-group-addon"><a href="javascript:;" onclick="wallet.copy('address');"><i class="fa fa-copy fa-lg"></i></a></div>
                                 </div>
                             </p>
                         </div>
@@ -145,7 +145,7 @@
             </div>
             <div class="modal-body">
               <p>{{.i18n.Tr "withdrawConfirmMsg"}}</p>
-              <p style="margin-bottom: 0px;"><a href="javascript:$('#payAdvanced').fadeToggle()">{{.i18n.Tr "configureFee"}}</a></p>
+              <p style="margin-bottom: 0px;"><a href="javascript:;" onclick="$('#payAdvanced').fadeToggle();">{{.i18n.Tr "configureFee"}}</a></p>
                 <div class="form-group" id="payAdvanced" style="display: none; margin: 10px 0 0 0;">
                     <label>{{.i18n.Tr "feeCurrency"}}</label>
                     <select class="form-control" id="withdrawFeeCurrency">
