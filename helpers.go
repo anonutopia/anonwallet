@@ -24,7 +24,7 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 		}
 		if u.ID != 0 && len(u.BitcoinAddr) == 0 {
 			var err error
-			u.BitcoinAddr, err = bg.getAddress(uint32(u.ID))
+			u.BitcoinAddr, err = bg.getAddress()
 			if err != nil {
 				log.Printf("Error in bg.getAddress: %s", err)
 			}
@@ -40,4 +40,8 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 		}
 		ctx.Data["User"] = u
 	}
+}
+
+type JsonResponse struct {
+	Success bool `json:"success"`
 }

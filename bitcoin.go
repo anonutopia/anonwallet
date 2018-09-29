@@ -1,49 +1,64 @@
 package main
 
 import (
-	"fmt"
+	"bytes"
+	"encoding/json"
 	"log"
-
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil/hdkeychain"
+	"os"
+	"os/exec"
+	"strconv"
+	"strings"
 )
 
 type BitcoinGenerator struct {
-	masterKey *hdkeychain.ExtendedKey
 }
 
-func (bg *BitcoinGenerator) getAddress(userID uint32) (string, error) {
-	acc, err := bg.masterKey.Child(hdkeychain.HardenedKeyStart + userID)
+func (bg *BitcoinGenerator) getAddress() (string, error) {
+	cmd := exec.Command("/usr/local/bin/electrum", "createnewaddress")
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
 	if err != nil {
+		log.Println("Error in BitcoinGenerator.getAddress: " + string(stderr.Bytes()))
 		return "", err
 	}
+	return strings.TrimRight(string(stdout.Bytes()), "\n"), nil
+}
 
-	accExt, err := acc.Child(0)
+func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
+	cmd := exec.Command("/usr/local/bin/electrum", "getaddressbalance", address)
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
+	var stdout, stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
 	if err != nil {
-		return "", err
+		log.Printf("Error in BitcoinGenerator.getBalance (address: %s): %s", address, string(stderr.Bytes()))
+		return 0, err
 	}
 
-	accExt0, err := accExt.Child(0)
+	br := &BalanceResponse{}
+	err = json.Unmarshal(stdout.Bytes(), br)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
-	accExt0Addr, err := accExt0.Address(&chaincfg.MainNetParams)
+	balance, err := strconv.ParseFloat(br.Confirmed, 64)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
-	return fmt.Sprintf("%s", accExt0Addr), nil
+	return balance, nil
 }
 
 func initBtcGen() *BitcoinGenerator {
-	var err error
 	bg := &BitcoinGenerator{}
-
-	bg.masterKey, err = hdkeychain.NewKeyFromString(conf.BtcMasterKey)
-	if err != nil {
-		log.Fatalf("hdkeychain.NewKeyFromString error: %s", err)
-	}
-
 	return bg
+}
+
+type BalanceResponse struct {
+	Confirmed   string `json:"confirmed"`
+	Unconfirmed string `json:"unconfirmed"`
 }

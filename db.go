@@ -9,7 +9,7 @@ import (
 )
 
 func initDb() *gorm.DB {
-	db, err := gorm.Open("postgres", fmt.Sprintf("host=localhost port=5432 user=%s dbname=%s password=%s", conf.DbUser, conf.DbName, conf.DbPass))
+	db, err := gorm.Open("postgres", fmt.Sprintf("host=localhost port=5432 user=%s dbname=%s password=%s sslmode=disable", conf.DbUser, conf.DbName, conf.DbPass))
 
 	if err != nil {
 		log.Printf("[initDb] error: %s", err)

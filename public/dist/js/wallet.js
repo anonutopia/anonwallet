@@ -14,27 +14,46 @@ function Wallet() {
         var amount = getEl('amount').value;
         var currency = getEl('paymentCurrency').selectedIndex;
         if (validatePaymentFields(addressTo, amount)) {
+            $("#modalPay").modal();
+        }
+    }
+
+    // Payment method
+    this.payConfirmed = function() {
+        $("#modalPay").modal("hide");
+        var addressTo = getEl('addressTo').value;
+        var amount = getEl('amount').value;
+        var currency = getEl('paymentCurrency').selectedIndex;
+        var feeCurrency = getEl('payFeeCurrency').selectedIndex;
+
+        if (validatePaymentFields(addressTo, amount)) {
             switch (currency) {
                 case 1:
-                    transfer(addressTo, amount, 'WAVES', '');
+                    transfer(addressTo, amount, 'WAVES', '', feeCurrency);
                     break;
                 case 2:
                     if (checkAddress(addressTo)) {
-                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forward=' + addressTo);
+                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
                     } else {
-                        transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '');
+                        transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', feeCurrency);
                     }
                     break;
                 case 3:
+                    var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
-                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forward=' + addressTo);
+                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
-                        transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '');
+                        transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
                     }
                     break;
                 default:
-                    transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '');
+                    transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '', feeCurrency);
             }
+
+            getEl('addressTo').value = '';
+            getEl('amount').value = '';
+
+            $('#payAdvanced').fadeOut();
         }
     }
 
@@ -65,6 +84,16 @@ function Wallet() {
         var selectedCurrency = getEl('currency').selectedIndex;
         var amount = getEl('amount').value;
         if (validateExchangeFields(selectedCurrency, amount)) {
+            $("#modalExchange").modal();
+        }
+    }
+
+    // Confirms exchange currencies
+    this.exchangeConfirm = function() {
+        $("#modalExchange").modal('hide');
+        var selectedCurrency = getEl('currency').selectedIndex;
+        var amount = getEl('amount').value;
+        if (validateExchangeFields(selectedCurrency, amount)) {
             $('#content').fadeOut(function() {
                 $('#transactionInProgress').fadeIn();
             });
@@ -83,11 +112,27 @@ function Wallet() {
 
     // Withdraw ANT profit
     this.withdraw = function() {
-        $('#withdrawmessage').fadeIn(function() {
-            setTimeout(() => {
-                $('#withdrawmessage').fadeOut();
-            }, 2000);
-        });
+        $("#modalWithdraw").modal();
+    }
+
+    // Withdraw confirmed
+    this.withdrawConfirm = function() {
+        $("#modalWithdraw").modal('hide');
+        var withdrawCurrency = getEl('withdrawFeeCurrency').selectedIndex;
+        if (withdrawCurrency == 0) {
+            var assetId = '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf';
+            var amount = 0.9;
+        } else if (feeCurrency == 2) {
+            var assetId = '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs';
+            var amount = 0.0000012;
+        } else if (feeCurrency == 3) {
+            var assetId = '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53';
+            var amount = 0.000024;
+        } else {
+            var assetId = 'WAVES';
+            var amount = 0.003;
+        }
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, assetId, 'withdraw', withdrawCurrency);
     }
 
     // Sign in method
@@ -208,6 +253,12 @@ function Wallet() {
 
     }
 
+    this.showSeed = function() {
+        // alert(seed.phrase);
+        getEl('seed').innerHTML = seed.phrase;
+        getEl('copySeed').disabled = false;
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -233,12 +284,17 @@ function Wallet() {
             seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
             Cookies.set('seed', restoredPhrase, { expires: 1 });
             Cookies.set('address', address, { expires: 1 });
+
+            getEl('transactionsButton').href += address;
+
             switch(window.location.pathname) {
                 case '/profit/':
                     initSuccessProfit();
                     break;
                 case '/exchange/':
                     // initSuccessProfit();
+                    break;
+                case '/settings/':
                     break;
                 default:
                     initSuccess();
@@ -590,21 +646,34 @@ function Wallet() {
     }
 
     // Transfers any token
-    function transfer(addressTo, amount, assetId, attachment) {
+    function transfer(addressTo, amount, assetId, attachment, feeCurrency) {
+        if (feeCurrency == 1) {
+            var feeAssetId = 'WAVES';
+            var feeAmount = 100000;
+        } else if (feeCurrency == 2) {
+            var feeAssetId = '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs';
+            var feeAmount = 40;
+        } else if (feeCurrency == 3) {
+            var feeAssetId = '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53';
+            var feeAmount = 800;
+        } else {
+            var feeAssetId = '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf';
+            var feeAmount = 30000000;
+        }
+
         $('#content').fadeOut(function() {
             $('#transactionInProgress').fadeIn(function() {
                 const transferData = {
                     recipient: addressTo,
                     assetId: assetId,
-                    amount: amount * 10**8,
-                    feeAssetId: '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf',
-                    fee: 30000000,
+                    amount: parseInt(amount * 10**8),
+                    feeAssetId: feeAssetId,
+                    fee: feeAmount,
                     attachment: attachment,
                     timestamp: Date.now()
                 };
 
                 Waves.API.Node.v1.assets.transfer(transferData, seed.keyPair).then((responseData) => {
-                    console.log('responseData');
                     $('#transactionInProgress').fadeOut(function() {
                         $('#transactionSuccess').fadeIn(function() {
                             setTimeout(() => {
@@ -630,22 +699,22 @@ function Wallet() {
 
     // Exchange ANO to WAV
     function anoToWav(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '');
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '', 0);
     }
 
     // Exchange WAV to ANO
     function wavToAno( amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', '');
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', '', 0);
     }
 
     // Exchange BTC to ANO
     function btcToAno(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '');
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', 0);
     }
 
     // Exchange ETH to ANO
     function ethToAno(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '');
+        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', 0);
     }
 
     // Gets referral from url
@@ -673,15 +742,19 @@ function Wallet() {
     switch (window.location.pathname) {
         case '/':
             getEl('payButton').addEventListener('click', bind(this, this.pay), false);
+            getEl('payConfirmButton').addEventListener('click', bind(this, this.payConfirmed), false);
             break;
         case '/profit/':
             getEl('withdrawButton').addEventListener('click', bind(this, this.withdraw), false);
+            getEl('withdrawConfirmButton').addEventListener('click', bind(this, this.withdrawConfirm), false);
             break;
-        case '/profile/':
-            getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+        case '/settings/':
+            // getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+            getEl('showSeed').addEventListener('click', bind(this, this.showSeed), false);
             break;
         case '/exchange/':
             getEl('exchangeButton').addEventListener('click', bind(this, this.exchange), false);
+            getEl('exchangeConfirmButton').addEventListener('click', bind(this, this.exchangeConfirm), false);
             getEl('currency').addEventListener('change', bind(this, this.updateCalculator), false);
             getEl('amount').addEventListener('keyup', bind(this, this.updateCalculator), false);
             break;
