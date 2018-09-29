@@ -115,6 +115,7 @@ function Wallet() {
     // Sign out method
     this.signOut = function() {
         Cookies.remove('seed');
+        Cookies.remove('address');
         window.location = '/sign-in/';
     }
 
