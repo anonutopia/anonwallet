@@ -8,8 +8,8 @@ import (
 
 type User struct {
 	gorm.Model
-	Nickname                string `sql:"size:255"`
-	Email                   string `sql:"size:255"`
+	Nickname                string `sql:"size:255;unique_index"`
+	Email                   string `sql:"size:255;unique_index"`
 	Address                 string `sql:"size:255;unique_index"`
 	Referral                string `sql:"size:255"`
 	BitcoinAddr             string `sql:"size:255"`

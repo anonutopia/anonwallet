@@ -345,7 +345,9 @@ $(function () {
 
   setup()
 
-  $('[data-toggle="tooltip"]').tooltip()
+  $('[data-toggle="tooltip"]').tooltip();
+
+  $('#country').CountryCity();
 })
 
 function resized() {

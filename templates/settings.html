@@ -12,7 +12,44 @@
         <section class="content" id="content">
 
             <div class="row">
-                <div class="col-md-4">
+
+                <div class="col-md-6">
+                    <!-- Default box -->
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-globe"></i>
+                            <h3 class="box-title">{{.i18n.Tr "anonutopia"}}</h3>
+                        </div>
+                        <form action="javascript:;">
+                            <div class="box-body">
+                                <div class="form-group" id="emailGroup">
+                                    <label for="email">{{.i18n.Tr "email"}}</label>
+                                    <input type="text" class="form-control input-lg" id="email" placeholder="anon@anonutopia.com" name="email">
+                                </div>
+                                <div class="form-group" id="nicknameGroup">
+                                    <label for="nickname">{{.i18n.Tr "nick"}}</label>
+                                    <input type="text" class="form-control input-lg" id="nickname" placeholder="Anonymous" name="nickname">
+                                </div>
+                                <div class="form-group" id="countryGroup">
+                                    <label for="nickname">{{.i18n.Tr "country"}}</label>
+                                    <!-- <input type="text" class="form-control input-lg" id="country" placeholder="Anonutopia"> -->
+                                    <select class="form-control input-lg" id="country" name="country"></select>
+                                </div>
+                                <div class="form-group" id="cityGroup">
+                                    <label for="nickname">{{.i18n.Tr "city"}}</label>
+                                    <select class="form-control input-lg" id="city" name="city"></select>
+                                </div>
+                                <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p>
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="{{.i18n.Tr "apply"}}" class="btn btn-lg btn-success btn-block" id="saveButton">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                </div>
+
+                <div class="col-md-6">
                     <!-- Default box -->
                     <div class="box">
                         <div class="box-header with-border">
@@ -36,44 +73,6 @@
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-4">
-                    <!-- Default box -->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-user"></i>
-                            <h3 class="box-title">{{.i18n.Tr "nick"}}</h3>
-                        </div>
-                        <form action="javascript:;">
-                            <div class="box-body">
-                                {{.i18n.Tr "development"}}
-                                <!-- <div class="form-group" id="nicknameGroup">
-                                    <label for="nickname">Nadimak</label>
-                                    <input type="text" class="form-control input-lg" id="nickname" placeholder="Anonymous">
-                                </div>
-                                <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p> -->
-                            </div>
-                            <!-- <div class="box-footer">
-                                <input type="submit" value="Zabilježi Nadimak" class="btn btn-lg btn-default" id="saveButton">
-                            </div> -->
-                        </form>
-                    </div>
-                    <!-- /.box -->
-                </div>
-
-                <div class="col-md-4">
-                    <!-- Default box -->
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <i class="fa fa-address-book"></i>
-                            <h3 class="box-title">{{.i18n.Tr "addressBook"}}</h3>
-                        </div>
-                        <div class="box-body">
-                            {{.i18n.Tr "development"}}
-                        </div>
-                        <!-- /.box-body -->
-                    </div>
-                    <!-- /.box -->
-                </div>
             </div>
 
         </section>
