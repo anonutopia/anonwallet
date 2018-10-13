@@ -37,10 +37,14 @@
                                 </div>
                                 <div class="form-group" id="cityGroup">
                                     <label for="nickname">{{.i18n.Tr "city"}}</label>
-                                    <select class="form-control input-lg" id="city" name="city"></select>
+                                    <select class="form-control input-lg" id="city" name="city">
+                                        <option>City</option>
+                                    </select>
                                 </div>
                                 <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p>
                             </div>
+                            <input type="hidden" name="countryHidden" id="countryHidden">
+                            <input type="hidden" name="cityHidden" id="cityHidden">
                             <div class="box-footer">
                                 <input type="submit" value="{{.i18n.Tr "apply"}}" class="btn btn-lg btn-success btn-block" id="saveButton">
                             </div>

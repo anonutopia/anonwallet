@@ -72,11 +72,31 @@ function Wallet() {
     // Saves user's nickname to blockchain
     this.save = function() {
         var nickname = getEl('nickname').value;
-        if (validateNicknameFields(nickname)) {
-            anonutopia.setNickname(nickname, function(error, result) {
-                console.log(error);
-            });
+        var email = getEl('email').value;
+        var country = getEl('countryHidden').value;
+        var city = getEl('cityHidden').value;
+        if (validateSettingsFields(nickname, email, country, city)) {
+            // anonutopia.setNickname(nickname, function(error, result) {
+            //     console.log(error);
+            // });
         }
+    }
+
+    // Updates hidden country and city fields
+    this.updateCountryCity = function() {
+        var country = $('#country').val();
+        var city = $('#city').val();
+
+        if (country == 'Country') {
+            country = '';
+        }
+
+        if (city == 'City') {
+            city = '';
+        }
+
+        $('#countryHidden').val(country);
+        $('#cityHidden').val(city);
     }
 
     // Exchange currencies
@@ -477,8 +497,8 @@ function Wallet() {
         return validates;
     }
 
-    // Checks and validates fields for nickname form
-    function validateNicknameFields(nickname) {
+    // Checks and validates fields for settings form
+    function validateSettingsFields(nickname, email, country, city) {
         var validates = true;
 
         if (nickname.length == 0) {
@@ -486,12 +506,30 @@ function Wallet() {
             validates = false;
         }
 
+        if (email.length == 0) {
+            $('#emailGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (country.length == 0) {
+            $('#countryGroup').addClass('has-error');
+            validates = false;
+        }
+
+        if (city.length == 0) {
+            $('#cityGroup').addClass('has-error');
+            validates = false;
+        }
+
         if (!validates) {
-            setHTML('errorMessageNickname', allLocales.jsFieldEmpty);
+            setHTML('errorMessageNickname', allLocales.allFields);
             $('#errorMessageNickname').fadeIn(function() {
                 setTimeout(() => {
                     $('#errorMessageNickname').fadeOut();
                     $('#nicknameGroup').removeClass('has-error');
+                    $('#emailGroup').removeClass('has-error');
+                    $('#countryGroup').removeClass('has-error');
+                    $('#cityGroup').removeClass('has-error');
                 }, 2000);
             });
         }
@@ -749,7 +787,9 @@ function Wallet() {
             getEl('withdrawConfirmButton').addEventListener('click', bind(this, this.withdrawConfirm), false);
             break;
         case '/settings/':
-            // getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+            getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+            getEl('country').addEventListener('change', bind(this, this.updateCountryCity), false);
+            getEl('city').addEventListener('change', bind(this, this.updateCountryCity), false);
             getEl('showSeed').addEventListener('click', bind(this, this.showSeed), false);
             break;
         case '/exchange/':

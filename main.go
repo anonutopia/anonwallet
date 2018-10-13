@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-macaron/binding"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/macaron.v1"
 )
@@ -53,6 +54,8 @@ func main() {
 	m.Get("/sign-up-new/", newPageData, signUpNewView)
 	m.Get("/sign-up-import/", newPageData, signUpImportView)
 	m.Get("/locales.json", newPageData, localesjsView)
+
+	m.Post("/apply/", binding.Bind(ApplyForm{}), newPageData, applyView)
 
 	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)

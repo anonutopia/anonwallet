@@ -43,5 +43,6 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 }
 
 type JsonResponse struct {
-	Success bool `json:"success"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
 }

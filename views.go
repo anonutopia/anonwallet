@@ -17,9 +17,9 @@ func settingsView(ctx *macaron.Context) {
 func exchangeView(ctx *macaron.Context) {
 	prices, err := pc.DoRequest()
 	if err != nil {
-		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", 0)
-		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", 0)
-		ctx.Data["PriceEth"] = fmt.Sprintf("%.8f", 0)
+		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", float64(0))
+		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", float64(0))
+		ctx.Data["PriceEth"] = fmt.Sprintf("%.8f", float64(0))
 	} else {
 		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", prices.WAVES/100)
 		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", prices.BTC/100)
@@ -51,4 +51,25 @@ func signUpImportView(ctx *macaron.Context) {
 func localesjsView(ctx *macaron.Context) {
 	loc = initLocale(ctx)
 	ctx.JSON(200, &loc)
+}
+
+func applyView(ctx *macaron.Context, af ApplyForm) {
+	success := &JsonResponse{Success: true}
+	status := 200
+	user := ctx.Data["User"].(*User)
+
+	user.Nickname = af.Nickname
+	user.Email = af.Email
+	user.Country = af.Country
+	user.City = af.City
+
+	err := db.Save(user)
+
+	if err.RowsAffected == 0 {
+		success.Success = false
+		success.Message = err.Error.Error()
+		status = 400
+	}
+
+	ctx.JSON(status, success)
 }
