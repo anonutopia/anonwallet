@@ -58,6 +58,7 @@ func main() {
 
 	m.Post("/apply/", binding.Bind(ApplyForm{}), newPageData, loginRequired, applyView)
 	m.Post("/sign-in/", binding.Bind(SignInForm{}), newPageData, signInPostView)
+	m.Post("/sign-up/", binding.Bind(SignInForm{}), newPageData, signUpPostView)
 
 	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)

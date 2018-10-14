@@ -20,6 +20,8 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 			if len(r) > 0 {
 				u.Referral = r
 			}
+			u.Nickname = a
+			u.Email = a
 			db.Create(u)
 		}
 		if u.ID != 0 && len(u.BitcoinAddr) == 0 {
@@ -27,8 +29,9 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 			u.BitcoinAddr, err = bg.getAddress()
 			if err != nil {
 				log.Printf("Error in bg.getAddress: %s", err)
+			} else {
+				db.Save(u)
 			}
-			db.Save(u)
 		}
 		if u.ID != 0 && len(u.EtherAddr) == 0 {
 			var err error

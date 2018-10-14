@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/go-macaron/session"
+	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/macaron.v1"
 )
 
@@ -37,8 +39,25 @@ func signInView(ctx *macaron.Context) {
 	ctx.HTMLSet(200, "login", "signin")
 }
 
-func signInPostView(ctx *macaron.Context, siForm SignInForm) {
-	success := &JsonResponse{Success: true}
+func signInPostView(ctx *macaron.Context, siForm SignInForm, sess session.Store) {
+	success := &JsonResponse{Success: false}
+
+	user := ctx.Data["User"].(*User)
+
+	if len(user.PasswordHash) == 0 {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
+		if err == nil {
+			user.PasswordHash = string(hashedPassword)
+			db.Save(user)
+		}
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(siForm.Password))
+	if err == nil {
+		success.Success = true
+		sess.Set("userID", user.ID)
+	}
+
 	ctx.JSON(200, success)
 }
 
@@ -57,6 +76,22 @@ func signUpNewView(ctx *macaron.Context) {
 
 func signUpImportView(ctx *macaron.Context) {
 	ctx.HTMLSet(200, "login", "signupimport")
+}
+
+func signUpPostView(ctx *macaron.Context, siForm SignInForm, sess session.Store) {
+	success := &JsonResponse{Success: true}
+
+	user := ctx.Data["User"].(*User)
+	log.Println(user)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
+	if err == nil {
+		user.PasswordHash = string(hashedPassword)
+		db.Save(user)
+	} else {
+		success.Success = false
+	}
+
+	ctx.JSON(200, success)
 }
 
 func localesjsView(ctx *macaron.Context) {

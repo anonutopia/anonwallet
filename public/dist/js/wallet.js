@@ -212,7 +212,7 @@ function Wallet() {
                         password: pass
                     },
                     success: function(data, status) {
-
+                        window.location = "/";
                     },
                     error: function(data, status, error) {
                         console.log(error);
@@ -266,7 +266,20 @@ function Wallet() {
             Cookies.set('seed', seed.phrase, { expires: 1 });
             Cookies.set('encrypted', seed.encrypt(p1), { expires: 365 });
             Cookies.set('address', seed.address, { expires: 1 });
-            window.location = "/";
+            console.log('signUpNext2');
+            $.ajax({
+                url: '/sign-up/',
+                method: 'POST',
+                data : {
+                    password: p1
+                },
+                success: function(data, status) {
+                    window.location = "/";
+                },
+                error: function(data, status, error) {
+                    console.log(error);
+                }
+            });
         }
     }
 
@@ -301,7 +314,19 @@ function Wallet() {
             Cookies.set('seed', seed.phrase, { expires: 1 });
             Cookies.set('encrypted', seed.encrypt(p1), { expires: 365 });
             Cookies.set('address', seed.address, { expires: 1 });
-            window.location = "/";
+            $.ajax({
+                url: '/sign-up/',
+                method: 'POST',
+                data : {
+                    password: p1
+                },
+                success: function(data, status) {
+                    window.location = "/";
+                },
+                error: function(data, status, error) {
+                    console.log(error);
+                }
+            });
         }
     }
 
@@ -867,7 +892,6 @@ function Wallet() {
         case '/sign-up-new/':
             getEl('signupnext').addEventListener('click', bind(this, this.signUpNext), false);
             getEl('signupnext1').addEventListener('click', bind(this, this.signUpNext1), false);
-            getEl('signupnext2').addEventListener('click', bind(this, this.signUpNext2), false);
             getEl('signupcopy').addEventListener('click', bind(this, this.signUpCopy), false);
             break;
         case '/sign-up-import/':
