@@ -7,6 +7,10 @@ type ApplyForm struct {
 	City     string `binding:"Required"`
 }
 
+type SignInForm struct {
+	Password string `binding:"Required"`
+}
+
 // func (cf ApplyForm) Error(ctx *macaron.Context, errs binding.Errors) {
 // 	ctx.Data["Errors"] = errs
 // }

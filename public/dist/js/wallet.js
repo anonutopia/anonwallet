@@ -204,7 +204,20 @@ function Wallet() {
                 Cookies.set('seed', restoredPhrase, { expires: 1 });
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
                 Cookies.set('address', seed.address, { expires: 1 });
-                window.location = '/';
+                // window.location = '/';
+                $.ajax({
+                    url: '/sign-in/',
+                    method: 'POST',
+                    data: {
+                        password: pass
+                    },
+                    success: function(data, status) {
+
+                    },
+                    error: function(data, status, error) {
+                        console.log(error);
+                    }
+                });
             } catch (e) {
                 setHTML('required', e);
                 $('#required').fadeIn(function() {
@@ -221,7 +234,7 @@ function Wallet() {
     this.signOut = function() {
         Cookies.remove('seed');
         Cookies.remove('address');
-        window.location = '/sign-in/';
+        window.location = '/sign-out/';
     }
 
     // Sign up next method

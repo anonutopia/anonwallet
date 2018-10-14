@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/go-macaron/session"
 	"gopkg.in/macaron.v1"
 )
 
@@ -34,6 +35,16 @@ func profitView(ctx *macaron.Context) {
 
 func signInView(ctx *macaron.Context) {
 	ctx.HTMLSet(200, "login", "signin")
+}
+
+func signInPostView(ctx *macaron.Context, siForm SignInForm) {
+	success := &JsonResponse{Success: true}
+	ctx.JSON(200, success)
+}
+
+func signOutView(ctx *macaron.Context, sess session.Store) {
+	sess.Delete("userID")
+	ctx.Redirect("/")
 }
 
 func signUpView(ctx *macaron.Context) {

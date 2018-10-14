@@ -45,17 +45,19 @@ func main() {
 
 	pc = initPriceClient()
 
-	m.Get("/", newPageData, homeView)
-	m.Get("/settings/", newPageData, settingsView)
-	m.Get("/exchange/", newPageData, exchangeView)
-	m.Get("/profit/", newPageData, profitView)
+	m.Get("/", newPageData, loginRequired, homeView)
+	m.Get("/settings/", newPageData, loginRequired, settingsView)
+	m.Get("/exchange/", newPageData, loginRequired, exchangeView)
+	m.Get("/profit/", newPageData, loginRequired, profitView)
 	m.Get("/sign-in/", newPageData, signInView)
+	m.Get("/sign-out/", newPageData, loginRequired, signOutView)
 	m.Get("/sign-up/", newPageData, signUpView)
 	m.Get("/sign-up-new/", newPageData, signUpNewView)
 	m.Get("/sign-up-import/", newPageData, signUpImportView)
 	m.Get("/locales.json", newPageData, localesjsView)
 
-	m.Post("/apply/", binding.Bind(ApplyForm{}), newPageData, applyView)
+	m.Post("/apply/", binding.Bind(ApplyForm{}), newPageData, loginRequired, applyView)
+	m.Post("/sign-in/", binding.Bind(SignInForm{}), newPageData, signInPostView)
 
 	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)

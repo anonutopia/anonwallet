@@ -39,10 +39,18 @@ func newPageData(ctx *macaron.Context, sess session.Store) {
 			db.Save(u)
 		}
 		ctx.Data["User"] = u
+		sess.Set("userID", u.ID)
 	}
 }
 
 type JsonResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
+}
+
+func loginRequired(ctx *macaron.Context, sess session.Store) {
+	userID := sess.Get("userID")
+	if userID == nil {
+		ctx.Redirect("/sign-in/")
+	}
 }
