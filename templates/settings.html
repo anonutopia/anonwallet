@@ -20,7 +20,7 @@
                             <i class="fa fa-globe"></i>
                             <h3 class="box-title">{{.i18n.Tr "anonutopia"}}</h3>
                         </div>
-                        <form action="javascript:;">
+                        <form action="javascript:;" id="applicationForm">
                             <div class="box-body">
                                 <div class="form-group" id="emailGroup">
                                     <label for="email">{{.i18n.Tr "email"}}</label>
@@ -49,6 +49,9 @@
                                 <input type="submit" value="{{.i18n.Tr "apply"}}" class="btn btn-lg btn-success btn-block" id="saveButton">
                             </div>
                         </form>
+                        <div class="box-body" style="display: none;" id="applicationSuccess">
+                            <p class="text-green" style="margin: 0;">{{.i18n.Tr "applicationSuccess"}}</p>
+                        </div>
                     </div>
                     <!-- /.box -->
                 </div>

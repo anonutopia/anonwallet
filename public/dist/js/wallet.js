@@ -86,10 +86,37 @@ function Wallet() {
                     city: city
                 },
                 success: function (data, status){
-                    alert(status);
+                    $('#applicationForm').fadeOut(function (){
+                        $('#applicationSuccess').fadeIn();
+                    });
                 },
                 error: function(data, status, error) {
-                    console.log(data.responseJSON.message);
+                    if (data.responseJSON.message.search('nickname') != -1) {
+                        setHTML('errorMessageNickname', allLocales.nicknameExists);
+                        $('#nicknameGroup').addClass('has-error');
+                        $('#errorMessageNickname').fadeIn(function() {
+                            setTimeout(() => {
+                                $('#errorMessageNickname').fadeOut();
+                                $('#nicknameGroup').removeClass('has-error');
+                            }, 2000);
+                        });
+                    } else if (data.responseJSON.message.search('email') != - 1) {
+                        setHTML('errorMessageNickname', allLocales.emailExists);
+                        $('#emailGroup').addClass('has-error');
+                        $('#errorMessageNickname').fadeIn(function() {
+                            setTimeout(() => {
+                                $('#errorMessageNickname').fadeOut();
+                                $('#emailGroup').removeClass('has-error');
+                            }, 2000);
+                        });
+                    } else {
+                        setHTML('errorMessageNickname', data.responseJSON.message);
+                        $('#errorMessageNickname').fadeIn(function() {
+                            setTimeout(() => {
+                                $('#errorMessageNickname').fadeOut();
+                            }, 2000);
+                        });
+                    }
                 } 
             });
         }
