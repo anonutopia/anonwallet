@@ -76,9 +76,22 @@ function Wallet() {
         var country = getEl('countryHidden').value;
         var city = getEl('cityHidden').value;
         if (validateSettingsFields(nickname, email, country, city)) {
-            // anonutopia.setNickname(nickname, function(error, result) {
-            //     console.log(error);
-            // });
+            $.ajax({
+                url: '/apply/',
+                method: 'POST',
+                data: {
+                    nickname: nickname,
+                    email: email,
+                    country: country,
+                    city: city
+                },
+                success: function (data, status){
+                    alert(status);
+                },
+                error: function(data, status, error) {
+                    console.log(data.responseJSON.message);
+                } 
+            });
         }
     }
 
@@ -315,6 +328,7 @@ function Wallet() {
                     // initSuccessProfit();
                     break;
                 case '/settings/':
+                    initSuccessSettings();
                     break;
                 default:
                     initSuccess();
@@ -417,6 +431,13 @@ function Wallet() {
         // });
 
         // timeout = setTimeout(initSuccessProfit, 1000);
+    }
+
+    // Successful init for settings page
+    function initSuccessSettings() {
+        // alert($('#countryHidden').val());
+        // $('#country').val($('#countryHidden').val());
+        // $('#city').val($('#cityHidden').val());
     }
 
     // Updates counter for loading purposes

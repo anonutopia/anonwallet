@@ -24,11 +24,11 @@
                             <div class="box-body">
                                 <div class="form-group" id="emailGroup">
                                     <label for="email">{{.i18n.Tr "email"}}</label>
-                                    <input type="text" class="form-control input-lg" id="email" placeholder="anon@anonutopia.com" name="email">
+                                    <input type="text" class="form-control input-lg" id="email" placeholder="anon@anonutopia.com" name="email" value="{{ .User.Email }}">
                                 </div>
                                 <div class="form-group" id="nicknameGroup">
                                     <label for="nickname">{{.i18n.Tr "nick"}}</label>
-                                    <input type="text" class="form-control input-lg" id="nickname" placeholder="Anonymous" name="nickname">
+                                    <input type="text" class="form-control input-lg" id="nickname" placeholder="Anonymous" name="nickname" value="{{ .User.Nickname }}">
                                 </div>
                                 <div class="form-group" id="countryGroup">
                                     <label for="nickname">{{.i18n.Tr "country"}}</label>
@@ -43,8 +43,8 @@
                                 </div>
                                 <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p>
                             </div>
-                            <input type="hidden" name="countryHidden" id="countryHidden">
-                            <input type="hidden" name="cityHidden" id="cityHidden">
+                            <input type="hidden" name="countryHidden" id="countryHidden" value="{{ .User.Country }}">
+                            <input type="hidden" name="cityHidden" id="cityHidden" value="{{ .User.City }}">
                             <div class="box-footer">
                                 <input type="submit" value="{{.i18n.Tr "apply"}}" class="btn btn-lg btn-success btn-block" id="saveButton">
                             </div>
