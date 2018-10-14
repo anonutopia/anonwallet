@@ -45,6 +45,17 @@ func main() {
 
 	pc = initPriceClient()
 
+	em := &EmailMessage{}
+	em.FromName = "Test"
+	em.FromEmail = "test@test.com"
+	em.Subject = "Test Mail"
+	em.ToEmail = "cryptopragmatic@protonmail.com"
+	em.ToName = "Pragmatic"
+	em.BodyText = "Test Email Body"
+	em.BodyHTML = "Test <strong>Email</strong> Body"
+	err := sendEmail(em)
+	log.Println(err)
+
 	m.Get("/", newPageData, loginRequired, homeView)
 	m.Get("/settings/", newPageData, loginRequired, settingsView)
 	m.Get("/exchange/", newPageData, loginRequired, exchangeView)

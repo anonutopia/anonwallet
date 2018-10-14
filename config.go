@@ -16,6 +16,7 @@ type config struct {
 	DbName            string `json:"db_name"`
 	DbUser            string `json:"db_user"`
 	DbPass            string `json:"db_pass"`
+	SendgridKey       string `json:"sendgrid_key"`
 }
 
 func (sc *config) Load(configFile string) error {
