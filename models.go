@@ -34,6 +34,7 @@ type User struct {
 	ReferralProfitWavTotal  uint64
 	ReferralProfitBtcTotal  uint64
 	ReceivedFreeAnote       bool `sql:"DEFAULT:false"`
+	EmailVerified           bool `sql:"DEFAULT:false"`
 	TelegramId              int  `sql:"DEFAULT:0"`
 }
 

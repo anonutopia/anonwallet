@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	// "log"
 
 	"bytes"
 	"html/template"
-	"log"
 
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
@@ -46,14 +46,20 @@ func sendWelcomeEmail(to *User) error {
 	var err error
 	t, err = t.ParseFiles("emails/welcome.html")
 	if err != nil {
-		log.Println("fdsafad")
 		return err
 	}
+
+	uid, err := encrypt([]byte(conf.DbPass[:16]), to.Address)
+	if err != nil {
+		return err
+	}
+
+	verLink := fmt.Sprintf("https://wallet.anonutopia.com/verify/%s/", uid)
 
 	data := struct {
 		VerificationLink string
 	}{
-		VerificationLink: "https://www.google.com",
+		VerificationLink: verLink,
 	}
 
 	var tpl bytes.Buffer

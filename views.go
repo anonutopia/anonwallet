@@ -115,7 +115,25 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 		success.Success = false
 		success.Message = err.Error.Error()
 		status = 400
+	} else {
+		sendWelcomeEmail(user)
 	}
 
 	ctx.JSON(status, success)
+}
+
+func verifyView(ctx *macaron.Context, f *session.Flash) {
+	uid, err := decrypt([]byte(conf.DbPass[:16]), ctx.Params("uid"))
+	if err != nil {
+		return
+	}
+	log.Println(uid)
+	u := &User{Address: uid}
+	db.First(u, u)
+	u.EmailVerified = true
+	db.Save(u)
+
+	f.Success("You have successfully verified your email address.")
+
+	ctx.Redirect("/settings/")
 }

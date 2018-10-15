@@ -11,6 +11,13 @@
         <!-- Main content -->
         <section class="content" id="content">
 
+{{ if .Flash.SuccessMsg }}
+            <div class="callout callout-success">
+                <h4>{{.i18n.Tr "success"}}</h4>
+                <p>{{ .Flash.SuccessMsg }}</p>
+            </div>
+{{ end }}
+
             <div class="row">
 
                 <div class="col-md-6">
