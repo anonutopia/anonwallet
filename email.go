@@ -3,6 +3,10 @@ package main
 import (
 	// "log"
 
+	"bytes"
+	"html/template"
+	"log"
+
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -24,6 +28,42 @@ func sendEmail(em *EmailMessage) error {
 
 	client := sendgrid.NewSendClient(conf.SendgridKey)
 	_, err := client.Send(message)
+
+	return err
+}
+
+func sendWelcomeEmail(to *User) error {
+	em := &EmailMessage{}
+	em.Subject = "Welcome to Anonutopia"
+	em.FromName = "Anonutopia"
+	em.FromEmail = "no-reply@anonutopia.com"
+	em.BodyText = "Welcome to Anonutopia!"
+	em.BodyHTML = "Welcome to Anonutopia!"
+	em.ToEmail = to.Email
+	em.ToName = to.Nickname
+
+	t := template.New("welcome.html")
+	var err error
+	t, err = t.ParseFiles("emails/welcome.html")
+	if err != nil {
+		log.Println("fdsafad")
+		return err
+	}
+
+	data := struct {
+		VerificationLink string
+	}{
+		VerificationLink: "https://www.google.com",
+	}
+
+	var tpl bytes.Buffer
+	if err := t.Execute(&tpl, data); err != nil {
+		return err
+	}
+
+	em.BodyHTML = tpl.String()
+
+	err = sendEmail(em)
 
 	return err
 }
