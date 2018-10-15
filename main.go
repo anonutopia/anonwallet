@@ -45,10 +45,6 @@ func main() {
 
 	pc = initPriceClient()
 
-	to := &User{Nickname: "Pragmatic", Email: "cryptopragmatic@protonmail.com"}
-	err := sendWelcomeEmail(to)
-	log.Println(err)
-
 	m.Get("/", newPageData, loginRequired, homeView)
 	m.Get("/settings/", newPageData, loginRequired, settingsView)
 	m.Get("/exchange/", newPageData, loginRequired, exchangeView)
