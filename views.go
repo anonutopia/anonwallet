@@ -122,16 +122,21 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 	ctx.JSON(status, success)
 }
 
-func verifyView(ctx *macaron.Context, f *session.Flash) {
+func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	uid, err := decrypt([]byte(conf.DbPass[:16]), ctx.Params("uid"))
 	if err != nil {
 		return
 	}
+
 	log.Println(uid)
 	u := &User{Address: uid}
 	db.First(u, u)
 	u.EmailVerified = true
 	db.Save(u)
+
+	applicant := &Badge{Name: "applicant"}
+	db.First(applicant)
+	db.Model(u).Association("Badges").Append(applicant)
 
 	f.Success("You have successfully verified your email address.")
 

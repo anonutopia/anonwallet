@@ -19,6 +19,9 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	a := ctx.GetCookie("address")
 	r := ctx.GetCookie("referral")
 
+	// var user User
+	// // db.Model(&user).Association("Badges")
+
 	if len(a) > 0 {
 		u := &User{Address: a}
 		db.First(u, u)
@@ -47,6 +50,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 			}
 			db.Save(u)
 		}
+		db.Model(u).Association("Badges").Find(&u.Badges)
 		ctx.Data["User"] = u
 		sess.Set("userID", u.ID)
 	}

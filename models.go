@@ -63,7 +63,14 @@ func (u *User) ReferralProfitEthString() string {
 	return fmt.Sprintf("%.8f", float64(u.ReferralProfitEth)/float64(100000000))
 }
 
+func (u *User) HasBadges() bool {
+	var badges []*Badge
+	db.Model(u).Association("Badges").Find(&badges)
+	return len(badges) > 0
+}
+
 type Badge struct {
 	gorm.Model
-	Name string `sql:"size:255;unique_index"`
+	Name  string `sql:"size:255;unique_index"`
+	AUBIX uint16
 }

@@ -27,6 +27,16 @@
                             <i class="fa fa-globe"></i>
                             <h3 class="box-title">{{.i18n.Tr "anonutopia"}}</h3>
                         </div>
+{{ if .User.HasBadges }}
+                        <div class="box-body">
+                            <p><strong>Anonutopia Badges</strong></p>
+                            <p>
+{{ range .User.Badges }}
+                                <small class="label bg-green" style="text-transform: capitalize;">{{ .Name }}</small>
+{{ end }}
+                            </p>
+                        </div>
+{{ else }}
                         <form action="javascript:;" id="applicationForm">
                             <div class="box-body">
                                 <div class="form-group" id="emailGroup">
@@ -59,6 +69,7 @@
                         <div class="box-body" style="display: none;" id="applicationSuccess">
                             <p class="text-green" style="margin: 0;">{{.i18n.Tr "applicationSuccess"}}</p>
                         </div>
+{{ end }}
                     </div>
                     <!-- /.box -->
                 </div>
