@@ -7,16 +7,15 @@ import (
 )
 
 type config struct {
-	EthNetwork        uint   `json:"eth_network"`
-	AnoteAddress      string `json:"anote_address"`
-	AnonutopiaAddress string `json:"anonutopia_address"`
-	Port              uint   `json:"port"`
-	Debug             bool   `json:"debug"`
-	BtcMasterKey      string `json:"btc_master_key"`
-	DbName            string `json:"db_name"`
-	DbUser            string `json:"db_user"`
-	DbPass            string `json:"db_pass"`
-	SendgridKey       string `json:"sendgrid_key"`
+	EthNetwork   uint   `json:"eth_network"`
+	NodeAddress  string `json:"node_address"`
+	Port         uint   `json:"port"`
+	Debug        bool   `json:"debug"`
+	BtcMasterKey string `json:"btc_master_key"`
+	DbName       string `json:"db_name"`
+	DbUser       string `json:"db_user"`
+	DbPass       string `json:"db_pass"`
+	SendgridKey  string `json:"sendgrid_key"`
 }
 
 func (sc *config) Load(configFile string) error {

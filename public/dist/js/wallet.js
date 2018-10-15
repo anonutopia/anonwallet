@@ -33,7 +33,7 @@ function Wallet() {
                     break;
                 case 2:
                     if (checkAddress(addressTo)) {
-                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
+                        transfer(nodeAddress, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', feeCurrency);
                     }
@@ -41,7 +41,7 @@ function Wallet() {
                 case 3:
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
-                        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
+                        transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
                     }
@@ -192,7 +192,7 @@ function Wallet() {
             var assetId = 'WAVES';
             var amount = 0.003;
         }
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, assetId, 'withdraw', withdrawCurrency);
+        transfer(nodeAddress, amount, assetId, 'withdraw', withdrawCurrency);
     }
 
     // Sign in method
@@ -823,22 +823,22 @@ function Wallet() {
 
     // Exchange ANO to WAV
     function anoToWav(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '', 0);
+        transfer(nodeAddress, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '', 0);
     }
 
     // Exchange WAV to ANO
     function wavToAno( amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, 'WAVES', '', 0);
+        transfer(nodeAddress, amount, 'WAVES', '', 0);
     }
 
     // Exchange BTC to ANO
     function btcToAno(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', 0);
+        transfer(nodeAddress, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', 0);
     }
 
     // Exchange ETH to ANO
     function ethToAno(amount) {
-        transfer('3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2', amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', 0);
+        transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', 0);
     }
 
     // Gets referral from url

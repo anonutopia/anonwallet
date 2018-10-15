@@ -60,7 +60,7 @@
                                 <p class="text-green" id="copymessageaddress" style="display: none;">{{.i18n.Tr "addressCopied"}}</p>
                                 <p>
                                     <div class="input-group">
-                                            <input type="text" class="form-control input-lg" id="address" value="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2" readonly>
+                                            <input type="text" class="form-control input-lg" id="address" value="{{ .NodeAddress }}" readonly>
                                             <div class="input-group-addon"><a href="javascript:;" onclick="wallet.copy('address');"><i class="fa fa-copy fa-lg"></i></a></div>
                                     </div>
                                 </p>
@@ -181,7 +181,7 @@
                                         </div>
                                         <div class="form-group" id="addressToGroup">
                                             <label for="addressTo">{{.i18n.Tr "addressTo"}}</label>
-                                            <input type="text" class="form-control input-lg" id="addressTo" placeholder="3PDb1ULFjazuzPeWkF2vqd1nomKh4ctq9y2">
+                                            <input type="text" class="form-control input-lg" id="addressTo" placeholder="{{ .NodeAddress }}">
                                         </div>
                                         <div class="form-group" id="amountGroup">
                                             <label for="amount">{{.i18n.Tr "amount"}}</label>

@@ -19,8 +19,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	a := ctx.GetCookie("address")
 	r := ctx.GetCookie("referral")
 
-	// var user User
-	// // db.Model(&user).Association("Badges")
+	ctx.Data["NodeAddress"] = conf.NodeAddress
 
 	if len(a) > 0 {
 		u := &User{Address: a}
