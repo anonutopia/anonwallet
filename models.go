@@ -33,9 +33,10 @@ type User struct {
 	ReferralProfitEthTotal  uint64
 	ReferralProfitWavTotal  uint64
 	ReferralProfitBtcTotal  uint64
-	ReceivedFreeAnote       bool `sql:"DEFAULT:false"`
-	EmailVerified           bool `sql:"DEFAULT:false"`
-	TelegramId              int  `sql:"DEFAULT:0"`
+	ReceivedFreeAnote       bool    `sql:"DEFAULT:false"`
+	EmailVerified           bool    `sql:"DEFAULT:false"`
+	TelegramId              int     `sql:"DEFAULT:0"`
+	Badges                  []Badge `gorm:"many2many:user_badges;"`
 }
 
 func (u *User) ProfitWavString() string {
@@ -60,4 +61,9 @@ func (u *User) ReferralProfitBtcString() string {
 
 func (u *User) ReferralProfitEthString() string {
 	return fmt.Sprintf("%.8f", float64(u.ReferralProfitEth)/float64(100000000))
+}
+
+type Badge struct {
+	gorm.Model
+	Name string `sql:"size:255;unique_index"`
 }
