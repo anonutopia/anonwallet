@@ -6,6 +6,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+type Transaction struct {
+	gorm.Model
+	TxId      string `sql:"size:255"`
+	Processed bool   `sql:"DEFAULT:false"`
+}
+
 type User struct {
 	gorm.Model
 	Nickname                string `sql:"size:255;unique_index"`
