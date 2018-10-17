@@ -14,8 +14,8 @@ type Transaction struct {
 
 type User struct {
 	gorm.Model
-	Nickname                string `sql:"size:255;unique_index"`
-	Email                   string `sql:"size:255;unique_index"`
+	Nickname                string `sql:"size:255"`
+	Email                   string `sql:"size:255"`
 	Country                 string `sql:"size:255"`
 	City                    string `sql:"size:255"`
 	Address                 string `sql:"size:255;unique_index"`
