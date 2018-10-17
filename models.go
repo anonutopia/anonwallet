@@ -80,3 +80,9 @@ type Badge struct {
 	Name  string `sql:"size:255;unique_index"`
 	AUBIX uint16
 }
+
+type KeyValue struct {
+	gorm.Model
+	Key   string `sql:"size:255;unique_index"`
+	Value uint64 `sql:"type:bigint"`
+}
