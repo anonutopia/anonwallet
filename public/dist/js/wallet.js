@@ -22,7 +22,7 @@ function Wallet() {
     this.payConfirmed = function() {
         $("#modalPay").modal("hide");
         var addressTo = getEl('addressTo').value;
-        var amount = parseFloat(getEl('amount').value);
+        var amount = new Decimal(getEl('amount').value);
         var currency = getEl('paymentCurrency').selectedIndex;
         var feeCurrency = getEl('payFeeCurrency').selectedIndex;
 
@@ -42,7 +42,8 @@ function Wallet() {
                 case 3:
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
-                        amount += 0.001;
+                        var fee = new Decimal(0.001);
+                        amount += fee;
                         console.log(amount);
                         transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
