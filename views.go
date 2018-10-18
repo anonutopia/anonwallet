@@ -151,7 +151,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 
 	if balance >= (1 * satInBtc) {
 		applicant := &Badge{Name: "applicant"}
-		db.First(applicant)
+		db.First(applicant, applicant)
 		db.Model(u).Association("Badges").Append(applicant)
 
 		f.Success("You have successfully applied for Anonutopia citizenship.")
@@ -159,19 +159,19 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 
 	if balance >= (1000 * satInBtc) {
 		citizen := &Badge{Name: "citizen"}
-		db.First(citizen)
+		db.First(citizen, citizen)
 		db.Model(u).Association("Badges").Append(citizen)
 	}
 
 	if balance >= (10000 * satInBtc) {
 		founder := &Badge{Name: "funder"}
-		db.First(founder)
+		db.First(founder, founder)
 		db.Model(u).Association("Badges").Append(founder)
 	}
 
 	if balance >= (100000 * satInBtc) {
 		pioneer := &Badge{Name: "pioneer"}
-		db.First(pioneer)
+		db.First(pioneer, pioneer)
 		db.Model(u).Association("Badges").Append(pioneer)
 	}
 
