@@ -116,7 +116,10 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 		success.Message = err.Error.Error()
 		status = 400
 	} else {
-		sendWelcomeEmail(user)
+		err := sendWelcomeEmail(user)
+		if err != nil {
+			log.Printf("error sending email: %s", err)
+		}
 	}
 
 	ctx.JSON(status, success)
