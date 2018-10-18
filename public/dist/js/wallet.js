@@ -22,7 +22,7 @@ function Wallet() {
     this.payConfirmed = function() {
         $("#modalPay").modal("hide");
         var addressTo = getEl('addressTo').value;
-        var amount = getEl('amount').value;
+        var amount = parseFloat(getEl('amount').value);
         var currency = getEl('paymentCurrency').selectedIndex;
         var feeCurrency = getEl('payFeeCurrency').selectedIndex;
 
