@@ -33,8 +33,8 @@ function Wallet() {
                     break;
                 case 2:
                     if (checkAddress(addressTo)) {
-                        amount += 0.0005;
-                        transfer(nodeAddress, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
+                        var fee = new Decimal(0.0005);
+                        transfer(nodeAddress, amount.add(fee).toNumber(), '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', feeCurrency);
                     }
@@ -43,9 +43,7 @@ function Wallet() {
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
                         var fee = new Decimal(0.001);
-                        amount += fee;
-                        console.log(amount);
-                        transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
+                        transfer(nodeAddress, amount.add(fee).toNumber(), '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
                     }
