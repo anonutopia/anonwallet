@@ -828,17 +828,20 @@ function Wallet() {
 
     // Exchange WAV to ANO
     function wavToAno( amount) {
-        transfer(nodeAddress, amount, 'WAVES', '', 0);
+        var feeCurrency = getEl('exchangeFeeCurrency').selectedIndex;
+        transfer(nodeAddress, amount, 'WAVES', '', feeCurrency);
     }
 
     // Exchange BTC to ANO
     function btcToAno(amount) {
-        transfer(nodeAddress, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', 0);
+        var feeCurrency = getEl('exchangeFeeCurrency').selectedIndex;
+        transfer(nodeAddress, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', feeCurrency);
     }
 
     // Exchange ETH to ANO
     function ethToAno(amount) {
-        transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', 0);
+        var feeCurrency = getEl('exchangeFeeCurrency').selectedIndex;
+        transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
     }
 
     // Gets referral from url
