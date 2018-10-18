@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/anonutopia/gowaves"
 	"github.com/go-macaron/binding"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/macaron.v1"
@@ -28,6 +29,8 @@ var loc map[string]string
 
 var pc *PriceClient
 
+var wnc *gowaves.WavesNodeClient
+
 func main() {
 	m = initMacaron()
 
@@ -44,6 +47,8 @@ func main() {
 	eam = initEaMonitor()
 
 	pc = initPriceClient()
+
+	wnc = initWaves()
 
 	m.Get("/", newPageData, loginRequired, homeView)
 	m.Get("/settings/", newPageData, loginRequired, settingsView)

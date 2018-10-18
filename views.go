@@ -137,11 +137,41 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	u.EmailVerified = true
 	db.Save(u)
 
-	applicant := &Badge{Name: "applicant"}
-	db.First(applicant)
-	db.Model(u).Association("Badges").Append(applicant)
+	var balance uint64
+	abr, err := wnc.AssetsBalance(u.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
+	if err != nil {
+		balance = 0
+	} else {
+		balance = uint64(abr.Balance)
+	}
 
 	f.Success("You have successfully verified your email address.")
+
+	if balance >= (1 * satInBtc) {
+		applicant := &Badge{Name: "applicant"}
+		db.First(applicant)
+		db.Model(u).Association("Badges").Append(applicant)
+
+		f.Success("You have successfully applied for Anonutopia citizenship.")
+	}
+
+	if balance >= (1000 * satInBtc) {
+		citizen := &Badge{Name: "citizen"}
+		db.First(citizen)
+		db.Model(u).Association("Badges").Append(citizen)
+	}
+
+	if balance >= (10000 * satInBtc) {
+		founder := &Badge{Name: "founder"}
+		db.First(founder)
+		db.Model(u).Association("Badges").Append(founder)
+	}
+
+	if balance >= (100000 * satInBtc) {
+		pioneer := &Badge{Name: "pioneer"}
+		db.First(pioneer)
+		db.Model(u).Association("Badges").Append(pioneer)
+	}
 
 	ctx.Redirect("/settings/")
 }

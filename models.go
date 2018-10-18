@@ -6,6 +6,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+const satInBtc = uint64(100000000)
+
 type Transaction struct {
 	gorm.Model
 	TxId      string `sql:"size:255"`
