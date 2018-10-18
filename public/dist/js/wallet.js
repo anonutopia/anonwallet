@@ -43,6 +43,7 @@ function Wallet() {
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
                         amount += 0.001;
+                        console.log(amount);
                         transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
