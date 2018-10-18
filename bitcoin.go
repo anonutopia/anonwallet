@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -13,11 +15,14 @@ type BitcoinGenerator struct {
 }
 
 func (bg *BitcoinGenerator) getAddress() (string, error) {
-	cmd := exec.Command("/usr/local/bin/electrum", "createnewaddress")
+	cmdStr := fmt.Sprintf("/usr/local/bin/electrum createnewaddress")
+	cmd := exec.Command("bash", "-c", cmdStr)
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	err := cmd.Run()
+
 	if err != nil {
 		log.Println("Error in BitcoinGenerator.getAddress: " + string(stderr.Bytes()))
 		return "", err
@@ -26,11 +31,14 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 }
 
 func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
-	cmd := exec.Command("/usr/local/bin/electrum", "getaddressbalance", address)
+	cmdStr := fmt.Sprintf("/usr/local/bin/electrum getaddressbalance %s", address)
+	cmd := exec.Command("bash", "-c", cmdStr)
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	err := cmd.Run()
+
 	if err != nil {
 		log.Printf("Error in BitcoinGenerator.getBalance (address: %s): %s", address, string(stderr.Bytes()))
 		return 0, err
