@@ -33,6 +33,7 @@ function Wallet() {
                     break;
                 case 2:
                     if (checkAddress(addressTo)) {
+                        amount += 0.0005;
                         transfer(nodeAddress, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', 'forwardbtc=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs', '', feeCurrency);
@@ -41,6 +42,7 @@ function Wallet() {
                 case 3:
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
+                        amount += 0.001;
                         transfer(nodeAddress, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', 'forwardeth=' + addressTo, feeCurrency);
                     } else {
                         transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
@@ -777,11 +779,9 @@ function Wallet() {
         } else if (feeCurrency == 2) {
             var feeAssetId = '7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs';
             var feeAmount = 40;
-            amount += 0.0005
         } else if (feeCurrency == 3) {
             var feeAssetId = '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53';
             var feeAmount = 800;
-            amount += 0.001
         } else {
             var feeAssetId = '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf';
             var feeAmount = 30000000;
