@@ -145,6 +145,8 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 		balance = uint64(abr.Balance)
 	}
 
+	log.Printf("balance: %d", balance)
+
 	f.Success("You have successfully verified your email address.")
 
 	if balance >= (1 * satInBtc) {
