@@ -30,7 +30,7 @@ func (b *BitcoinAddressMonitor) checkAddresses() {
 	for _, u := range users {
 		balance := b.checkAddressesRequest(u.BitcoinAddr)
 		if balance > 0 {
-			u.BitcoinBalanceNew = amountNew
+			u.BitcoinBalanceNew = balance
 
 			ua := &UsedAddress{Address: u.BitcoinAddr, Type: 1, UserID: int(u.ID), Balance: uint64(balance)}
 			db.Create(ua)
