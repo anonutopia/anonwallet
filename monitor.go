@@ -29,9 +29,18 @@ func (b *BitcoinAddressMonitor) checkAddresses() {
 
 	for _, u := range users {
 		balance := b.checkAddressesRequest(u.BitcoinAddr)
-		amountNew := balance - u.BitcoinBalanceProcessed
-		if amountNew > 1000 {
+		if balance > 0 {
 			u.BitcoinBalanceNew = amountNew
+
+			ua := &UsedAddress{Address: u.BitcoinAddr, Type: 1, UserID: int(u.ID), Balance: uint64(balance)}
+			db.Create(ua)
+
+			var err error
+			u.BitcoinAddr, err = bg.getAddress()
+			if err != nil {
+				log.Printf("Error in bg.getAddress: %s", err)
+			}
+
 			db.Save(u)
 		}
 	}
