@@ -76,9 +76,8 @@ func (e *EthereumAddressMonitor) checkAddresses() {
 
 	for _, u := range users {
 		balance := e.checkAddressesRequest(u.EtherAddr)
-		amountNew := balance - u.EtherBalanceProcessed
-		if amountNew > 100000 {
-			u.EtherBalanceNew = amountNew
+		if balance > 0 {
+			u.EtherBalanceNew = balance
 			db.Save(u)
 		}
 	}
