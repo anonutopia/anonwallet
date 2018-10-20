@@ -79,7 +79,7 @@ func (e *EthereumAddressMonitor) checkAddresses() {
 		if balance > 0 {
 			u.EtherBalanceNew = balance
 
-			ua := &UsedAddress{Address: u.EtherAddr, Type: 2, UserID: int(u.ID)}
+			ua := &UsedAddress{Address: u.EtherAddr, Type: 2, UserID: int(u.ID), Balance: uint64(balance)}
 			db.Create(ua)
 
 			var err error

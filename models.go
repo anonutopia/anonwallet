@@ -95,4 +95,5 @@ type UsedAddress struct {
 	Type    uint8
 	UserID  int
 	User    User
+	Balance uint64 `sql:"type:bigint"`
 }
