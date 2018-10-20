@@ -78,6 +78,16 @@ func (e *EthereumAddressMonitor) checkAddresses() {
 		balance := e.checkAddressesRequest(u.EtherAddr)
 		if balance > 0 {
 			u.EtherBalanceNew = balance
+
+			ua := &UsedAddress{Address: u.EtherAddr, Type: "eth", UserID: u.ID}
+			db.Create(ua)
+
+			var err error
+			u.EtherAddr, err = eg.getAddress(uint32(u.ID))
+			if err != nil {
+				log.Printf("Error in eg.getAddress: %s", err)
+			}
+
 			db.Save(u)
 		}
 	}

@@ -21,7 +21,7 @@ func initDb() *gorm.DB {
 	db.DB().SetMaxOpenConns(100)
 	db.LogMode(conf.Debug)
 
-	db.AutoMigrate(&User{}, &Transaction{}, &KeyValue{}, &Badge{})
+	db.AutoMigrate(&User{}, &Transaction{}, &KeyValue{}, &Badge{}, &UsedAddress{})
 
 	return db
 }
