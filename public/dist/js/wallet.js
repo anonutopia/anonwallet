@@ -370,9 +370,26 @@ function Wallet() {
                 var price = priceWav;
         }
 
-        var amountAno = (amount / price).toFixed(2);
-        var amountEur = (amountAno * 14).toFixed(2);
-        setHTML('amountAno', amountAno);
+        var totalAmountAno = 0;
+        var priceFactor = price * (anotePriceFactor / anotePrice);
+
+        while (amount > 0) {
+            var amountAno = amount / price;
+            console.log(amountAno);
+            if (amountAno > (anoteTierPrice / 100000000)) {
+                amountAno = anoteTierPrice / 100000000;
+            }
+
+            amount -= amountAno * price;
+
+            totalAmountAno += amountAno;
+            price += priceFactor;
+        }
+
+        // var amountAno = (amount / price).toFixed(2);
+        totalAmountAno = totalAmountAno.toFixed(2)
+        var amountEur = (totalAmountAno * 14).toFixed(2);
+        setHTML('amountAno', totalAmountAno);
         setHTML('amountEur', amountEur);
 
     }

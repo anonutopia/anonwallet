@@ -53,6 +53,8 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 		ctx.Data["User"] = u
 		sess.Set("userID", u.ID)
 	}
+
+	ctx.Data["Anote"] = anote
 }
 
 type JsonResponse struct {

@@ -35,6 +35,10 @@
         nodeAddress = '{{ .NodeAddress }}';
         logoSrc = '{{.i18n.Tr "logo"}}';
         logoSrcAlt = '{{.i18n.Tr "logo-alt"}}';
+        anotePrice = {{ .Anote.Price }};
+        anotePriceFactor = {{ .Anote.PriceFactor }};
+        anoteTierPrice = {{ .Anote.TierPrice }};
+        anoteTierPriceFactor = {{ .Anote.TierPriceFactor }};
 
     </script>
 </head>
@@ -160,7 +164,7 @@
 <!-- CountryCity -->
 <script src="/dist/js/jquery-country-city/jquery.countrycity.js"></script>
 <!-- Wallet -->
-<script src="/dist/js/wallet.js?v=1.0.49"></script>
+<script src="/dist/js/wallet.js?v=1.0.50"></script>
 <script>
     $(document).ready(function () {
         $('.sidebar-menu').tree();

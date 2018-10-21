@@ -31,6 +31,8 @@ var pc *PriceClient
 
 var wnc *gowaves.WavesNodeClient
 
+var anote *Anote
+
 func main() {
 	m = initMacaron()
 
@@ -49,6 +51,8 @@ func main() {
 	pc = initPriceClient()
 
 	wnc = initWaves()
+
+	anote = initAnote()
 
 	m.Get("/", newPageData, loginRequired, homeView)
 	m.Get("/settings/", newPageData, loginRequired, settingsView)
