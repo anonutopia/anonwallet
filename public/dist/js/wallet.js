@@ -14,6 +14,28 @@ function Wallet() {
         var amount = getEl('amount').value;
         var currency = getEl('paymentCurrency').selectedIndex;
         if (validatePaymentFields(addressTo, amount)) {
+            switch (currency) {
+                case 2:
+                    if (checkAddress(addressTo)) {
+                        $('#outPayMsgBtc').show();
+                    } else {
+                        $('#outPayMsgBtc').hide();
+                        $('#outPayMsgEth').hide();
+                    }
+                    break;
+                case 3:
+                    var web3 = new Web3(Web3.currentProvider);
+                    if (web3.isAddress(addressTo)) {
+                        $('#outPayMsgEth').show();
+                    } else {
+                        $('#outPayMsgEth').hide();
+                        $('#outPayMsgBtc').hide();
+                    }
+                    break;
+                default:
+                    $('#outPayMsgEth').hide();
+                    $('#outPayMsgBtc').hide();
+            }
             $("#modalPay").modal();
         }
     }
