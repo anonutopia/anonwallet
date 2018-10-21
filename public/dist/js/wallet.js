@@ -18,6 +18,7 @@ function Wallet() {
                 case 2:
                     if (checkAddress(addressTo)) {
                         $('#outPayMsgBtc').show();
+                        $('#outPayMsgEth').hide();
                     } else {
                         $('#outPayMsgBtc').hide();
                         $('#outPayMsgEth').hide();
@@ -27,6 +28,7 @@ function Wallet() {
                     var web3 = new Web3(Web3.currentProvider);
                     if (web3.isAddress(addressTo)) {
                         $('#outPayMsgEth').show();
+                        $('#outPayMsgBtc').hide();
                     } else {
                         $('#outPayMsgEth').hide();
                         $('#outPayMsgBtc').hide();
