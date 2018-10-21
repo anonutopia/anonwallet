@@ -388,7 +388,7 @@ function Wallet() {
 
         // var amountAno = (amount / price).toFixed(2);
         totalAmountAno = totalAmountAno.toFixed(2)
-        var amountEur = (totalAmountAno * 14).toFixed(2);
+        var amountEur = (totalAmountAno * 17).toFixed(2);
         setHTML('amountAno', totalAmountAno);
         setHTML('amountEur', amountEur);
 
