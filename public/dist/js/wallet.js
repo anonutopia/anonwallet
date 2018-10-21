@@ -226,8 +226,8 @@ function Wallet() {
         var pass = getEl('password').value;
         if (validatePasswordField(pass)) {
             try {
-                var restoredPhrase = Waves.Seed.decryptSeedPhrase(Cookies.get('encrypted'), pass);
-                Cookies.set('seed', restoredPhrase, { expires: 1 });
+                var restoredPhrase = Waves.Seed.decryptSeedPhrase(window.localStorage.getItem('encrypted'), pass);
+                window.sessionStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
                 Cookies.set('address', seed.address, { expires: 1 });
                 // window.location = '/';
@@ -258,7 +258,7 @@ function Wallet() {
 
     // Sign out method
     this.signOut = function() {
-        Cookies.remove('seed');
+        window.sessionStorage.clear();
         Cookies.remove('address');
         window.location = '/sign-out/';
     }
@@ -289,8 +289,8 @@ function Wallet() {
         var p1 = getEl('password1').value;
         var p2 = getEl('password2').value;
         if (validateSUPasswords(p1, p2)) {
-            Cookies.set('seed', seed.phrase, { expires: 1 });
-            Cookies.set('encrypted', seed.encrypt(p1), { expires: 365 });
+            window.sessionStorage.setItem('seed', seed.phrase);
+            window.localStorage.setItem('encrypted', seed.encrypt(p1));
             Cookies.set('address', seed.address, { expires: 1 });
             console.log('signUpNext2');
             $.ajax({
@@ -337,8 +337,8 @@ function Wallet() {
         var p1 = getEl('password1').value;
         var p2 = getEl('password2').value;
         if (validateSUPasswords(p1, p2)) {
-            Cookies.set('seed', seed.phrase, { expires: 1 });
-            Cookies.set('encrypted', seed.encrypt(p1), { expires: 365 });
+            window.sessionStorage.setItem('seed', seed.phrase);
+            window.localStorage.setItem('encrypted', seed.encrypt(p1));
             Cookies.set('address', seed.address, { expires: 1 });
             $.ajax({
                 url: '/sign-up/',
@@ -400,13 +400,13 @@ function Wallet() {
         }
 
         Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
-        var restoredPhrase = Cookies.get('seed');
+        var restoredPhrase = window.sessionStorage.getItem('seed');
         var address = Cookies.get('address');
-        var encrypted = Cookies.get('encrypted');
+        var encrypted = window.localStorage.getItem('encrypted');
 
         if (restoredPhrase) {
             seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-            Cookies.set('seed', restoredPhrase, { expires: 1 });
+            window.sessionStorage.setItem('seed', restoredPhrase);
             Cookies.set('address', address, { expires: 1 });
 
             getEl('transactionsButton').href += address;
