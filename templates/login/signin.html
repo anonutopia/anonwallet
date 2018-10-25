@@ -6,7 +6,7 @@
     <div class="login-box-body">
         <p class="login-box-msg"><strong>{{.i18n.Tr "signInTitle"}}</strong></p>
 
-        <form action="javascript:;" method="post">
+        <form action="javascript:;" method="post" id="signInForm">
             <div class="form-group has-feedback" id="passwordGroup">
                 <input type="password" class="form-control input-lg" placeholder="Password" id="password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -28,7 +28,9 @@
             </div>
         </form>
 
-        <!-- <a href="/restore/">Vrati postojeći pomoću seeda</a> -->
+        <div id="newGroupAjax" style="display: none;">
+            <p class="text-center"><img src="/dist/img/ajax-loader.gif" alt="Ajax Loader"></p>
+        </div>
 
     </div>
     <!-- /.login-box-body -->

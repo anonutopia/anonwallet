@@ -230,7 +230,9 @@ function Wallet() {
                 window.sessionStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
                 Cookies.set('address', seed.address, { expires: 1 });
-                // window.location = '/';
+                $('#signInForm').fadeOut(function() {
+                    $('#newGroupAjax').fadeIn();
+                });
                 $.ajax({
                     url: '/sign-in/',
                     method: 'POST',
@@ -292,7 +294,9 @@ function Wallet() {
             window.sessionStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
             Cookies.set('address', seed.address, { expires: 1 });
-            console.log('signUpNext2');
+            $('#newGroup2').fadeOut(function() {
+                $('#newGroupAjax').fadeIn();
+            });
             $.ajax({
                 url: '/sign-up/',
                 method: 'POST',
@@ -340,6 +344,9 @@ function Wallet() {
             window.sessionStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
             Cookies.set('address', seed.address, { expires: 1 });
+            $('#importGroup2').fadeOut(function() {
+                $('#newGroupAjax').fadeIn();
+            });
             $.ajax({
                 url: '/sign-up/',
                 method: 'POST',
