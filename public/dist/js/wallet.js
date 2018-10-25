@@ -423,44 +423,58 @@ function Wallet() {
             Cookies.set('referral', referral, { expires: 30, domain: getDomainName(window.location.hostname) });
         }
 
-        Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
-        var restoredPhrase = window.sessionStorage.getItem('seed');
-        var address = Cookies.get('address');
-        var encrypted = window.localStorage.getItem('encrypted');
-
-        if (restoredPhrase) {
-            seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-            window.sessionStorage.setItem('seed', restoredPhrase);
-            Cookies.set('address', address, { expires: 1 });
-
-            getEl('transactionsButton').href += address;
-
-            switch(window.location.pathname) {
-                case '/profit/':
-                    initSuccessProfit();
-                    break;
-                case '/exchange/':
-                    // initSuccessProfit();
-                    break;
-                case '/settings/':
-                    initSuccessSettings();
-                    break;
-                default:
-                    initSuccess();
-            }
-        } else {
-            if (encrypted) {
-                if (window.location.pathname != '/sign-in/') {
-                    window.location = '/sign-in/';
-                }
-            } else {
-                if (window.location.pathname != '/sign-up/' && window.location.pathname != '/sign-up-new/' && window.location.pathname != '/sign-up-import/') {
-                    window.location = '/sign-up/';
-                } else if (window.location.pathname == '/sign-up-new/') {
-                    newWallet();
-                }
-            }
+        switch(window.location.pathname) {
+            case '/profit/':
+                initSuccessProfit();
+                break;
+            case '/exchange/':
+                // initSuccessProfit();
+                break;
+            case '/settings/':
+                initSuccessSettings();
+                break;
+            default:
+                initSuccess();
         }
+
+        // Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
+        // var restoredPhrase = window.sessionStorage.getItem('seed');
+        // var address = Cookies.get('address');
+        // var encrypted = window.localStorage.getItem('encrypted');
+
+        // if (restoredPhrase) {
+        //     seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
+        //     window.sessionStorage.setItem('seed', restoredPhrase);
+        //     Cookies.set('address', address, { expires: 1 });
+
+        //     getEl('transactionsButton').href += address;
+
+        //     switch(window.location.pathname) {
+        //         case '/profit/':
+        //             initSuccessProfit();
+        //             break;
+        //         case '/exchange/':
+        //             // initSuccessProfit();
+        //             break;
+        //         case '/settings/':
+        //             initSuccessSettings();
+        //             break;
+        //         default:
+        //             initSuccess();
+        //     }
+        // } else {
+        //     if (encrypted) {
+        //         if (window.location.pathname != '/sign-in/') {
+        //             window.location = '/sign-in/';
+        //         }
+        //     } else {
+        //         if (window.location.pathname != '/sign-up/' && window.location.pathname != '/sign-up-new/' && window.location.pathname != '/sign-up-import/') {
+        //             window.location = '/sign-up/';
+        //         } else if (window.location.pathname == '/sign-up-new/') {
+        //             newWallet();
+        //         }
+        //     }
+        // }
     }
 
     // Successful init
@@ -492,41 +506,6 @@ function Wallet() {
         });
 
         timeout = setTimeout(initSuccess, 1000);
-    }
-
-    // Successful init for profile page
-    function initSuccessProfile() {
-        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
-        anonutopia.getNickname(function(error, result) {
-            if (result.length) {
-                setHTML('nicknameTag', result);
-                if (!getEl('nickname').value.length) {
-                    setValue('nickname', result);
-                }
-            }
-            updateCounter();
-        });
-        updateCounter();
-
-        timeout = setTimeout(initSuccessProfile, 1000);
-    }
-
-    // Successful init for exchange page
-    function initSuccessExchange() {
-        anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
-        anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
-        anonutopia.getNickname(function(error, result) {
-            if (result.length) {
-                setHTML('nicknameTag', result);
-            }
-        });
-        anote.priceBuy(function(error, result) {
-            var price = parseFloat(web3js.fromWei(result)).toFixed(5);
-            setHTML('priceBuy', price);
-            updateCounter();
-        });
-
-        timeout = setTimeout(initSuccessExchange, 1000);
     }
 
     // Successful init for profit page
@@ -695,34 +674,6 @@ function Wallet() {
         return validates;
     }
 
-    // Checks and validates field for password form
-    function validateImportFields(password, seed) {
-        var validates = true;
-
-        if (password.length == 0) {
-            $('#passwordGroupImport').addClass('has-error');
-            validates = false;
-        }
-
-        if (seed.length == 0) {
-            $('#seedGroup').addClass('has-error');
-            validates = false;
-        }
-
-        if (!validates) {
-            setHTML('requiredImport', allLocales.bothFields);
-            $('#requiredImport').fadeIn(function() {
-                setTimeout(() => {
-                    $('#requiredImport').fadeOut();
-                    $('#passwordGroupImport').removeClass('has-error');
-                    $('#seedGroup').removeClass('has-error');
-                }, 2000);
-            });
-        }
-
-        return validates;
-    }
-
     // Checks and validates fields for exchange form
     function validateExchangeFields(selectedCurrency, amount) {
         var validates = true;
@@ -869,11 +820,6 @@ function Wallet() {
                 });
             });
         });
-    }
-
-    // Exchange ANO to WAV
-    function anoToWav(amount) {
-        transfer(nodeAddress, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '', 0);
     }
 
     // Exchange WAV to ANO
