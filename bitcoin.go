@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -16,7 +17,7 @@ type BitcoinGenerator struct {
 func (bg *BitcoinGenerator) getAddress() (string, error) {
 	cmdStr := fmt.Sprintf("/usr/local/bin/electrum createnewaddress")
 	cmd := exec.Command("bash", "-c", cmdStr)
-	// cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -32,7 +33,7 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
 	cmdStr := fmt.Sprintf("/usr/local/bin/electrum getaddressbalance %s", address)
 	cmd := exec.Command("bash", "-c", cmdStr)
-	// cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
+	cmd.Env = append(os.Environ(), "HOME=/home/kriptokuna")
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
