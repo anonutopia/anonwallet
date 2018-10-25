@@ -50,6 +50,15 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 			db.Save(u)
 		}
 		db.Model(u).Association("Badges").Find(&u.Badges)
+
+		if u.Email == u.Address {
+			u.Email = ""
+		}
+
+		if u.Nickname == u.Address {
+			u.Nickname = ""
+		}
+
 		ctx.Data["User"] = u
 		sess.Set("userID", u.ID)
 	}
