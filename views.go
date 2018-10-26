@@ -23,10 +23,12 @@ func exchangeView(ctx *macaron.Context) {
 		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", float64(0))
 		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", float64(0))
 		ctx.Data["PriceEth"] = fmt.Sprintf("%.8f", float64(0))
+		ctx.Data["PriceEur"] = fmt.Sprintf("%.8f", float64(anote.Price)/float64(satInBtc))
 	} else {
 		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", prices.WAVES*(float64(anote.Price)/float64(satInBtc)))
 		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", prices.BTC*(float64(anote.Price)/float64(satInBtc)))
 		ctx.Data["PriceEth"] = fmt.Sprintf("%.8f", prices.ETH*(float64(anote.Price)/float64(satInBtc)))
+		ctx.Data["PriceEur"] = fmt.Sprintf("%.8f", float64(anote.Price)/float64(satInBtc))
 	}
 	ctx.HTML(200, "exchange")
 }
