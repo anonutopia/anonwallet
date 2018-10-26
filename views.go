@@ -37,6 +37,7 @@ func settingsView(ctx *macaron.Context) {
 
 func exchangeView(ctx *macaron.Context) {
 	prices, err := pc.DoRequest()
+	anote.loadState()
 	if err != nil {
 		ctx.Data["PriceWav"] = fmt.Sprintf("%.8f", float64(0))
 		ctx.Data["PriceBtc"] = fmt.Sprintf("%.8f", float64(0))
