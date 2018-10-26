@@ -445,42 +445,10 @@ function Wallet() {
         } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/')) {
             window.location.href = '/sign-up/';
         }
-        // var address = Cookies.get('address');
-        // var encrypted = window.localStorage.getItem('encrypted');
 
-        // if (restoredPhrase) {
-        //     seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-        //     window.localStorage.setItem('seed', restoredPhrase);
-        //     Cookies.set('address', address, { expires: 1 });
-
-        //     getEl('transactionsButton').href += address;
-
-        //     switch(window.location.pathname) {
-        //         case '/profit/':
-        //             initSuccessProfit();
-        //             break;
-        //         case '/exchange/':
-        //             // initSuccessProfit();
-        //             break;
-        //         case '/settings/':
-        //             initSuccessSettings();
-        //             break;
-        //         default:
-        //             initSuccess();
-        //     }
-        // } else {
-        //     if (encrypted) {
-        //         if (window.location.pathname != '/sign-in/') {
-        //             window.location = '/sign-in/';
-        //         }
-        //     } else {
-        //         if (window.location.pathname != '/sign-up/' && window.location.pathname != '/sign-up-new/' && window.location.pathname != '/sign-up-import/') {
-        //             window.location = '/sign-up/';
-        //         } else if (window.location.pathname == '/sign-up-new/') {
-        //             newWallet();
-        //         }
-        //     }
-        // }
+        if (getEl('transactionsButton')) {
+            getEl('transactionsButton').href += address;
+        }
     }
 
     // Successful init
