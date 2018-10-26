@@ -862,9 +862,9 @@ function Wallet() {
         case '/settings/':
             if (getEl('saveButton')) {
                 getEl('saveButton').addEventListener('click', bind(this, this.save), false);
+                getEl('country').addEventListener('change', bind(this, this.updateCountryCity), false);
+                getEl('city').addEventListener('change', bind(this, this.updateCountryCity), false);
             }
-            getEl('country').addEventListener('change', bind(this, this.updateCountryCity), false);
-            getEl('city').addEventListener('change', bind(this, this.updateCountryCity), false);
             getEl('showSeed').addEventListener('click', bind(this, this.showSeed), false);
             break;
         case '/exchange/':
