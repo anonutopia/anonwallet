@@ -6,8 +6,6 @@ function Wallet() {
 
     var Waves = null;
 
-    var copied = false;
-
     // Payment method
     this.pay = function() {
         var addressTo = getEl('addressTo').value;
@@ -227,7 +225,7 @@ function Wallet() {
         if (validatePasswordField(pass)) {
             try {
                 var restoredPhrase = Waves.Seed.decryptSeedPhrase(window.localStorage.getItem('encrypted'), pass);
-                window.sessionStorage.setItem('seed', restoredPhrase);
+                window.localStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
                 Cookies.set('address', seed.address, { expires: 1 });
                 $('#signInForm').fadeOut(function() {
@@ -260,7 +258,7 @@ function Wallet() {
 
     // Sign out method
     this.signOut = function() {
-        window.sessionStorage.clear();
+        window.localStorage.removeItem('seed');
         Cookies.remove('address');
         window.location = '/sign-out/';
     }
@@ -291,7 +289,7 @@ function Wallet() {
         var p1 = getEl('password1').value;
         var p2 = getEl('password2').value;
         if (validateSUPasswords(p1, p2)) {
-            window.sessionStorage.setItem('seed', seed.phrase);
+            window.localStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
             Cookies.set('address', seed.address, { expires: 1 });
             $('#newGroup2').fadeOut(function() {
@@ -341,7 +339,7 @@ function Wallet() {
         var p1 = getEl('password1').value;
         var p2 = getEl('password2').value;
         if (validateSUPasswords(p1, p2)) {
-            window.sessionStorage.setItem('seed', seed.phrase);
+            window.localStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
             Cookies.set('address', seed.address, { expires: 1 });
             $('#importGroup2').fadeOut(function() {
@@ -423,28 +421,36 @@ function Wallet() {
             Cookies.set('referral', referral, { expires: 30, domain: getDomainName(window.location.hostname) });
         }
 
+        Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
+
         switch(window.location.pathname) {
-            case '/profit/':
-                initSuccessProfit();
+            case '/sign-in/':
+                initSignIn();
                 break;
-            case '/exchange/':
-                // initSuccessProfit();
+            case '/sign-up-new/':
+                newWallet();
                 break;
-            case '/settings/':
-                initSuccessSettings();
-                break;
-            default:
+            case '/':
                 initSuccess();
+                break;
         }
 
-        // Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
-        // var restoredPhrase = window.sessionStorage.getItem('seed');
+        var encrypted = window.localStorage.getItem('encrypted');
+        var restoredPhrase = window.localStorage.getItem('seed');
+
+        if (restoredPhrase) {
+            seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
+        } else if (encrypted && !window.location.href.endsWith('/sign-in/')) {
+            window.location.href = '/sign-in/';
+        } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/')) {
+            window.location.href = '/sign-up/';
+        }
         // var address = Cookies.get('address');
         // var encrypted = window.localStorage.getItem('encrypted');
 
         // if (restoredPhrase) {
         //     seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-        //     window.sessionStorage.setItem('seed', restoredPhrase);
+        //     window.localStorage.setItem('seed', restoredPhrase);
         //     Cookies.set('address', address, { expires: 1 });
 
         //     getEl('transactionsButton').href += address;
@@ -479,27 +485,27 @@ function Wallet() {
 
     // Successful init
     function initSuccess() {
-        setValue('address', seed.address);
+        setValue('address', address);
 
-        Waves.API.Node.v1.assets.balance(seed.address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf").then((balance) => {
+        Waves.API.Node.v1.assets.balance(address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf").then((balance) => {
             var antBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
             setHTML('balanceAnt', antBalance);
             updateCounter();
         });
 
-        Waves.API.Node.v1.assets.balance(seed.address, "7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs").then((balance) => {
+        Waves.API.Node.v1.assets.balance(address, "7xHHNP8h6FrbP5jYZunYWgGn2KFSBiWcVaZWe644crjs").then((balance) => {
             var btcBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
             setHTML('balanceBtc', btcBalance);
             updateCounter();
         });
 
-        Waves.API.Node.v1.assets.balance(seed.address, "4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53").then((balance) => {
+        Waves.API.Node.v1.assets.balance(address, "4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53").then((balance) => {
             var ethBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
             setHTML('balanceEth', ethBalance);
             updateCounter();
         });
 
-        Waves.API.Node.v1.addresses.balance(seed.address).then((balance) => {
+        Waves.API.Node.v1.addresses.balance(address).then((balance) => {
             var wavBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(5);
             setHTML('balanceWav', wavBalance);
             updateCounter();
@@ -508,30 +514,12 @@ function Wallet() {
         timeout = setTimeout(initSuccess, 1000);
     }
 
-    // Successful init for profit page
-    function initSuccessProfit() {
-        // anote = web3js.eth.contract(anoteAbi).at(anoteAddress);
-        // anonutopia = web3js.eth.contract(anonutopiaAbi).at(anonutopiaAddress);
-        // anonutopia.getNickname(function(error, result) {
-        //     if (result.length) {
-        //         setHTML('nicknameTag', result);
-        //     }
-        //     updateCounter();
-        // });
-        // anote.balanceProfitOf(web3js.eth.coinbase, function(error, result) {
-        //     var balanceProfit = parseFloat(web3js.fromWei(result)).toFixed(5);
-        //     setHTML('profit', balanceProfit);
-        //     updateCounter();
-        // });
-
-        // timeout = setTimeout(initSuccessProfit, 1000);
-    }
-
-    // Successful init for settings page
-    function initSuccessSettings() {
-        // alert($('#countryHidden').val());
-        // $('#country').val($('#countryHidden').val());
-        // $('#city').val($('#cityHidden').val());
+    // Init sign in page
+    function initSignIn() {
+        var encrypted = window.localStorage.getItem('encrypted');
+        if (!encrypted) {
+            window.location.href = '/sign-up/';
+        }
     }
 
     // Updates counter for loading purposes
@@ -541,7 +529,7 @@ function Wallet() {
             new QRious({
                 size: 300,
                 element: document.getElementById('qr'),
-                value: 'waves://' + seed.address
+                value: 'waves://' + address
             });
 
             new QRious({
