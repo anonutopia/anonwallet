@@ -14,6 +14,22 @@ func homeView(ctx *macaron.Context) {
 }
 
 func settingsView(ctx *macaron.Context) {
+	user := ctx.Data["User"].(*User)
+	var balance uint64
+
+	abr, err := wnc.AssetsBalance(user.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
+	if err != nil {
+		balance = 0
+	} else {
+		balance = uint64(abr.Balance)
+	}
+
+	if balance >= satInBtc {
+		ctx.Data["UserHasAnotes"] = true
+	} else {
+		ctx.Data["UserHasAnotes"] = false
+	}
+
 	ctx.HTML(200, "settings")
 }
 

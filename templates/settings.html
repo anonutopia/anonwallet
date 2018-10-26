@@ -11,6 +11,13 @@
         <!-- Main content -->
         <section class="content" id="content">
 
+{{ if not .User.ReceivedFreeAnote }}
+            <div class="callout callout-danger">
+                <h4>{{.i18n.Tr "telegramTitle"}}</h4>
+                <p>{{.i18n.Tr "telegramMessage"}} <a href="{{.i18n.Tr "homeLink"}}/airdrop/" target="_blank"><strong>{{.i18n.Tr "telegramHere"}}</strong></a>!</p>
+            </div>
+{{ end }}
+
 {{ if .Flash.SuccessMsg }}
             <div class="callout callout-success">
                 <h4>{{.i18n.Tr "success"}}</h4>
@@ -59,6 +66,9 @@
                                     </select>
                                 </div>
                                 <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p>
+{{ if not .UserHasAnote }}
+                                <p class="text-red" style="margin-bottom: 0; margin-top: 10px;">{{.i18n.Tr "needToHold"}}</p>
+{{ end }}
                             </div>
                             <input type="hidden" name="countryHidden" id="countryHidden" value="{{ .User.Country }}">
                             <input type="hidden" name="cityHidden" id="cityHidden" value="{{ .User.City }}">
