@@ -19,9 +19,10 @@ func settingsView(ctx *macaron.Context) {
 
 	abr, err := wnc.AssetsBalance(user.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
 	if err != nil {
-		log.Println("wnc.AssetsBalance error: %s", err)
+		log.Printf("wnc.AssetsBalance error: %s", err)
 		balance = 0
 	} else {
+		log.Println(abr.Balance)
 		balance = uint64(abr.Balance)
 	}
 
