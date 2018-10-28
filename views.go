@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/go-macaron/session"
 	"golang.org/x/crypto/bcrypt"
@@ -159,7 +160,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	db.Save(u)
 
 	sess.Set("userID", u.ID)
-	ctx.SetCookie("address", u.Address, 365)
+	ctx.SetCookie("address", u.Address, 365, "", "", false, false, time.Now().Add(time.Hour*24*365))
 
 	var balance uint64
 	abr, err := wnc.AssetsBalance(u.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
