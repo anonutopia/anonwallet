@@ -227,7 +227,8 @@ function Wallet() {
                 var restoredPhrase = Waves.Seed.decryptSeedPhrase(window.localStorage.getItem('encrypted'), pass);
                 window.localStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-                Cookies.set('address', seed.address, { expires:365, });
+                // Cookies.set('address', seed.address, { expires: 365 });
+                setCookie('address', seed.address, 365);
                 $('#signInForm').fadeOut(function() {
                     $('#newGroupAjax').fadeIn();
                 });
@@ -259,7 +260,8 @@ function Wallet() {
     // Sign out method
     this.signOut = function() {
         window.localStorage.removeItem('seed');
-        Cookies.remove('address');
+        // Cookies.remove('address');
+        deleteCookie('address');
         window.location = '/sign-out/';
     }
 
@@ -291,7 +293,8 @@ function Wallet() {
         if (validateSUPasswords(p1, p2)) {
             window.localStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
-            Cookies.set('address', seed.address, { expires:365, });
+            // Cookies.set('address', seed.address, { expires: 365 });
+            setCookie('address', seed.address, 365);
             $('#newGroup2').fadeOut(function() {
                 $('#newGroupAjax').fadeIn();
             });
@@ -341,7 +344,8 @@ function Wallet() {
         if (validateSUPasswords(p1, p2)) {
             window.localStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
-            Cookies.set('address', seed.address, { expires:365, });
+            // Cookies.set('address', seed.address, { expires: 365 });
+            setCookie('address', seed.address, 365);
             $('#importGroup2').fadeOut(function() {
                 $('#newGroupAjax').fadeIn();
             });
@@ -860,3 +864,14 @@ function Wallet() {
     // Calling Wallet constructor
     constructor();
 }
+
+function getCookie(name) {
+    var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return v ? v[2] : null;
+}
+function setCookie(name, value, days) {
+    var d = new Date;
+    d.setTime(d.getTime() + 24*60*60*1000*days);
+    document.cookie = name + "=" + value + ";path=/;expires=" + d.toGMTString();
+}
+function deleteCookie(name) { setCookie(name, '', -1); }
