@@ -228,6 +228,7 @@ function Wallet() {
                 window.localStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
                 // Cookies.set('address', seed.address, { expires: 365 });
+                alert('fdasfsa');
                 setCookie('address', seed.address, 365);
                 $('#signInForm').fadeOut(function() {
                     $('#newGroupAjax').fadeIn();
