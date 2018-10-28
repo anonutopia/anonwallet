@@ -223,7 +223,7 @@ function Wallet() {
     this.signIn = function() {
         var pass = getEl('password').value;
         if (validatePasswordField(pass)) {
-            try {
+            // try {
                 var restoredPhrase = Waves.Seed.decryptSeedPhrase(window.localStorage.getItem('encrypted'), pass);
                 window.localStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
@@ -245,15 +245,15 @@ function Wallet() {
                         console.log(error);
                     }
                 });
-            } catch (e) {
-                setHTML('required', e);
-                $('#required').fadeIn(function() {
-                    setTimeout(() => {
-                        $('#required').fadeOut();
-                        $('#passwordGroup').removeClass('has-error');
-                    }, 2000);
-                });
-            }
+            // } catch (e) {
+            //     setHTML('required', e);
+            //     $('#required').fadeIn(function() {
+            //         setTimeout(() => {
+            //             $('#required').fadeOut();
+            //             $('#passwordGroup').removeClass('has-error');
+            //         }, 2000);
+            //     });
+            // }
         }
     }
 
