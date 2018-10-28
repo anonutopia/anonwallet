@@ -227,7 +227,7 @@ function Wallet() {
                 var restoredPhrase = Waves.Seed.decryptSeedPhrase(window.localStorage.getItem('encrypted'), pass);
                 window.localStorage.setItem('seed', restoredPhrase);
                 seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-                Cookies.set('address', seed.address, { expires: 0 });
+                Cookies.set('address', seed.address, { expires: 365 });
                 $('#signInForm').fadeOut(function() {
                     $('#newGroupAjax').fadeIn();
                 });
@@ -291,7 +291,7 @@ function Wallet() {
         if (validateSUPasswords(p1, p2)) {
             window.localStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
-            Cookies.set('address', seed.address, { expires: 0 });
+            Cookies.set('address', seed.address, { expires: 365 });
             $('#newGroup2').fadeOut(function() {
                 $('#newGroupAjax').fadeIn();
             });
@@ -341,7 +341,7 @@ function Wallet() {
         if (validateSUPasswords(p1, p2)) {
             window.localStorage.setItem('seed', seed.phrase);
             window.localStorage.setItem('encrypted', seed.encrypt(p1));
-            Cookies.set('address', seed.address, { expires: 0 });
+            Cookies.set('address', seed.address, { expires: 365 });
             $('#importGroup2').fadeOut(function() {
                 $('#newGroupAjax').fadeIn();
             });
