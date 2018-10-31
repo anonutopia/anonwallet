@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
-	// "log"
-
 	"bytes"
+	"fmt"
 	"html/template"
 
+	ui18n "github.com/Unknwon/i18n"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -32,7 +31,7 @@ func sendEmail(em *EmailMessage) error {
 	return err
 }
 
-func sendWelcomeEmail(to *User) error {
+func sendWelcomeEmail(to *User, lang string) error {
 	em := &EmailMessage{}
 	em.Subject = "Welcome to Anonutopia"
 	em.FromName = "Anonutopia"
@@ -54,7 +53,7 @@ func sendWelcomeEmail(to *User) error {
 		return err
 	}
 
-	verLink := fmt.Sprintf("https://wallet.anonutopia.com/verify/%s/", uid)
+	verLink := fmt.Sprintf(ui18n.Tr(lang, "verificationLink"), uid)
 
 	data := struct {
 		VerificationLink string

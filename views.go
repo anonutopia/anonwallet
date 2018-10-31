@@ -137,7 +137,7 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 		success.Message = err.Error.Error()
 		status = 400
 	} else {
-		err := sendWelcomeEmail(user)
+		err := sendWelcomeEmail(user, ctx.GetCookie("lang"))
 		if err != nil {
 			log.Printf("error sending email: %s", err)
 		}
