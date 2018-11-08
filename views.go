@@ -181,6 +181,16 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 		db.Save(u)
 
 		if len(u.Referral) > 0 {
+			atr := &gowaves.AssetsTransferRequest{
+				Amount:    20000000,
+				AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
+				Fee:       100000,
+				Recipient: user.Referral,
+				Sender:    conf.NodeAddress,
+			}
+
+			wnc.AssetsTransfer(atr)
+
 			r := &User{Address: u.Referral}
 			db.First(r, r)
 			count := r.ReferredUsersVerifiedCount()
