@@ -205,15 +205,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 
 	log.Printf("balance: %d", balance)
 
-	f.Success("You have successfully verified your email address.")
-
-	if balance >= (1 * satInBtc) {
-		applicant := &Badge{Name: "applicant"}
-		db.First(applicant, applicant)
-		db.Model(u).Association("Badges").Append(applicant)
-
-		f.Success("You have successfully applied for Anonutopia citizenship.")
-	}
+	f.Success("You have successfully verified your email address. We have sent you your 1 free anote.")
 
 	if balance >= (1000 * satInBtc) {
 		citizen := &Badge{Name: "citizen"}
