@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/anonutopia/gowaves"
 	"github.com/go-macaron/session"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/macaron.v1"
@@ -159,8 +160,24 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	log.Println(uid)
 	u := &User{Address: uid}
 	db.First(u, u)
-	u.EmailVerified = true
-	db.Save(u)
+
+	if !u.EmailVerified {
+		atr := &gowaves.AssetsTransferRequest{
+			Amount:    100000000,
+			AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
+			Fee:       100000,
+			Recipient: uid,
+			Sender:    conf.NodeAddress,
+		}
+
+		_, err := wnc.AssetsTransfer(atr)
+		if err != nil {
+			log.Printf("Error gowaves.AssetsTransfer %s", err)
+		}
+
+		u.EmailVerified = true
+		db.Save(u)
+	}
 
 	sess.Set("userID", u.ID)
 	ctx.SetCookie("address", u.Address, 1<<31-1)
