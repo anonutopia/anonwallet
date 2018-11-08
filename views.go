@@ -33,6 +33,8 @@ func settingsView(ctx *macaron.Context) {
 		ctx.Data["UserHasAnotes"] = false
 	}
 
+	ctx.Data["Referred"] = user.ReferredUsersVerifiedCount()
+
 	ctx.HTML(200, "settings")
 }
 

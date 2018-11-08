@@ -42,6 +42,8 @@
                                 <small class="label bg-green" style="text-transform: capitalize;"><i class="fa fa-tag"></i>&nbsp;&nbsp;{{ .Name }}</small>
 {{ end }}
                             </p>
+                            <p style="margin: 15px 0 10px 0;"><strong>Verified Referred Applicants / Citizens</strong></p>
+                            <p><input type="text" class="form-control input-lg" value="{{ .Referred }}" readonly></p>
 {{ if not .User.EmailVerified }}
                             <p class="text-green" style="margin: 15px 0 0 0;">{{.i18n.Tr "applicationSuccess"}}</p>
 {{ end }}
