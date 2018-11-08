@@ -69,9 +69,6 @@
                                     </select>
                                 </div>
                                 <p class="text-red" style="margin: 0; display: none;" id="errorMessageNickname"></p>
-{{ if not .UserHasAnotes }}
-                                <p class="text-red" style="margin-bottom: 0; margin-top: 10px;">{{.i18n.Tr "needToHold"}}</p>
-{{ end }}
                             </div>
                             <input type="hidden" name="countryHidden" id="countryHidden" value="{{ .User.Country }}">
                             <input type="hidden" name="cityHidden" id="cityHidden" value="{{ .User.City }}">

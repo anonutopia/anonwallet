@@ -192,7 +192,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	}
 
 	if balance >= (10000 * satInBtc) {
-		founder := &Badge{Name: "funder"}
+		founder := &Badge{Name: "founder"}
 		db.First(founder, founder)
 		db.Model(u).Association("Badges").Append(founder)
 	}
