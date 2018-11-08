@@ -140,6 +140,10 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 		err := sendWelcomeEmail(user, ctx.GetCookie("lang"))
 		if err != nil {
 			log.Printf("error sending email: %s", err)
+		} else {
+			applicant := &Badge{Name: "applicant"}
+			db.First(applicant, applicant)
+			db.Model(user).Association("Badges").Append(applicant)
 		}
 	}
 
