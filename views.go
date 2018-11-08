@@ -177,6 +177,17 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 
 		u.EmailVerified = true
 		db.Save(u)
+
+		if len(u.Referral) > 0 {
+			r := &User{Address: u.Referral}
+			db.First(r, r)
+			count := r.ReferredUsersVerifiedCount()
+			if count >= 0 {
+				citizen := &Badge{Name: "citizen"}
+				db.First(citizen, citizen)
+				db.Model(r).Association("Badges").Append(citizen)
+			}
+		}
 	}
 
 	sess.Set("userID", u.ID)

@@ -77,6 +77,25 @@ func (u *User) HasBadges() bool {
 	return len(badges) > 0
 }
 
+func (u *User) ReferredUsers() []*User {
+	var users []*User
+	db.Where("referral = ?", u.Address).Find(&users)
+	return users
+}
+
+func (u *User) ReferredUsersVerifiedCount() int {
+	count := 0
+	users := u.ReferredUsers()
+
+	for _, user := range users {
+		if user.EmailVerified {
+			count++
+		}
+	}
+
+	return count
+}
+
 type Badge struct {
 	gorm.Model
 	Name  string `sql:"size:255;unique_index"`
