@@ -184,7 +184,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 			r := &User{Address: u.Referral}
 			db.First(r, r)
 			count := r.ReferredUsersVerifiedCount()
-			if count >= 0 {
+			if count >= 10 {
 				citizen := &Badge{Name: "citizen"}
 				db.First(citizen, citizen)
 				db.Model(r).Association("Badges").Append(citizen)
