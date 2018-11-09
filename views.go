@@ -56,6 +56,20 @@ func exchangeView(ctx *macaron.Context) {
 }
 
 func profitView(ctx *macaron.Context) {
+	user := ctx.Data["User"].(*User)
+	prices, _ := pc.DoRequest()
+
+	tp := float64(0)
+
+	tp += float64(user.ProfitWav) / (prices.WAVES * float64(satInBtc))
+	tp += float64(user.ProfitBtc) / (prices.BTC * float64(satInBtc))
+	tp += float64(user.ProfitEth) / (prices.ETH * float64(satInBtc))
+	tp += float64(user.ReferralProfitWav) / (prices.WAVES * float64(satInBtc))
+	tp += float64(user.ReferralProfitBtc) / (prices.BTC * float64(satInBtc))
+	tp += float64(user.ReferralProfitEth) / (prices.ETH * float64(satInBtc))
+
+	ctx.Data["TotalProfit"] = fmt.Sprintf("%.2f", tp)
+
 	ctx.HTML(200, "profit")
 }
 

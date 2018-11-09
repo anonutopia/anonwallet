@@ -54,7 +54,13 @@
                         <div class="box-body">
                             <table class="table">
                                 <tr>
-                                    <th colspan="3" style="border: none;">{{.i18n.Tr "holdingProfit"}}</th>
+                                    <th colspan="3" style="border: none;" class="text-center">{{.i18n.Tr "totalProfit"}}</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding-bottom: 20px;" class="text-center"><span class="badge bg-green"><strong>{{ .TotalProfit }} EUR</strong></span></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" style="border: none;">{{.i18n.Tr "holdingProfit"}} (10.43 EUR)</th>
                                 </tr>
                                 <tr>
                                     <th style="width: 90px;">WAV</th>
