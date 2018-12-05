@@ -140,27 +140,30 @@ func localesjsView(ctx *macaron.Context) {
 func applyView(ctx *macaron.Context, af ApplyForm) {
 	success := &JsonResponse{Success: true}
 	status := 200
-	user := ctx.Data["User"].(*User)
 
-	user.Nickname = af.Nickname
-	user.Email = af.Email
-	user.Country = af.Country
-	user.City = af.City
+	if validateEmailDomain(af.Email) {
+		user := ctx.Data["User"].(*User)
 
-	err := db.Save(user)
+		user.Nickname = af.Nickname
+		user.Email = af.Email
+		user.Country = af.Country
+		user.City = af.City
 
-	if err.RowsAffected == 0 {
-		success.Success = false
-		success.Message = err.Error.Error()
-		status = 400
-	} else {
-		err := sendWelcomeEmail(user, ctx.GetCookie("lang"))
-		if err != nil {
-			log.Printf("error sending email: %s", err)
+		err := db.Save(user)
+
+		if err.RowsAffected == 0 {
+			success.Success = false
+			success.Message = err.Error.Error()
+			status = 400
 		} else {
-			applicant := &Badge{Name: "applicant"}
-			db.First(applicant, applicant)
-			db.Model(user).Association("Badges").Append(applicant)
+			err := sendWelcomeEmail(user, ctx.GetCookie("lang"))
+			if err != nil {
+				log.Printf("error sending email: %s", err)
+			} else {
+				applicant := &Badge{Name: "applicant"}
+				db.First(applicant, applicant)
+				db.Model(user).Association("Badges").Append(applicant)
+			}
 		}
 	}
 

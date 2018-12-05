@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"strings"
 
 	ui18n "github.com/Unknwon/i18n"
 	"github.com/sendgrid/sendgrid-go"
@@ -26,13 +27,17 @@ var domains = [...]string{
 	"ntlworld.com", "o2.co.uk", "orange.net", "sky.com", "talktalk.co.uk", "tiscali.co.uk",
 	"virgin.net", "wanadoo.co.uk", "bt.com",
 
-	"sina.com", "sina.cn", "qq.com", "naver.com", "hanmail.net", "daum.net", "nate.com", "yahoo.co.jp", "yahoo.co.kr", "yahoo.co.id", "yahoo.co.in", "yahoo.com.sg", "yahoo.com.ph", "163.com", "126.com", "aliyun.com", "foxmail.com",
+	"sina.com", "sina.cn", "qq.com", "naver.com", "hanmail.net", "daum.net", "nate.com", "yahoo.co.jp",
+	"yahoo.co.kr", "yahoo.co.id", "yahoo.co.in", "yahoo.com.sg", "yahoo.com.ph", "163.com", "126.com",
+	"aliyun.com", "foxmail.com",
 
-	"hotmail.fr", "live.fr", "laposte.net", "yahoo.fr", "wanadoo.fr", "orange.fr", "gmx.fr", "sfr.fr", "neuf.fr", "free.fr",
+	"hotmail.fr", "live.fr", "laposte.net", "yahoo.fr", "wanadoo.fr", "orange.fr", "gmx.fr", "sfr.fr",
+	"neuf.fr", "free.fr",
 
 	"gmx.de", "hotmail.de", "live.de", "online.de", "t-online.de", "web.de", "yahoo.de",
 
-	"libero.it", "virgilio.it", "hotmail.it", "aol.it", "tiscali.it", "alice.it", "live.it", "yahoo.it", "email.it", "tin.it", "poste.it", "teletu.it",
+	"libero.it", "virgilio.it", "hotmail.it", "aol.it", "tiscali.it", "alice.it", "live.it", "yahoo.it",
+	"email.it", "tin.it", "poste.it", "teletu.it",
 
 	"mail.ru", "rambler.ru", "yandex.ru", "ya.ru", "list.ru",
 
@@ -42,7 +47,8 @@ var domains = [...]string{
 
 	"yahoo.com.mx", "live.com.mx", "hotmail.es", "hotmail.com.mx", "prodigy.net.mx",
 
-	"yahoo.com.br", "hotmail.com.br", "outlook.com.br", "uol.com.br", "bol.com.br", "terra.com.br", "ig.com.br", "itelefonica.com.br", "r7.com", "zipmail.com.br", "globo.com", "globomail.com", "oi.com.br"}
+	"yahoo.com.br", "hotmail.com.br", "outlook.com.br", "uol.com.br", "bol.com.br", "terra.com.br",
+	"ig.com.br", "itelefonica.com.br", "r7.com", "zipmail.com.br", "globo.com", "globomail.com", "oi.com.br"}
 
 type EmailMessage struct {
 	FromName  string
@@ -108,5 +114,10 @@ func sendWelcomeEmail(to *User, lang string) error {
 }
 
 func validateEmailDomain(email string) bool {
-	return true
+	for i := range domains {
+		if strings.HasSuffix(email, domains[i]) {
+			return true
+		}
+	}
+	return false
 }
