@@ -116,28 +116,28 @@ function Wallet() {
                 },
                 error: function(data, status, error) {
                     if (data.responseJSON.message.search('nickname') != -1) {
-                        setHTML('errorMessageNickname', allLocales.nicknameExists);
+                        setHTML('errorMessageSettings', allLocales.nicknameExists);
                         $('#nicknameGroup').addClass('has-error');
-                        $('#errorMessageNickname').fadeIn(function() {
+                        $('#errorMessageSettings').fadeIn(function() {
                             setTimeout(() => {
-                                $('#errorMessageNickname').fadeOut();
+                                $('#errorMessageSettings').fadeOut();
                                 $('#nicknameGroup').removeClass('has-error');
                             }, 2000);
                         });
                     } else if (data.responseJSON.message.search('email') != - 1) {
-                        setHTML('errorMessageNickname', allLocales.emailExists);
+                        setHTML('errorMessageSettings', allLocales.emailExists);
                         $('#emailGroup').addClass('has-error');
-                        $('#errorMessageNickname').fadeIn(function() {
+                        $('#errorMessageSettings').fadeIn(function() {
                             setTimeout(() => {
-                                $('#errorMessageNickname').fadeOut();
+                                $('#errorMessageSettings').fadeOut();
                                 $('#emailGroup').removeClass('has-error');
                             }, 2000);
                         });
                     } else {
-                        setHTML('errorMessageNickname', data.responseJSON.message);
-                        $('#errorMessageNickname').fadeIn(function() {
+                        setHTML('errorMessageSettings', data.responseJSON.message);
+                        $('#errorMessageSettings').fadeIn(function() {
                             setTimeout(() => {
-                                $('#errorMessageNickname').fadeOut();
+                                $('#errorMessageSettings').fadeOut();
                             }, 2000);
                         });
                     }
@@ -571,7 +571,8 @@ function Wallet() {
     // Checks and validates fields for settings form
     function validateSettingsFields(nickname, email, country, city) {
         var validates = true;
-
+        var validatesDomain = true;
+    
         if (nickname.length == 0) {
             $('#nicknameGroup').addClass('has-error');
             validates = false;
@@ -580,6 +581,11 @@ function Wallet() {
         if (email.length == 0) {
             $('#emailGroup').addClass('has-error');
             validates = false;
+        }
+
+        if (!validateEmailDomain(email)) {
+            $('#emailGroup').addClass('has-error');
+            validatesDomain = false;
         }
 
         if (country.length == 0) {
@@ -592,11 +598,15 @@ function Wallet() {
             validates = false;
         }
 
-        if (!validates) {
-            setHTML('errorMessageNickname', allLocales.allFields);
-            $('#errorMessageNickname').fadeIn(function() {
+        if (!validates || !validatesDomain) {
+            if (!validates) {
+                setHTML('errorMessageSettings', allLocales.allFields);
+            } else if (!validatesDomain) {
+                setHTML('errorMessageSettings', allLocales.emailDomain);
+            }
+            $('#errorMessageSettings').fadeIn(function() {
                 setTimeout(() => {
-                    $('#errorMessageNickname').fadeOut();
+                    $('#errorMessageSettings').fadeOut();
                     $('#nicknameGroup').removeClass('has-error');
                     $('#emailGroup').removeClass('has-error');
                     $('#countryGroup').removeClass('has-error');
@@ -605,7 +615,7 @@ function Wallet() {
             });
         }
 
-        return validates;
+        return validates && validatesDomain;
     }
 
     // Checks and validates field for password form
@@ -809,6 +819,16 @@ function Wallet() {
         return hostName.substring(hostName.lastIndexOf(".", hostName.lastIndexOf(".") - 1) + 1);
     }
 
+    // Validates email domain
+    function validateEmailDomain(email) {
+        for (var i = 0; i < _emailDomains.length; i++) {
+            if (email.endsWith(_emailDomains[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // New wallet method
     function newWallet() {
         seed = Waves.Seed.create();
@@ -860,3 +880,51 @@ function Wallet() {
     // Calling Wallet constructor
     constructor();
 }
+
+var _emailDomains = [
+  /* Default domains included */
+  "aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com",
+  "google.com", "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com",
+  "live.com", "sbcglobal.net", "verizon.net", "yahoo.com", "yahoo.co.uk",
+
+  /* Other global domains */
+  "email.com", "fastmail.fm", "games.com" /* AOL */, "gmx.net", "hush.com", "hushmail.com", "icloud.com",
+  "iname.com", "inbox.com", "lavabit.com", "love.com" /* AOL */, "outlook.com", "pobox.com", "protonmail.com",
+  "rocketmail.com" /* Yahoo */, "safe-mail.net", "wow.com" /* AOL */, "ygm.com" /* AOL */,
+  "ymail.com" /* Yahoo */, "zoho.com", "yandex.com",
+
+  /* United States ISP domains */
+  "bellsouth.net", "charter.net", "cox.net", "earthlink.net", "juno.com",
+
+  /* British ISP domains */
+  "btinternet.com", "virginmedia.com", "blueyonder.co.uk", "freeserve.co.uk", "live.co.uk",
+  "ntlworld.com", "o2.co.uk", "orange.net", "sky.com", "talktalk.co.uk", "tiscali.co.uk",
+  "virgin.net", "wanadoo.co.uk", "bt.com",
+
+  /* Domains used in Asia */
+  "sina.com", "sina.cn", "qq.com", "naver.com", "hanmail.net", "daum.net", "nate.com", "yahoo.co.jp", "yahoo.co.kr", "yahoo.co.id", "yahoo.co.in", "yahoo.com.sg", "yahoo.com.ph", "163.com", "126.com", "aliyun.com", "foxmail.com",
+
+  /* French ISP domains */
+  "hotmail.fr", "live.fr", "laposte.net", "yahoo.fr", "wanadoo.fr", "orange.fr", "gmx.fr", "sfr.fr", "neuf.fr", "free.fr",
+
+  /* German ISP domains */
+  "gmx.de", "hotmail.de", "live.de", "online.de", "t-online.de" /* T-Mobile */, "web.de", "yahoo.de",
+
+  /* Italian ISP domains */
+  "libero.it", "virgilio.it", "hotmail.it", "aol.it", "tiscali.it", "alice.it", "live.it", "yahoo.it", "email.it", "tin.it", "poste.it", "teletu.it",
+
+  /* Russian ISP domains */
+  "mail.ru", "rambler.ru", "yandex.ru", "ya.ru", "list.ru",
+
+  /* Belgian ISP domains */
+  "hotmail.be", "live.be", "skynet.be", "voo.be", "tvcablenet.be", "telenet.be",
+
+  /* Argentinian ISP domains */
+  "hotmail.com.ar", "live.com.ar", "yahoo.com.ar", "fibertel.com.ar", "speedy.com.ar", "arnet.com.ar",
+
+  /* Domains used in Mexico */
+  "yahoo.com.mx", "live.com.mx", "hotmail.es", "hotmail.com.mx", "prodigy.net.mx",
+
+  /* Domains used in Brazil */
+  "yahoo.com.br", "hotmail.com.br", "outlook.com.br", "uol.com.br", "bol.com.br", "terra.com.br", "ig.com.br", "itelefonica.com.br", "r7.com", "zipmail.com.br", "globo.com", "globomail.com", "oi.com.br"
+];

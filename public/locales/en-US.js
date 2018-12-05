@@ -3,6 +3,7 @@ var allLocales = {
     copyAgain :             "Please copy seed words from your backup.",
     bothFields :            "Both fields are required.",
     allFields :             "All fields are required.",
+    emailDomain :           "Only popular email domains like gmail.com are allowed",
     wrongSeed :             "Seed words are not correct.",
     passNotMatch :          "You passwords don't match.",
     nicknameExists :        "This nickname is already used.",

@@ -3,6 +3,7 @@ var allLocales = {
     copyAgain :             "Molimo vas da kopirate seed iz backupa.",
     bothFields :            "Oba polja su obavezna.",
     allFields :             "Sva polja su obavezna.",
+    emailDomain :           "Dozvoljene su samo popularne email domene kao gmail.com.",
     wrongSeed :             "Niste upisali dobre seed riječi.",
     passNotMatch :          "Lozinke koje ste upisali nisu iste.",
     nicknameExists :        "Ovaj nadimak je već u upotrebi.",
