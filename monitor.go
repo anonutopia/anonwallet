@@ -39,6 +39,7 @@ func (b *BitcoinAddressMonitor) checkAddresses() {
 			u.BitcoinAddr, err = bg.getAddress()
 			if err != nil {
 				log.Printf("Error in bg.getAddress: %s", err)
+				logTelegram(fmt.Sprintf("Error in bg.getAddress: %s", err))
 			}
 
 			db.Save(u)
@@ -54,6 +55,7 @@ func (b *BitcoinAddressMonitor) checkAddressesRequest(address string) int {
 	balance, err := bg.getBalance(address)
 	if err != nil {
 		log.Printf("Error in BitcoinAddressMonitor.checkAddressRequest: %s", err)
+		logTelegram(fmt.Sprintf("Error in BitcoinAddressMonitor.checkAddressRequest: %s", err))
 		return 0
 	}
 
@@ -95,6 +97,7 @@ func (e *EthereumAddressMonitor) checkAddresses() {
 			u.EtherAddr, err = eg.getAddress(uint32(u.ID))
 			if err != nil {
 				log.Printf("Error in eg.getAddress: %s", err)
+				logTelegram(fmt.Sprintf("Error in eg.getAddress: %s", err))
 			}
 
 			db.Save(u)
@@ -114,17 +117,20 @@ func (e *EthereumAddressMonitor) checkAddressesRequest(address string) int {
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		log.Printf("[EthereumAddressMonitor.checkAdressesRequest] request err %s", err)
+		logTelegram(fmt.Sprintf("[EthereumAddressMonitor.checkAdressesRequest] request err %s", err))
 		return 0
 	}
 
 	res, err := cl.Do(req)
 	if err != nil {
 		log.Printf("[EthereumAddressMonitor.checkAdressesRequest] request do err %s", err)
+		logTelegram(fmt.Sprintf("[EthereumAddressMonitor.checkAdressesRequest] request do err %s", err))
 		return 0
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("[EthereumAddressMonitor.checkAdressesRequest] ioutil.ReadAll err %s", err)
+		logTelegram(fmt.Sprintf("[EthereumAddressMonitor.checkAdressesRequest] ioutil.ReadAll err %s", err))
 		return 0
 	}
 

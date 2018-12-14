@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -43,6 +44,7 @@ func (w *PriceClient) DoRequest() (*Prices, error) {
 		}
 		if res.StatusCode != 200 {
 			log.Printf("[PriceClient.DoRequest] Error, body: %s", string(body))
+			logTelegram(fmt.Sprintf("[PriceClient.DoRequest] Error, body: %s", string(body)))
 		}
 		json.Unmarshal(body, p)
 	} else {

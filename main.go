@@ -8,12 +8,15 @@ import (
 	"github.com/anonutopia/gowaves"
 	"github.com/go-macaron/binding"
 	"github.com/jinzhu/gorm"
-	"gopkg.in/macaron.v1"
+	macaron "gopkg.in/macaron.v1"
+	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
 var m *macaron.Macaron
 
 var conf *config
+
+var bot *tgbotapi.BotAPI
 
 var db *gorm.DB
 
@@ -37,6 +40,8 @@ func main() {
 	m = initMacaron()
 
 	conf = initConfig()
+
+	bot = initBot()
 
 	db = initDb()
 

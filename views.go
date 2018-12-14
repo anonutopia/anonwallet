@@ -7,7 +7,7 @@ import (
 	"github.com/anonutopia/gowaves"
 	"github.com/go-macaron/session"
 	"golang.org/x/crypto/bcrypt"
-	"gopkg.in/macaron.v1"
+	macaron "gopkg.in/macaron.v1"
 )
 
 func homeView(ctx *macaron.Context) {
@@ -21,9 +21,9 @@ func settingsView(ctx *macaron.Context) {
 	abr, err := wnc.AssetsBalance(user.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
 	if err != nil {
 		log.Printf("wnc.AssetsBalance error: %s", err)
+		logTelegram(fmt.Sprintf("wnc.AssetsBalance error: %s", err))
 		balance = 0
 	} else {
-		log.Println(abr.Balance)
 		balance = uint64(abr.Balance)
 	}
 
@@ -120,7 +120,6 @@ func signUpPostView(ctx *macaron.Context, siForm SignInForm, sess session.Store)
 	success := &JsonResponse{Success: true}
 
 	user := ctx.Data["User"].(*User)
-	log.Println(user)
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
 	if err == nil {
 		user.PasswordHash = string(hashedPassword)
@@ -159,6 +158,7 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 			err := sendWelcomeEmail(user, ctx.GetCookie("lang"))
 			if err != nil {
 				log.Printf("error sending email: %s", err)
+				logTelegram(fmt.Sprintf("error sending email: %s", err))
 			} else {
 				applicant := &Badge{Name: "applicant"}
 				db.First(applicant, applicant)
@@ -176,7 +176,6 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 		return
 	}
 
-	log.Println(uid)
 	u := &User{Address: uid}
 	db.First(u, u)
 
@@ -192,6 +191,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 		_, err := wnc.AssetsTransfer(atr)
 		if err != nil {
 			log.Printf("Error gowaves.AssetsTransfer %s", err)
+			logTelegram(fmt.Sprintf("Error gowaves.AssetsTransfer %s", err))
 		}
 
 		u.EmailVerified = true
@@ -229,8 +229,6 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	} else {
 		balance = uint64(abr.Balance)
 	}
-
-	log.Printf("balance: %d", balance)
 
 	f.Success("You have successfully verified your email address. We have sent you your 1 free anote.")
 

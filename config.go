@@ -16,6 +16,7 @@ type config struct {
 	DbUser          string `json:"db_user"`
 	DbPass          string `json:"db_pass"`
 	SendgridKey     string `json:"sendgrid_key"`
+	Telegram        string `json:"telegram"`
 	WavesNodeApiKey string `json:"wavesnode_apikey"`
 }
 

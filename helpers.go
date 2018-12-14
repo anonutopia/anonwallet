@@ -6,11 +6,12 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 
 	"github.com/go-macaron/session"
-	"gopkg.in/macaron.v1"
+	macaron "gopkg.in/macaron.v1"
 )
 
 func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
@@ -37,6 +38,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 			u.BitcoinAddr, err = bg.getAddress()
 			if err != nil {
 				log.Printf("Error in bg.getAddress: %s", err)
+				logTelegram(fmt.Sprintf("Error in bg.getAddress: %s", err))
 			} else {
 				db.Save(u)
 			}
@@ -46,6 +48,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 			u.EtherAddr, err = eg.getAddress(uint32(u.ID))
 			if err != nil {
 				log.Printf("Error in eg.getAddress: %s", err)
+				logTelegram(fmt.Sprintf("Error in eg.getAddress: %s", err))
 			}
 			db.Save(u)
 		}

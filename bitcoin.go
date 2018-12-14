@@ -23,6 +23,7 @@ func (bg *BitcoinGenerator) getAddress() (string, error) {
 
 	if err != nil {
 		log.Println("Error in BitcoinGenerator.getAddress: " + string(stderr.Bytes()))
+		logTelegram("Error in BitcoinGenerator.getAddress: " + string(stderr.Bytes()))
 		return "", err
 	}
 	return strings.TrimRight(string(stdout.Bytes()), "\n"), nil
@@ -38,6 +39,7 @@ func (bg *BitcoinGenerator) getBalance(address string) (float64, error) {
 
 	if err != nil {
 		log.Printf("Error in BitcoinGenerator.getBalance (address: %s): %s", address, string(stderr.Bytes()))
+		logTelegram(fmt.Sprintf("Error in BitcoinGenerator.getBalance (address: %s): %s", address, string(stderr.Bytes())))
 		return 0, err
 	}
 
