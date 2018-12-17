@@ -839,7 +839,7 @@ function Wallet() {
         window.localStorage.setItem('encrypted', seed.encrypt(password));
         Cookies.set('address', seed.address, { expires: 365 });
         $.ajax({
-            url: '/sign-up/',
+            url: '/init/',
             method: 'POST',
             data : {
                 password: password

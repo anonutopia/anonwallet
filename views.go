@@ -264,7 +264,7 @@ func initView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	user := &User{Email: uid}
 	db.First(user, user)
 
-	log.Println(user)
+	ctx.SetCookie("email", uid, 1<<31-1)
 
 	applicant := &Badge{Name: "applicant"}
 	db.First(applicant, applicant)
@@ -273,6 +273,25 @@ func initView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	ctx.HTMLSet(200, "login", "init")
 }
 
-func initPostView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+func initPostView(ctx *macaron.Context, f *session.Flash, sess session.Store, siForm SignInForm) {
+	success := &JsonResponse{Success: true}
 
+	a := ctx.GetCookie("address")
+	e := ctx.GetCookie("email")
+
+	user := &User{Email: e}
+	db.First(user, user)
+
+	user.Address = a
+	db.Save(user)
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
+	if err == nil {
+		user.PasswordHash = string(hashedPassword)
+		db.Save(user)
+	} else {
+		success.Success = false
+	}
+
+	ctx.JSON(200, success)
 }

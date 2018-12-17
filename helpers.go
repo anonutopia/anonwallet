@@ -25,6 +25,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	if len(a) > 0 {
 		u := &User{Address: a}
 		db.First(u, u)
+
 		if u.ID == 0 {
 			if len(r) > 0 {
 				u.Referral = r
