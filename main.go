@@ -70,6 +70,7 @@ func main() {
 	m.Get("/sign-up-import/", newPageData, signUpImportView)
 	m.Get("/locales.json", newPageData, localesjsView)
 	m.Get("/verify/:uid", newPageData, verifyView)
+	m.Get("/init/:uid", newPageData, initView)
 
 	m.Post("/apply/", binding.Bind(ApplyForm{}), newPageData, loginRequired, applyView)
 	m.Post("/sign-in/", binding.Bind(SignInForm{}), newPageData, signInPostView)

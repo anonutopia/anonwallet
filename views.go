@@ -232,7 +232,9 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 
 	f.Success("You have successfully verified your email address. We have sent you your 1 free anote.")
 
-	if balance >= (1000 * satInBtc) {
+	citizenLimit := (10 * satInBtc / anote.Price) * satInBtc
+
+	if balance >= citizenLimit {
 		citizen := &Badge{Name: "citizen"}
 		db.First(citizen, citizen)
 		db.Model(u).Association("Badges").Append(citizen)
@@ -251,4 +253,26 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	}
 
 	ctx.Redirect("/settings/")
+}
+
+func initView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+	uid, err := decrypt([]byte(conf.DbPass[:16]), ctx.Params("uid"))
+	if err != nil {
+		return
+	}
+
+	user := &User{Email: uid}
+	db.First(user, user)
+
+	log.Println(user)
+
+	applicant := &Badge{Name: "applicant"}
+	db.First(applicant, applicant)
+	db.Model(user).Association("Badges").Append(applicant)
+
+	ctx.HTMLSet(200, "login", "init")
+}
+
+func initPostView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+
 }

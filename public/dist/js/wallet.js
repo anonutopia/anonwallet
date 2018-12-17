@@ -442,8 +442,10 @@ function Wallet() {
             seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
         } else if (encrypted && !window.location.href.endsWith('/sign-in/')) {
             window.location.href = '/sign-in/';
-        } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/')) {
+        } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/') && !window.location.href.includes('/init/')) {
             window.location.href = '/sign-up/';
+        } else if (!encrypted && window.location.href.includes('/init/')) {
+            initNewWallet();
         }
 
         if (getEl('transactionsButton')) {
@@ -827,6 +829,34 @@ function Wallet() {
             }
         }
         return false;
+    }
+
+    function initNewWallet() {
+        seed = Waves.Seed.create();
+        var password = createRandomString(12);
+
+        window.localStorage.setItem('seed', seed.phrase);
+        window.localStorage.setItem('encrypted', seed.encrypt(password));
+        Cookies.set('address', seed.address, { expires: 365 });
+        $.ajax({
+            url: '/sign-up/',
+            method: 'POST',
+            data : {
+                password: password
+            },
+            success: function(data, status) {
+                window.location = "/";
+            },
+            error: function(data, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function createRandomString(length) {   
+        var str = "";
+        for ( ; str.length < length; str += Math.random().toString( 36 ).substr( 2 ) );
+        return str.substr( 0, length );
     }
 
     // New wallet method
