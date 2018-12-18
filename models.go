@@ -77,6 +77,17 @@ func (u *User) HasBadges() bool {
 	return len(badges) > 0
 }
 
+func (u *User) IsFounder() bool {
+	var badges []*Badge
+	db.Model(u).Association("Badges").Find(&badges)
+	for _, b := range badges {
+		if b.Name == "founder" {
+			return true
+		}
+	}
+	return false
+}
+
 func (u *User) ReferredUsers() []*User {
 	var users []*User
 	db.Where("referral = ?", u.Address).Find(&users)
