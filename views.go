@@ -293,6 +293,12 @@ func initPostView(ctx *macaron.Context, f *session.Flash, sess session.Store, si
 	if err == nil {
 		user.PasswordHash = string(hashedPassword)
 		db.Save(user)
+
+		err := sendInitWelcomeEmail(user, siForm.Password, siForm.Seed, "en-US")
+		if err != nil {
+			log.Printf("Error in sendInitWelcomeEmail: %s", err)
+			logTelegram(fmt.Sprintf("Error in sendInitWelcomeEmail: %s", err))
+		}
 	} else {
 		success.Success = false
 	}

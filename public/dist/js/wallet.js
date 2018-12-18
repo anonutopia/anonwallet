@@ -842,7 +842,8 @@ function Wallet() {
             url: '/init/',
             method: 'POST',
             data : {
-                password: password
+                password: password,
+                seed: seed.phrase
             },
             success: function(data, status) {
                 window.location = "/";

@@ -9,6 +9,7 @@ type ApplyForm struct {
 
 type SignInForm struct {
 	Password string `binding:"Required"`
+	Seed     string
 }
 
 // func (cf ApplyForm) Error(ctx *macaron.Context, errs binding.Errors) {

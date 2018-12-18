@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	ui18n "github.com/Unknwon/i18n"
-	"github.com/sendgrid/sendgrid-go"
+	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
@@ -99,6 +99,52 @@ func sendWelcomeEmail(to *User, lang string) error {
 		VerificationLink string
 	}{
 		VerificationLink: verLink,
+	}
+
+	var tpl bytes.Buffer
+	if err := t.Execute(&tpl, data); err != nil {
+		return err
+	}
+
+	em.BodyHTML = tpl.String()
+
+	err = sendEmail(em)
+
+	return err
+}
+
+func sendInitWelcomeEmail(to *User, password string, seed string, lang string) error {
+	em := &EmailMessage{}
+	em.Subject = "Welcome to Anonutopia"
+	em.FromName = "Anonutopia"
+	em.FromEmail = "no-reply@anonutopia.com"
+	em.BodyText = "Welcome to Anonutopia!"
+	em.BodyHTML = "Welcome to Anonutopia!"
+	em.ToEmail = to.Email
+	em.ToName = to.Nickname
+
+	t := template.New("welcomeinit.html")
+	var err error
+	t, err = t.ParseFiles("emails/welcomeinit.html")
+	if err != nil {
+		return err
+	}
+
+	uid, err := encrypt([]byte(conf.DbPass[:16]), to.Address)
+	if err != nil {
+		return err
+	}
+
+	verLink := fmt.Sprintf(ui18n.Tr(lang, "verificationLink"), uid)
+
+	data := struct {
+		VerificationLink string
+		Password         string
+		Seed             string
+	}{
+		VerificationLink: verLink,
+		Password:         password,
+		Seed:             seed,
 	}
 
 	var tpl bytes.Buffer
