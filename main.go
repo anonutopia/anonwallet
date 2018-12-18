@@ -28,6 +28,8 @@ var bam *BitcoinAddressMonitor
 
 var eam *EthereumAddressMonitor
 
+var ubm *UserBalanceMonitor
+
 var loc map[string]string
 
 var pc *PriceClient
@@ -58,6 +60,8 @@ func main() {
 	wnc = initWaves()
 
 	anote = initAnote()
+
+	ubm = initUserBalanceMonitor()
 
 	m.Get("/", newPageData, loginRequired, homeView)
 	m.Get("/settings/", newPageData, loginRequired, settingsView)

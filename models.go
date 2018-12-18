@@ -78,10 +78,14 @@ func (u *User) HasBadges() bool {
 }
 
 func (u *User) IsFounder() bool {
+	return u.HasBadge("founder")
+}
+
+func (u *User) HasBadge(badge string) bool {
 	var badges []*Badge
 	db.Model(u).Association("Badges").Find(&badges)
 	for _, b := range badges {
-		if b.Name == "founder" {
+		if b.Name == badge {
 			return true
 		}
 	}

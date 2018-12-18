@@ -157,3 +157,73 @@ type EthBalance struct {
 	Message string `json:"message"`
 	Result  string `json:"result"`
 }
+
+type UserBalanceMonitor struct {
+}
+
+func (ubm *UserBalanceMonitor) start() {
+	go func() {
+		for {
+			ubm.checkBalances()
+
+			time.Sleep(time.Minute * 5)
+		}
+	}()
+}
+
+func (ubm *UserBalanceMonitor) checkBalances() {
+	var users []*User
+	db.Find(&users)
+
+	for _, u := range users {
+		if u.HasBadges() {
+			var balance uint64
+
+			abr, err := wnc.AssetsBalance(u.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
+			if err != nil {
+				log.Printf("wnc.AssetsBalance error: %s", err)
+				logTelegram(fmt.Sprintf("wnc.AssetsBalance error: %s", err))
+				balance = 0
+			} else {
+				balance = uint64(abr.Balance)
+			}
+
+			log.Printf("%s %d", u.Address, balance)
+
+			citizenLimit := (10 * satInBtc / anote.Price) * satInBtc
+			founderLimit := 10000 * satInBtc
+			pioneerLimit := 100000 * satInBtc
+
+			citizen := &Badge{Name: "citizen"}
+			db.First(citizen, citizen)
+			founder := &Badge{Name: "founder"}
+			db.First(founder, founder)
+			pioneer := &Badge{Name: "pioneer"}
+			db.First(pioneer, pioneer)
+
+			if balance >= citizenLimit && !u.HasBadge("citizen") {
+				db.Model(u).Association("Badges").Append(citizen)
+			} else if balance < citizenLimit && u.HasBadge("citizen") && u.ReferredUsersVerifiedCount() < 10 {
+				db.Model(u).Association("Badges").Delete(citizen)
+			}
+
+			if balance >= founderLimit && !u.HasBadge("founder") {
+				db.Model(u).Association("Badges").Append(founder)
+			} else if balance < founderLimit && u.HasBadge("founder") {
+				db.Model(u).Association("Badges").Delete(founder)
+			}
+
+			if balance >= pioneerLimit && !u.HasBadge("pioneer") {
+				db.Model(u).Association("Badges").Append(pioneer)
+			} else if balance < pioneerLimit && u.HasBadge("pioneer") {
+				db.Model(u).Association("Badges").Delete(pioneer)
+			}
+		}
+	}
+}
+
+func initUserBalanceMonitor() *UserBalanceMonitor {
+	ubm := &UserBalanceMonitor{}
+	ubm.start()
+	return ubm
+}
