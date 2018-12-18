@@ -142,9 +142,13 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 
 	if validateEmailDomain(af.Email) {
 		user := ctx.Data["User"].(*User)
+		first := false
 
 		user.Nickname = af.Nickname
-		user.Email = af.Email
+		if len(user.Email) == 0 {
+			user.Email = af.Email
+			first = true
+		}
 		user.Country = af.Country
 		user.City = af.City
 
@@ -154,7 +158,7 @@ func applyView(ctx *macaron.Context, af ApplyForm) {
 			success.Success = false
 			success.Message = err.Error.Error()
 			status = 400
-		} else {
+		} else if first {
 			err := sendWelcomeEmail(user, ctx.GetCookie("lang"))
 			if err != nil {
 				log.Printf("error sending email: %s", err)

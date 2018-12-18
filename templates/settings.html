@@ -27,33 +27,17 @@
 
             <div class="row">
 
-                <div class="col-md-6">
-                    <!-- Default box -->
+                <div class="col-md-4">
                     <div class="box">
                         <div class="box-header with-border">
-                            <i class="fa fa-globe"></i>
-                            <h3 class="box-title">{{.i18n.Tr "anonutopia"}}</h3>
-                        </div>
-{{ if .User.HasBadges }}
-                        <div class="box-body">
-                            <p><strong>Anonutopia Badges</strong></p>
-                            <p>
-{{ range .User.Badges }}
-                                <small class="label bg-green" style="text-transform: capitalize;"><i class="fa fa-tag"></i>&nbsp;&nbsp;{{ .Name }}</small>
-{{ end }}
-                            </p>
-                            <p style="margin: 15px 0 10px 0;"><strong>Verified Referred Applicants / Citizens</strong></p>
-                            <p><input type="text" class="form-control input-lg" value="{{ .Referred }}" readonly></p>
-{{ if not .User.EmailVerified }}
-                            <p class="text-green" style="margin: 15px 0 0 0;">{{.i18n.Tr "applicationSuccess"}}</p>
-{{ end }}
-                        </div>
-{{ else }}
+                            <i class="fa fa-user"></i>
+                            <h3 class="box-title">{{.i18n.Tr "Profile"}}</h3>
+                        </div>       
                         <form action="javascript:;" id="applicationForm">
                             <div class="box-body">
                                 <div class="form-group" id="emailGroup">
                                     <label for="email">{{.i18n.Tr "email"}}</label>
-                                    <input type="text" class="form-control input-lg" id="email" placeholder="anon@anonutopia.com" name="email" value="{{ .User.Email }}">
+                                    <input type="text" class="form-control input-lg" id="email" placeholder="anon@anonutopia.com" name="email" value="{{ .User.Email }}"{{ if .User.HasBadges }} readonly {{ end }}>
                                 </div>
                                 <div class="form-group" id="nicknameGroup">
                                     <label for="nickname">{{.i18n.Tr "nick"}}</label>
@@ -75,18 +59,47 @@
                             <input type="hidden" name="countryHidden" id="countryHidden" value="{{ .User.Country }}">
                             <input type="hidden" name="cityHidden" id="cityHidden" value="{{ .User.City }}">
                             <div class="box-footer">
+{{ if .User.HasBadges }}
+                                <input type="submit" value="{{.i18n.Tr "update"}}" class="btn btn-lg btn-success btn-block" id="saveButton">
+{{ else }}
                                 <input type="submit" value="{{.i18n.Tr "apply"}}" class="btn btn-lg btn-success btn-block" id="saveButton">
+{{ end }}
                             </div>
                         </form>
                         <div class="box-body" style="display: none;" id="applicationSuccess">
                             <p class="text-green" style="margin: 0;">{{.i18n.Tr "applicationSuccess"}}</p>
                         </div>
+                    </div>             
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Default box -->
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-globe"></i>
+                            <h3 class="box-title">{{.i18n.Tr "anonutopia"}}</h3>
+                        </div>
+                        <div class="box-body">
+                            <p><strong>Anonutopia Badges</strong></p>
+                            <p>
+{{ if not .User.HasBadges }}
+                                <p class="text-green" style="margin: 15px 0 5px 0;">{{.i18n.Tr "noBadges"}}</p>
 {{ end }}
+{{ range .User.Badges }}
+                                <small class="label bg-green" style="text-transform: capitalize;"><i class="fa fa-tag"></i>&nbsp;&nbsp;{{ .Name }}</small>
+{{ end }}
+                            </p>
+                            <p style="margin: 15px 0 10px 0;"><strong>Verified Referred Applicants / Citizens</strong></p>
+                            <p><input type="text" class="form-control input-lg" value="{{ .Referred }}" readonly></p>
+{{ if not .User.EmailVerified }}
+                            <!-- <p class="text-green" style="margin: 15px 0 5px 0;">{{.i18n.Tr "applicationSuccess"}}</p> -->
+{{ end }}
+                        </div>
                     </div>
                     <!-- /.box -->
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <!-- Default box -->
                     <div class="box">
                         <div class="box-header with-border">
