@@ -315,7 +315,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 	ctx.Data["Form"] = faf
 	user := ctx.Data["User"].(*User)
 
-	if strings.HasPrefix(faf.FbLink, "https://web.facebook.com/") {
+	if strings.HasPrefix(faf.FbLink, "https://web.facebook.com/") || strings.HasPrefix(faf.FbLink, "https://www.facebook.com/") || strings.HasPrefix(faf.FbLink, "https://m.facebook.com/") {
 		response, err := http.Get(faf.FbLink)
 		if err != nil {
 			ctx.Data["ErrorMessage"] = fmt.Sprintf("%e", err)
@@ -327,7 +327,6 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 			} else {
 				containsLink := strings.Contains(string(contents), "https://www.anonutopia.com")
 				containsAddress := strings.Contains(string(contents), user.Address)
-				containsHashtag := strings.Contains(string(contents), "#AnonutopiaUprising")
 				timeLimitAllowed := false
 
 				if user.LastFacebookAwardTime == nil {
@@ -336,7 +335,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 					timeLimitAllowed = true
 				}
 
-				if containsLink && containsAddress && containsHashtag && timeLimitAllowed && user.NextFacebookAward > 0 {
+				if containsLink && containsAddress && timeLimitAllowed && user.NextFacebookAward > 0 {
 					atr := &gowaves.AssetsTransferRequest{
 						Amount:    user.NextFacebookAward,
 						AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
@@ -360,7 +359,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 						ctx.Redirect("/settings/")
 						return
 					}
-				} else if !containsLink || !containsAddress || !containsHashtag {
+				} else if !containsLink || !containsAddress {
 					ctx.Data["Errors"] = true
 					ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link or #AnonutopiaUprising."
 				} else if !timeLimitAllowed {
@@ -372,6 +371,9 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 				}
 			}
 		}
+	} else {
+		ctx.Data["Errors"] = true
+		ctx.Data["ErrorMessage"] = "Facebook link must begin with https://www, https://web or https://m."
 	}
 
 	var balance uint64

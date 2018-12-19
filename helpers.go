@@ -73,7 +73,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 		} else if !u.ReceivedFreeAnote && u.FacebookShareEnabled() {
 			ctx.Data["Notification"] = true
 			ctx.Data["NotificationTitle"] = "Get More Free Anotes"
-			ctx.Data["NotificationMessage"] = "Get more free anotes by using your referral link (\"Profit\" page in wallet) to invite your friends over Facebook or join our Telegram group and ask our bot for it."
+			ctx.Data["NotificationMessage"] = "Get more free anotes by inviting your friends over Facebook (use settings page to share or profit page to get referral URL) or join our Telegram group and ask our bot for it."
 		} else if !u.ReceivedFreeAnote {
 			ctx.Data["Notification"] = true
 			ctx.Data["NotificationTitle"] = "Get More Free Anotes"
@@ -81,7 +81,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 		} else if u.FacebookShareEnabled() {
 			ctx.Data["Notification"] = true
 			ctx.Data["NotificationTitle"] = "Get More Free Anotes"
-			ctx.Data["NotificationMessage"] = "Get more free anotes by using your referral link (\"Profit\" page in wallet) to invite your friends over Facebook."
+			ctx.Data["NotificationMessage"] = "Get more free anotes by inviting your friends over Facebook (use settings page or to share or profit page to get referral URL)."
 		}
 
 		ctx.Data["User"] = u

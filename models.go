@@ -144,3 +144,9 @@ type UsedAddress struct {
 	User    User
 	Balance uint64 `sql:"type:bigint"`
 }
+
+type SharePost struct {
+	gorm.Model
+	URI       string `sql:"size:255;unique_index"`
+	Processed bool   `sql:"DEFAULT:false"`
+}
