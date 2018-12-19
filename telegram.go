@@ -14,17 +14,16 @@ func initBot() *tgbotapi.BotAPI {
 
 	bot.Debug = true
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	msg := tgbotapi.NewMessage(-1001325718529, "Robot successfully started - anonwallet.")
-	bot.Send(msg)
+	log.Printf("Telegram authorized on account %s", bot.Self.UserName)
 
 	return bot
 }
 
 func logTelegram(message string) {
-	msg := tgbotapi.NewMessage(-1001325718529, message)
-	bot.Send(msg)
+	if conf.TelegramLog {
+		msg := tgbotapi.NewMessage(-1001325718529, message)
+		bot.Send(msg)
+	}
 }
 
 type TelegramUpdate struct {

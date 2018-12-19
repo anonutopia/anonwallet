@@ -11,6 +11,7 @@ type config struct {
 	NodeAddress     string `json:"node_address"`
 	Port            uint   `json:"port"`
 	Debug           bool   `json:"debug"`
+	TelegramLog     bool   `json:"telegram_log"`
 	BtcMasterKey    string `json:"btc_master_key"`
 	DbName          string `json:"db_name"`
 	DbUser          string `json:"db_user"`

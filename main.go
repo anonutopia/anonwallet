@@ -40,28 +40,19 @@ var anote *Anote
 
 func main() {
 	m = initMacaron()
-
 	conf = initConfig()
-
 	bot = initBot()
-
 	db = initDb()
-
 	bg = initBtcGen()
-
 	eg = initEthGen()
-
 	bam = initBaMonitor()
-
 	eam = initEaMonitor()
-
 	pc = initPriceClient()
-
 	wnc = initWaves()
-
 	anote = initAnote()
-
 	ubm = initUserBalanceMonitor()
+
+	logTelegram("Successfully started - anonwallet.")
 
 	m.Get("/", newPageData, loginRequired, homeView)
 	m.Get("/settings/", newPageData, loginRequired, settingsView)
@@ -82,7 +73,6 @@ func main() {
 	m.Post("/init/", binding.Bind(SignInForm{}), initPostView)
 	m.Post("/settings/", binding.Bind(FacebookAwardForm{}), newPageData, initFbPostView)
 
-	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)
 	log.Printf("Server is running on: %s", addr)
 	http.ListenAndServe(addr, m)
