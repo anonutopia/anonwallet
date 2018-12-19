@@ -21,6 +21,9 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	r := ctx.GetCookie("referral")
 
 	ctx.Data["NodeAddress"] = conf.NodeAddress
+	ctx.Data["Notification"] = false
+	ctx.Data["NotificationTitle"] = ""
+	ctx.Data["NotificationMessage"] = ""
 
 	if len(a) > 0 {
 		u := &User{Address: a}
@@ -61,6 +64,24 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 
 		if u.Nickname == u.Address {
 			u.Nickname = ""
+		}
+
+		if !u.EmailVerified {
+			ctx.Data["Notification"] = true
+			ctx.Data["NotificationTitle"] = "Please Verify Your Email Address"
+			ctx.Data["NotificationMessage"] = "Please verify your email address and you will receive free anotes. If you haven't received our email, please check your spam folder."
+		} else if !u.ReceivedFreeAnote && u.FacebookShareEnabled() {
+			ctx.Data["Notification"] = true
+			ctx.Data["NotificationTitle"] = "Get More Free Anotes"
+			ctx.Data["NotificationMessage"] = "Get more free anotes by using your referral link (\"Profit\" page in wallet) to invite your friends over Facebook or join our Telegram group and ask our bot for it."
+		} else if !u.ReceivedFreeAnote {
+			ctx.Data["Notification"] = true
+			ctx.Data["NotificationTitle"] = "Get More Free Anotes"
+			ctx.Data["NotificationMessage"] = "Get more free anotes by joining our Telegram group and asking our bot for it."
+		} else if u.FacebookShareEnabled() {
+			ctx.Data["Notification"] = true
+			ctx.Data["NotificationTitle"] = "Get More Free Anotes"
+			ctx.Data["NotificationMessage"] = "Get more free anotes by using your referral link (\"Profit\" page in wallet) to invite your friends over Facebook."
 		}
 
 		ctx.Data["User"] = u
