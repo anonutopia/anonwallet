@@ -188,8 +188,6 @@ func (ubm *UserBalanceMonitor) checkBalances() {
 				balance = uint64(abr.Balance)
 			}
 
-			log.Printf("%s %d", u.Address, balance)
-
 			citizenLimit := (10 * satInBtc / anote.Price) * satInBtc
 			founderLimit := 10000 * satInBtc
 			pioneerLimit := 100000 * satInBtc

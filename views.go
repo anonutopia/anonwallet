@@ -315,65 +315,76 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 	ctx.Data["Form"] = faf
 	user := ctx.Data["User"].(*User)
 
-	if strings.HasPrefix(faf.FbLink, "https://web.facebook.com/") || strings.HasPrefix(faf.FbLink, "https://www.facebook.com/") || strings.HasPrefix(faf.FbLink, "https://m.facebook.com/") {
-		response, err := http.Get(faf.FbLink)
-		if err != nil {
-			ctx.Data["ErrorMessage"] = fmt.Sprintf("%e", err)
-		} else {
-			defer response.Body.Close()
-			contents, err := ioutil.ReadAll(response.Body)
+	if strings.Contains(faf.FbLink, "facebook.com/") {
+		fbLinkSplit := strings.Split(faf.FbLink, "facebook.com/")
+		sp := &SharePost{URI: fbLinkSplit[1]}
+		db.First(sp, sp)
+
+		if sp.ID == 0 {
+			response, err := http.Get(faf.FbLink)
 			if err != nil {
 				ctx.Data["ErrorMessage"] = fmt.Sprintf("%e", err)
 			} else {
-				containsLink := strings.Contains(string(contents), "https://www.anonutopia.com")
-				containsAddress := strings.Contains(string(contents), user.Address)
-				timeLimitAllowed := false
+				defer response.Body.Close()
+				contents, err := ioutil.ReadAll(response.Body)
+				if err != nil {
+					ctx.Data["ErrorMessage"] = fmt.Sprintf("%e", err)
+				} else {
+					containsLink := strings.Contains(string(contents), "https://www.anonutopia.com") || strings.Contains(string(contents), "https%3A%2F%2Fwww.anonutopia.com")
+					containsAddress := strings.Contains(string(contents), user.Address)
+					timeLimitAllowed := false
 
-				if user.LastFacebookAwardTime == nil {
-					timeLimitAllowed = true
-				} else if user.LastFacebookAwardTime.Add(24 * time.Hour).Before(time.Now()) {
-					timeLimitAllowed = true
-				}
-
-				if containsLink && containsAddress && timeLimitAllowed && user.NextFacebookAward > 0 {
-					atr := &gowaves.AssetsTransferRequest{
-						Amount:    user.NextFacebookAward,
-						AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
-						Fee:       100000,
-						Recipient: user.Address,
-						Sender:    conf.NodeAddress,
+					if user.LastFacebookAwardTime == nil {
+						timeLimitAllowed = true
+					} else if user.LastFacebookAwardTime.Add(24 * time.Hour).Before(time.Now()) {
+						timeLimitAllowed = true
 					}
 
-					_, err := wnc.AssetsTransfer(atr)
-					if err != nil {
-						log.Printf("Error gowaves.AssetsTransfer %s", err)
-						logTelegram(fmt.Sprintf("Error gowaves.AssetsTransfer %s", err))
-					} else {
-						f.Success("You have successfully received your Facebook share award.")
+					if containsLink && containsAddress && timeLimitAllowed && user.NextFacebookAward > 0 {
+						atr := &gowaves.AssetsTransferRequest{
+							Amount:    user.NextFacebookAward,
+							AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
+							Fee:       100000,
+							Recipient: user.Address,
+							Sender:    conf.NodeAddress,
+						}
 
-						now := time.Now()
-						user.NextFacebookAward -= 20000000
-						user.LastFacebookAwardTime = &now
-						db.Save(user)
+						_, err := wnc.AssetsTransfer(atr)
+						if err != nil {
+							log.Printf("Error gowaves.AssetsTransfer %s", err)
+							logTelegram(fmt.Sprintf("Error gowaves.AssetsTransfer %s", err))
+						} else {
+							f.Success("You have successfully received your Facebook share award.")
 
-						ctx.Redirect("/settings/")
-						return
+							now := time.Now()
+							user.NextFacebookAward -= 20000000
+							user.LastFacebookAwardTime = &now
+							db.Save(user)
+
+							db.Create(sp)
+
+							ctx.Redirect("/settings/")
+							return
+						}
+					} else if !containsLink || !containsAddress {
+						ctx.Data["Errors"] = true
+						ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link."
+					} else if !timeLimitAllowed {
+						ctx.Data["Errors"] = true
+						ctx.Data["ErrorMessage"] = "You have to wait at least 24 hours to do this again."
+					} else if user.NextFacebookAward == 0 {
+						ctx.Data["Errors"] = true
+						ctx.Data["ErrorMessage"] = "You have received all Facebook share awards."
 					}
-				} else if !containsLink || !containsAddress {
-					ctx.Data["Errors"] = true
-					ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link or #AnonutopiaUprising."
-				} else if !timeLimitAllowed {
-					ctx.Data["Errors"] = true
-					ctx.Data["ErrorMessage"] = "You have to wait at least 24 hours to do this again."
-				} else if user.NextFacebookAward == 0 {
-					ctx.Data["Errors"] = true
-					ctx.Data["ErrorMessage"] = "You have received all Facebook share awards."
 				}
 			}
+		} else {
+			ctx.Data["Errors"] = true
+			ctx.Data["ErrorMessage"] = "This Facebook post has already been used."
 		}
 	} else {
 		ctx.Data["Errors"] = true
-		ctx.Data["ErrorMessage"] = "Facebook link must begin with https://www, https://web or https://m."
+		ctx.Data["ErrorMessage"] = "The link you provided is not a Facebook link."
 	}
 
 	var balance uint64
