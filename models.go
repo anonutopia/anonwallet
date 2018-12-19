@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/jinzhu/gorm"
 )
@@ -29,6 +30,8 @@ type User struct {
 	EtherAddr               string `sql:"size:255"`
 	EtherBalanceNew         int    `sql:"DEFAULT:0"`
 	EtherBalanceProcessed   int    `sql:"DEFAULT:0"`
+	NextFacebookAward       int    `sql:"DEFAULT:100000000"`
+	LastFacebookAwardTime   *time.Time
 	ProfitEth               uint64
 	ProfitWav               uint64
 	ProfitBtc               uint64
@@ -79,6 +82,16 @@ func (u *User) HasBadges() bool {
 
 func (u *User) IsFounder() bool {
 	return u.HasBadge("founder")
+}
+
+func (u *User) FacebookShareEnabled() bool {
+	if u.LastFacebookAwardTime == nil && u.NextFacebookAward > 0 {
+		return true
+	} else if u.LastFacebookAwardTime.Add(24*time.Hour).Before(time.Now()) && u.NextFacebookAward > 0 {
+		return true
+	}
+
+	return false
 }
 
 func (u *User) HasBadge(badge string) bool {

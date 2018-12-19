@@ -80,6 +80,7 @@ func main() {
 	m.Post("/sign-in/", binding.Bind(SignInForm{}), newPageData, signInPostView)
 	m.Post("/sign-up/", binding.Bind(SignInForm{}), newPageData, signUpPostView)
 	m.Post("/init/", binding.Bind(SignInForm{}), initPostView)
+	m.Post("/settings/", binding.Bind(FacebookAwardForm{}), newPageData, initFbPostView)
 
 	// m.Run()
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)

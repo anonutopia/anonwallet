@@ -1,5 +1,10 @@
 package main
 
+import (
+	"github.com/go-macaron/binding"
+	macaron "gopkg.in/macaron.v1"
+)
+
 type ApplyForm struct {
 	Nickname string `binding:"Required"`
 	Email    string `binding:"Email"`
@@ -12,6 +17,10 @@ type SignInForm struct {
 	Seed     string
 }
 
-// func (cf ApplyForm) Error(ctx *macaron.Context, errs binding.Errors) {
-// 	ctx.Data["Errors"] = errs
-// }
+type FacebookAwardForm struct {
+	FbLink string `binding:"Required"`
+}
+
+func (faf FacebookAwardForm) Error(ctx *macaron.Context, errs binding.Errors) {
+	ctx.Data["Errors"] = errs
+}

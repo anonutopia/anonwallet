@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net/http"
+	"strings"
+	"time"
 
 	"github.com/anonutopia/gowaves"
 	"github.com/go-macaron/session"
@@ -304,4 +308,89 @@ func initPostView(ctx *macaron.Context, f *session.Flash, sess session.Store, si
 	}
 
 	ctx.JSON(200, success)
+}
+
+func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flash) {
+	ctx.Data["ErrorMessage"] = "This field is required."
+	ctx.Data["Form"] = faf
+	user := ctx.Data["User"].(*User)
+
+	if strings.HasPrefix(faf.FbLink, "https://web.facebook.com/") {
+		response, err := http.Get(faf.FbLink)
+		if err != nil {
+			ctx.Data["ErrorMessage"] = fmt.Sprintf("%e", err)
+		} else {
+			defer response.Body.Close()
+			contents, err := ioutil.ReadAll(response.Body)
+			if err != nil {
+				ctx.Data["ErrorMessage"] = fmt.Sprintf("%e", err)
+			} else {
+				containsLink := strings.Contains(string(contents), "https://www.anonutopia.com")
+				containsAddress := strings.Contains(string(contents), user.Address)
+				timeLimitAllowed := false
+
+				if user.LastFacebookAwardTime == nil {
+					timeLimitAllowed = true
+				} else if user.LastFacebookAwardTime.Add(24 * time.Hour).Before(time.Now()) {
+					timeLimitAllowed = true
+				}
+
+				if containsLink && containsAddress && timeLimitAllowed && user.NextFacebookAward > 0 {
+					atr := &gowaves.AssetsTransferRequest{
+						Amount:    user.NextFacebookAward,
+						AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
+						Fee:       100000,
+						Recipient: user.Address,
+						Sender:    conf.NodeAddress,
+					}
+
+					_, err := wnc.AssetsTransfer(atr)
+					if err != nil {
+						log.Printf("Error gowaves.AssetsTransfer %s", err)
+						logTelegram(fmt.Sprintf("Error gowaves.AssetsTransfer %s", err))
+					} else {
+						f.Success("You have successfully received your Facebook share award.")
+
+						now := time.Now()
+						user.NextFacebookAward -= 20000000
+						user.LastFacebookAwardTime = &now
+						db.Save(user)
+
+						ctx.Redirect("/settings/")
+						return
+					}
+				} else if !containsLink && !containsAddress {
+					ctx.Data["Errors"] = true
+					ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link."
+				} else if !timeLimitAllowed {
+					ctx.Data["Errors"] = true
+					ctx.Data["ErrorMessage"] = "You have to wait at least 24 hours to do this again."
+				} else if user.NextFacebookAward == 0 {
+					ctx.Data["Errors"] = true
+					ctx.Data["ErrorMessage"] = "You have received all Facebook share awards."
+				}
+			}
+		}
+	}
+
+	var balance uint64
+
+	abr, err := wnc.AssetsBalance(user.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")
+	if err != nil {
+		log.Printf("wnc.AssetsBalance error: %s", err)
+		logTelegram(fmt.Sprintf("wnc.AssetsBalance error: %s", err))
+		balance = 0
+	} else {
+		balance = uint64(abr.Balance)
+	}
+
+	if balance >= satInBtc {
+		ctx.Data["UserHasAnotes"] = true
+	} else {
+		ctx.Data["UserHasAnotes"] = false
+	}
+
+	ctx.Data["Referred"] = user.ReferredUsersVerifiedCount()
+
+	ctx.HTML(200, "settings")
 }

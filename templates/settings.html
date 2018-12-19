@@ -12,16 +12,45 @@
         <section class="content" id="content">
 
 {{ if not .User.ReceivedFreeAnote }}
-            <div class="callout callout-danger">
+            <!-- <div class="callout callout-danger">
                 <h4>{{.i18n.Tr "telegramTitle"}}</h4>
                 <p>{{.i18n.Tr "telegramMessage"}} <a href="{{.i18n.Tr "homeLink"}}/airdrop/" target="_blank"><strong>{{.i18n.Tr "telegramHere"}}</strong></a>!</p>
-            </div>
+            </div> -->
 {{ end }}
 
 {{ if .Flash.SuccessMsg }}
             <div class="callout callout-success">
                 <h4>{{.i18n.Tr "success"}}</h4>
                 <p>{{ .Flash.SuccessMsg }}</p>
+            </div>
+{{ end }}
+
+{{ if .User.FacebookShareEnabled }}
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Default box -->
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <i class="fa fa-facebook"></i>
+                            <h3 class="box-title">Social Network Share Award</h3>
+                        </div>
+                        <form action="/settings/" method="POST">
+                            <div class="box-body">
+                                <div class="form-group" id="nicknameGroup">
+                                    <label for="fb_link">Link To Social Network Post</label>
+                                    <input type="text" class="form-control input-lg" id="fb_link" placeholder="https://web.facebook.com/anonutopia/posts/306845473483872" name="fb_link" value="{{ .Form.FbLink }}">
+{{ if .Errors }}
+                                    <p class="text-red" style="margin: 10px 0 0 0;">{{ .ErrorMessage }}</p>
+{{ end }}
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <input type="submit" value="Claim Free Anotes" class="btn btn-lg btn-success">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                </div>
             </div>
 {{ end }}
 
