@@ -359,7 +359,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 						ctx.Redirect("/settings/")
 						return
 					}
-				} else if !containsLink && !containsAddress {
+				} else if !containsLink || !containsAddress {
 					ctx.Data["Errors"] = true
 					ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link."
 				} else if !timeLimitAllowed {
