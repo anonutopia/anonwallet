@@ -327,6 +327,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 			} else {
 				containsLink := strings.Contains(string(contents), "https://www.anonutopia.com")
 				containsAddress := strings.Contains(string(contents), user.Address)
+				containsHashtag := strings.Contains(string(contents), "#AnonutopiaUprising")
 				timeLimitAllowed := false
 
 				if user.LastFacebookAwardTime == nil {
@@ -335,7 +336,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 					timeLimitAllowed = true
 				}
 
-				if containsLink && containsAddress && timeLimitAllowed && user.NextFacebookAward > 0 {
+				if containsLink && containsAddress && containsHashtag && timeLimitAllowed && user.NextFacebookAward > 0 {
 					atr := &gowaves.AssetsTransferRequest{
 						Amount:    user.NextFacebookAward,
 						AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
@@ -359,9 +360,9 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 						ctx.Redirect("/settings/")
 						return
 					}
-				} else if !containsLink || !containsAddress {
+				} else if !containsLink || !containsAddress || !containsHashtag {
 					ctx.Data["Errors"] = true
-					ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link."
+					ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link or #AnonutopiaUprising."
 				} else if !timeLimitAllowed {
 					ctx.Data["Errors"] = true
 					ctx.Data["ErrorMessage"] = "You have to wait at least 24 hours to do this again."
