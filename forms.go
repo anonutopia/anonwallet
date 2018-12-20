@@ -13,12 +13,22 @@ type ProfileForm struct {
 }
 
 type SignUpForm struct {
+	Address  string `binding:"Required"`
 	Password string `binding:"Required"`
 	Email    string `binding:"Required;Email"`
 	Seed     string `binding:"Required"`
 }
 
-func (lf SignUpForm) Error(ctx *macaron.Context, errs binding.Errors) {
+func (suf SignUpForm) Error(ctx *macaron.Context, errs binding.Errors) {
+	ctx.Data["Errors"] = errs
+}
+
+type SignInForm struct {
+	Address  string `binding:"Required"`
+	Password string `binding:"Required"`
+}
+
+func (sif SignInForm) Error(ctx *macaron.Context, errs binding.Errors) {
 	ctx.Data["Errors"] = errs
 }
 

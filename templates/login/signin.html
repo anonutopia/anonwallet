@@ -1,38 +1,67 @@
-<div class="login-box">
-    <div class="login-logo">
-        <a href="{{.i18n.Tr "homeLink"}}"><img src="{{.i18n.Tr "logo"}}" alt="Anonutopia Logo" style="width: 270px;"></a>
-    </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <p class="login-box-msg"><strong>{{.i18n.Tr "signInTitle"}}</strong></p>
-
-        <form action="javascript:;" method="post" id="signInForm">
-            <div class="form-group has-feedback" id="passwordGroup">
-                <input type="password" class="form-control input-lg" placeholder="Password" id="password">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <!-- header wrapper -->
+        <div class="header-wrapper sm-padding bg-dark">
+            <div class="container">
+                <h2>Wallet Sign In</h2>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active">Sign In</li>
+                </ul>
             </div>
-            <p class="text-red" style="display: none;" id="required">{{.i18n.Tr "requiredField"}}</p>
-            <div class="row">
-                <div class="col-xs-7">
-                    <!-- <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;Zapamti
-                        </label>
-                    </div> -->
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-5">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat btn-lg" id="signInButton">{{.i18n.Tr "signInButton"}}</button>
-                </div>
-                <!-- /.col -->
-            </div>
-        </form>
-
-        <div id="newGroupAjax" style="display: none;">
-            <p class="text-center"><img src="/dist/img/ajax-loader.gif" alt="Ajax Loader"></p>
         </div>
+        <!-- /header wrapper -->
+
+    </header>
+    <!-- /Header -->
+
+    <!-- Blog -->
+    <div id="blog" class="section md-padding">
+
+        <!-- Container -->
+        <div class="container">
+
+            <!-- Row -->
+            <div class="row">
+
+                <!-- Main -->
+                <div class="col-md-6 col-md-offset-3">
+
+                    <div class="well">
+                        <h3 class="text-center">Anonutopia Sign In</h3>
+{{ if .Finished }}
+                        <p class="bg-success text-success" style="margin: 15px 0; padding: 15px;">You have successfully signed in with your Anonutopia wallet. Please wait a second and you will be redirected.</p>
+                        <p class="text-center"><a href="/" class="main-btn">Open Wallet</a></p>
+                        <script type="text/javascript">
+
+                            finished = true;
+
+                        </script>
+                        <input type="hidden" name="password" id="password" value="{{ .SignInForm.Password }}">
+{{ else }}
+                        <form action="./" method="POST" id="applyForm">
+                            <div class="form-group" id="amountGroup">
+                                <label for="email">Anonutopia Password</label>
+                                <input type="password" class="input" id="password" placeholder="Your Password" name="password" value="">
+{{ if .Errors }}
+                                <p class="bg-danger text-danger" style="margin: 15px 0; padding: 15px;">{{ .ErrorMsg }}</p>
+{{ end }}
+                                <input type="hidden" name="address" id="address" value="">
+                            </div>
+                            <p class="text-center"><input type="submit" value="Anonutopia Sign In" class="main-btn"></p>
+                        </form>
+{{ end }}
+                    </div>
+
+                    <!-- <p>Apply now and receive <u>1 free Anote</u>. You can read more about the application process  -->
+                    <!-- <a href="https://www.anonutopia.com/apply-advanced/" target="_blank">here</a> and more about Anote <a href="https://www.anonutopia.com/anote/" target="_blank">here</a>.</p> -->
+
+                </div>
+                <!-- /Main -->
+
+            </div>
+            <!-- /Row -->
+
+        </div>
+        <!-- /Container -->
 
     </div>
-    <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
+    <!-- /Blog -->

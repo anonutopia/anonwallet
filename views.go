@@ -95,6 +95,8 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 
 	s := reflect.ValueOf(ctx.Data["Errors"])
 
+	log.Println(ctx.Data["Errors"])
+
 	if s.Len() == 0 {
 		u := &User{Email: suf.Email}
 		db.First(u, u)
@@ -105,7 +107,7 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 			ctx.Data["Errors"] = true
 			ctx.Data["ErrorMsg"] = "Please use one of known email providers like Gmail."
 		} else {
-			u.Address = ctx.GetCookie("address")
+			u.Address = suf.Address
 			u.Nickname = u.Email
 			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(suf.Password), 8)
 			if err == nil {
@@ -120,12 +122,46 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 			}
 
 			sess.Set("userID", u.ID)
+
+			ctx.Data["Finished"] = true
 		}
 	} else {
 		ctx.Data["ErrorMsg"] = "Email address is required."
 	}
 
 	ctx.HTMLSet(200, "login", "signup")
+}
+
+func signInView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Wallet Sign In | "
+
+	ctx.HTMLSet(200, "login", "signin")
+}
+
+func signInPostView(ctx *macaron.Context, sif SignInForm, sess session.Store) {
+	ctx.Data["Title"] = "Wallet Sign In | "
+	ctx.Data["SignInForm"] = sif
+
+	s := reflect.ValueOf(ctx.Data["Errors"])
+
+	if s.Len() == 0 {
+		user := &User{Address: sif.Address}
+		db.First(user, user)
+
+		err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(sif.Password))
+		if err == nil {
+			sess.Set("userID", user.ID)
+
+			ctx.Data["Finished"] = true
+		} else {
+			ctx.Data["Errors"] = true
+			ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+		}
+	} else {
+		ctx.Data["ErrorMsg"] = "Password is required."
+	}
+
+	ctx.HTMLSet(200, "login", "signin")
 }
 
 func localesjsView(ctx *macaron.Context) {

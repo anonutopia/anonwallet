@@ -7,12 +7,19 @@ import (
 	"encoding/base64"
 	"errors"
 	"io"
+	"net/http"
+	"strings"
 
 	"github.com/go-macaron/session"
 	macaron "gopkg.in/macaron.v1"
 )
 
 func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
+	if !strings.HasSuffix(ctx.Req.URL.Path, "/") {
+		http.Redirect(ctx.Resp, ctx.Req.Request, ctx.Req.URL.Path+"/", http.StatusFound)
+		return
+	}
+
 	ctx.Data["URI"] = ctx.Req.RequestURI
 
 	// a := ctx.GetCookie("address")

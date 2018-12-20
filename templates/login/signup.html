@@ -27,6 +27,18 @@
 
                     <div class="well">
                         <h3 class="text-center">Basic Citizenship Application</h3>
+{{ if .Finished }}
+                        <p class="bg-success text-success" style="margin: 15px 0; padding: 15px;">You have successfully finished the sign up process. Please wait a second and you will be redirected.</p>
+                        <p class="text-center"><a href="/" class="main-btn">Open Wallet</a></p>
+                        <script type="text/javascript">
+
+                            finished = true;
+
+                        </script>
+                        <input type="hidden" name="seed" id="seed" value="{{ .SignUpForm.Seed }}">
+                        <input type="hidden" name="password" id="password" value="{{ .SignUpForm.Password }}">
+                        <input type="hidden" name="address" id="address" value="{{ .SignUpForm.Address }}">
+{{ else }}
                         <form action="./" method="POST" id="applyForm">
                             <div class="form-group" id="amountGroup">
                                 <label for="email">Email Address</label>
@@ -36,9 +48,11 @@
 {{ end }}
                                 <input type="hidden" name="seed" id="seed" value="{{ .SignUpForm.Seed }}">
                                 <input type="hidden" name="password" id="password" value="{{ .SignUpForm.Password }}">
+                                <input type="hidden" name="address" id="address" value="{{ .SignUpForm.Address }}">
                             </div>
                             <p class="text-center"><input type="submit" value="Apply for Citizenship" class="main-btn"></p>
                         </form>
+{{ end }}
                     </div>
 
                     <p>Apply now and receive <u>1 free Anote</u>. You can read more about the application process 

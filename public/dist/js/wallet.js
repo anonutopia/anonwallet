@@ -219,146 +219,10 @@ function Wallet() {
         transfer(nodeAddress, amount, assetId, 'withdraw', withdrawCurrency);
     }
 
-    // Sign in method
-    this.signIn = function() {
-        var pass = getEl('password').value;
-        if (validatePasswordField(pass)) {
-            try {
-                var restoredPhrase = Waves.Seed.decryptSeedPhrase(window.localStorage.getItem('encrypted'), pass);
-                window.localStorage.setItem('seed', restoredPhrase);
-                seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-                Cookies.set('address', seed.address, { expires: 365 });
-                $('#signInForm').fadeOut(function() {
-                    $('#newGroupAjax').fadeIn();
-                });
-                $.ajax({
-                    url: '/sign-in/',
-                    method: 'POST',
-                    data: {
-                        password: pass
-                    },
-                    success: function(data, status) {
-                        window.location = "/";
-                    },
-                    error: function(data, status, error) {
-                        console.log(error);
-                    }
-                });
-            } catch (e) {
-                setHTML('required', e);
-                $('#required').fadeIn(function() {
-                    setTimeout(() => {
-                        $('#required').fadeOut();
-                        $('#passwordGroup').removeClass('has-error');
-                    }, 2000);
-                });
-            }
-        }
-    }
-
     // Sign out method
     this.signOut = function() {
-        window.localStorage.removeItem('seed');
-        Cookies.remove('address');
+        window.sessionStorage.removeItem('seed');
         window.location = '/sign-out/';
-    }
-
-    // Sign up next method
-    this.signUpNext = function() {
-        setValue('seedinput', allLocales.copyAgain);
-        var copyText = document.getElementById("seedinput");
-        copyText.select();
-        document.execCommand("copy");
-        $('#newGroup').fadeOut(function() {
-            $('#newGroup1').fadeIn();
-        });
-    }
-
-    // Sign up next method (second step)
-    this.signUpNext1 = function() {
-        var seedTa = getEl('seedta').value;
-        if (validateSeedField(seedTa, true)) {
-            $('#newGroup1').fadeOut(function() {
-                $('#newGroup2').fadeIn();
-            });
-        }
-    }
-
-    // Sign up next method (third step)
-    this.signUpNext2 = function() {
-        var p1 = getEl('password1').value;
-        var p2 = getEl('password2').value;
-        if (validateSUPasswords(p1, p2)) {
-            window.localStorage.setItem('seed', seed.phrase);
-            window.localStorage.setItem('encrypted', seed.encrypt(p1));
-            Cookies.set('address', seed.address, { expires: 365 });
-            $('#newGroup2').fadeOut(function() {
-                $('#newGroupAjax').fadeIn();
-            });
-            $.ajax({
-                url: '/sign-up/',
-                method: 'POST',
-                data : {
-                    password: p1
-                },
-                success: function(data, status) {
-                    window.location = "/";
-                },
-                error: function(data, status, error) {
-                    console.log(error);
-                }
-            });
-        }
-    }
-
-    // Sign out copy method
-    this.signUpCopy = function() {
-        var copyText = document.getElementById("seedinput");
-        copyText.select();
-        document.execCommand("copy");
-        $('#copymessage').fadeIn(function() {
-            setTimeout(() => {
-                $('#copymessage').fadeOut();
-            }, 2000);
-        });
-    }
-
-    // Import next method
-    this.importNext = function() {
-        var seedTa = getEl('seedta').value;
-        if (validateSeedField(seedTa, false)) {
-            seed = Waves.Seed.fromExistingPhrase(seedTa);
-            $('#importGroup1').fadeOut(function() {
-                $('#importGroup2').fadeIn();
-            });
-        }
-    }
-
-    // Import next method (second step)
-    this.importNext1 = function() {
-        var p1 = getEl('password1').value;
-        var p2 = getEl('password2').value;
-        if (validateSUPasswords(p1, p2)) {
-            window.localStorage.setItem('seed', seed.phrase);
-            window.localStorage.setItem('encrypted', seed.encrypt(p1));
-            Cookies.set('address', seed.address, { expires: 365 });
-            $('#importGroup2').fadeOut(function() {
-                $('#newGroupAjax').fadeIn();
-            });
-            $.ajax({
-                url: '/sign-up/',
-                method: 'POST',
-                data : {
-                    password: p1
-                },
-                success: function(data, status) {
-                    window.location = "/";
-                },
-                error: function(data, status, error) {
-                    console.log(error);
-                }
-            });
-        }
     }
 
     this.updateCalculator = function() {
@@ -427,32 +291,21 @@ function Wallet() {
             case '/sign-up/':
                 initNewWallet();
                 break;
-            // case '/sign-in/':
-            //     initSignIn();
-            //     break;
-            // case '/sign-up-new/':
-            //     newWallet();
-            //     break;
+            case '/sign-in/':
+                initSignIn();
+                break;
             case '/':
                 initSuccess();
                 break;
         }
 
-        // var encrypted = window.localStorage.getItem('encrypted');
-        // var restoredPhrase = window.localStorage.getItem('seed');
-
-        // if (restoredPhrase) {
-        //     seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-        // } else if (encrypted && !window.location.href.endsWith('/sign-in/')) {
-        //     window.location.href = '/sign-in/';
-        // } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/') && !window.location.href.includes('/init/')) {
-        //     window.location.href = '/sign-up/';
-        // } else if (!encrypted && window.location.href.includes('/init/')) {
-        //     initNewWallet();
-        // }
-
         if (getEl('transactionsButton')) {
             getEl('transactionsButton').href += address;
+        }
+
+        var seedPhrase = window.sessionStorage.getItem('seed');
+        if (seedPhrase.length) {
+            seed = Waves.Seed.fromExistingPhrase(seedPhrase);
         }
     }
 
@@ -488,12 +341,26 @@ function Wallet() {
     }
 
     // Init sign in page
-    // function initSignIn() {
-    //     var encrypted = window.localStorage.getItem('encrypted');
-    //     if (!encrypted) {
-    //         window.location.href = '/sign-up/';
-    //     }
-    // }
+    function initSignIn() {
+        var encrypted = window.localStorage.getItem('encrypted');
+
+        if (!encrypted) {
+            window.location.href = '/sign-up/';
+        }
+
+        if (finished) {
+            var password = $('#password').val();
+            var seedPhrase = Waves.Seed.decryptSeedPhrase(encrypted, password);
+            window.sessionStorage.setItem('seed', seedPhrase);
+
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 4000);
+        } else {
+            var address = window.localStorage.getItem('address');
+            setValue('address', address);
+        }
+    }
 
     // Updates counter for loading purposes
     function updateCounter() {
@@ -835,29 +702,25 @@ function Wallet() {
     }
 
     function initNewWallet() {
-        seed = Waves.Seed.create();
-        var password = createRandomString(12);
+        var seed = $('#seed').val();
+        var password = $('#password').val();
+        var address = $('#address').val();
+        if (seed.length == 0) {
+            seed = Waves.Seed.create();
+            password = createRandomString(12);
+            $('#seed').val(seed.phrase);
+            $('#address').val(seed.address);
+            $('#password').val(password);
+        } else if (finished) {
+            window.sessionStorage.setItem('seed', seed);
+            seed = Waves.Seed.fromExistingPhrase(seed);
+            window.localStorage.setItem('encrypted', seed.encrypt(password));
+            window.localStorage.setItem('address', seed.address);
 
-        window.localStorage.setItem('seed', seed.phrase);
-        window.localStorage.setItem('encrypted', seed.encrypt(password));
-        Cookies.set('address', seed.address, { expires: 365 });
-
-        $('#seed').val(seed.phrase);
-        $('#password').val(password);
-        // $.ajax({
-        //     url: '/init/',
-        //     method: 'POST',
-        //     data : {
-        //         password: password,
-        //         seed: seed.phrase
-        //     },
-        //     success: function(data, status) {
-        //         window.location = "/";
-        //     },
-        //     error: function(data, status, error) {
-        //         console.log(error);
-        //     }
-        // });
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 4000);
+        }
     }
 
     function createRandomString(length) {   
@@ -865,14 +728,6 @@ function Wallet() {
         for ( ; str.length < length; str += Math.random().toString( 36 ).substr( 2 ) );
         return str.substr( 0, length );
     }
-
-    // New wallet method
-    // function newWallet() {
-    //     seed = Waves.Seed.create();
-    //     setHTML('seed', seed.phrase);
-    //     setValue('seedinput', seed.phrase);
-    //     $('#newGroup').fadeIn();
-    // }
 
     // Attach all events
     switch (window.location.pathname) {
@@ -897,20 +752,6 @@ function Wallet() {
             getEl('exchangeConfirmButton').addEventListener('click', bind(this, this.exchangeConfirm), false);
             getEl('currency').addEventListener('change', bind(this, this.updateCalculator), false);
             getEl('amount').addEventListener('keyup', bind(this, this.updateCalculator), false);
-            break;
-        case '/sign-in/':
-            getEl('signInButton').addEventListener('click', bind(this, this.signIn), false);
-            break;
-        case '/sign-up/':
-            break;
-        case '/sign-up-new/':
-            getEl('signupnext').addEventListener('click', bind(this, this.signUpNext), false);
-            getEl('signupnext1').addEventListener('click', bind(this, this.signUpNext1), false);
-            getEl('signupcopy').addEventListener('click', bind(this, this.signUpCopy), false);
-            break;
-        case '/sign-up-import/':
-            getEl('importnext').addEventListener('click', bind(this, this.importNext), false);
-            getEl('importnext1').addEventListener('click', bind(this, this.importNext1), false);
             break;
     }
 
