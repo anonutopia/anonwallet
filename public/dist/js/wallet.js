@@ -264,7 +264,6 @@ function Wallet() {
     }
 
     this.showSeed = function() {
-        // alert(seed.phrase);
         getEl('seed').innerHTML = seed.phrase;
         getEl('copySeed').disabled = false;
     }
@@ -317,6 +316,8 @@ function Wallet() {
         var seedPhrase = window.sessionStorage.getItem('seed');
         if (seedPhrase && seedPhrase.length) {
             seed = Waves.Seed.fromExistingPhrase(seedPhrase);
+        } else if (window.location.href == '/' || window.location.href == '/profit/' || window.location.href == '/exchange/' || window.location.href == '/settings/') {
+            window.location.href = '/sign-out/'
         }
     }
 
