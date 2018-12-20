@@ -152,6 +152,9 @@ func signInPostView(ctx *macaron.Context, sif SignInForm, sess session.Store) {
 		user := &User{Address: sif.Address}
 		db.First(user, user)
 
+		log.Println(user)
+		log.Println(sif.Address)
+
 		err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(sif.Password))
 		if err == nil {
 			sess.Set("userID", user.ID)
