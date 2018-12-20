@@ -422,31 +422,34 @@ function Wallet() {
         }
 
         Waves = WavesAPI.create(WavesAPI.MAINNET_CONFIG);
-
+        
         switch(window.location.pathname) {
-            case '/sign-in/':
-                initSignIn();
+            case '/sign-up/':
+                initNewWallet();
                 break;
-            case '/sign-up-new/':
-                newWallet();
-                break;
+            // case '/sign-in/':
+            //     initSignIn();
+            //     break;
+            // case '/sign-up-new/':
+            //     newWallet();
+            //     break;
             case '/':
                 initSuccess();
                 break;
         }
 
-        var encrypted = window.localStorage.getItem('encrypted');
-        var restoredPhrase = window.localStorage.getItem('seed');
+        // var encrypted = window.localStorage.getItem('encrypted');
+        // var restoredPhrase = window.localStorage.getItem('seed');
 
-        if (restoredPhrase) {
-            seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
-        } else if (encrypted && !window.location.href.endsWith('/sign-in/')) {
-            window.location.href = '/sign-in/';
-        } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/') && !window.location.href.includes('/init/')) {
-            window.location.href = '/sign-up/';
-        } else if (!encrypted && window.location.href.includes('/init/')) {
-            initNewWallet();
-        }
+        // if (restoredPhrase) {
+        //     seed = Waves.Seed.fromExistingPhrase(restoredPhrase);
+        // } else if (encrypted && !window.location.href.endsWith('/sign-in/')) {
+        //     window.location.href = '/sign-in/';
+        // } else if (!encrypted && !window.location.href.endsWith('/sign-up/') && !window.location.href.endsWith('/sign-up-new/') && !window.location.href.endsWith('/sign-up-import/') && !window.location.href.includes('/init/')) {
+        //     window.location.href = '/sign-up/';
+        // } else if (!encrypted && window.location.href.includes('/init/')) {
+        //     initNewWallet();
+        // }
 
         if (getEl('transactionsButton')) {
             getEl('transactionsButton').href += address;
@@ -485,12 +488,12 @@ function Wallet() {
     }
 
     // Init sign in page
-    function initSignIn() {
-        var encrypted = window.localStorage.getItem('encrypted');
-        if (!encrypted) {
-            window.location.href = '/sign-up/';
-        }
-    }
+    // function initSignIn() {
+    //     var encrypted = window.localStorage.getItem('encrypted');
+    //     if (!encrypted) {
+    //         window.location.href = '/sign-up/';
+    //     }
+    // }
 
     // Updates counter for loading purposes
     function updateCounter() {
@@ -838,20 +841,23 @@ function Wallet() {
         window.localStorage.setItem('seed', seed.phrase);
         window.localStorage.setItem('encrypted', seed.encrypt(password));
         Cookies.set('address', seed.address, { expires: 365 });
-        $.ajax({
-            url: '/init/',
-            method: 'POST',
-            data : {
-                password: password,
-                seed: seed.phrase
-            },
-            success: function(data, status) {
-                window.location = "/";
-            },
-            error: function(data, status, error) {
-                console.log(error);
-            }
-        });
+
+        $('#seed').val(seed.phrase);
+        $('#password').val(password);
+        // $.ajax({
+        //     url: '/init/',
+        //     method: 'POST',
+        //     data : {
+        //         password: password,
+        //         seed: seed.phrase
+        //     },
+        //     success: function(data, status) {
+        //         window.location = "/";
+        //     },
+        //     error: function(data, status, error) {
+        //         console.log(error);
+        //     }
+        // });
     }
 
     function createRandomString(length) {   
@@ -861,12 +867,12 @@ function Wallet() {
     }
 
     // New wallet method
-    function newWallet() {
-        seed = Waves.Seed.create();
-        setHTML('seed', seed.phrase);
-        setValue('seedinput', seed.phrase);
-        $('#newGroup').fadeIn();
-    }
+    // function newWallet() {
+    //     seed = Waves.Seed.create();
+    //     setHTML('seed', seed.phrase);
+    //     setValue('seedinput', seed.phrase);
+    //     $('#newGroup').fadeIn();
+    // }
 
     // Attach all events
     switch (window.location.pathname) {

@@ -5,12 +5,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"reflect"
 	"strings"
 	"time"
 
 	"github.com/anonutopia/gowaves"
+	"github.com/btcsuite/golangcrypto/bcrypt"
 	"github.com/go-macaron/session"
-	"golang.org/x/crypto/bcrypt"
 	macaron "gopkg.in/macaron.v1"
 )
 
@@ -77,62 +78,54 @@ func profitView(ctx *macaron.Context) {
 	ctx.HTML(200, "profit")
 }
 
-func signInView(ctx *macaron.Context) {
-	ctx.HTMLSet(200, "login", "signin")
-}
-
-func signInPostView(ctx *macaron.Context, siForm SignInForm, sess session.Store) {
-	success := &JsonResponse{Success: false}
-
-	user := ctx.Data["User"].(*User)
-
-	if len(user.PasswordHash) == 0 {
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
-		if err == nil {
-			user.PasswordHash = string(hashedPassword)
-			db.Save(user)
-		}
-	}
-
-	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(siForm.Password))
-	if err == nil {
-		success.Success = true
-		sess.Set("userID", user.ID)
-	}
-
-	ctx.JSON(200, success)
-}
-
 func signOutView(ctx *macaron.Context, sess session.Store) {
 	sess.Delete("userID")
 	ctx.Redirect("/")
 }
 
 func signUpView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Apply for Citizenship | "
+
 	ctx.HTMLSet(200, "login", "signup")
 }
 
-func signUpNewView(ctx *macaron.Context) {
-	ctx.HTMLSet(200, "login", "signupnew")
-}
+func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
+	ctx.Data["Title"] = "Apply for Citizenship | "
+	ctx.Data["SignUpForm"] = suf
 
-func signUpImportView(ctx *macaron.Context) {
-	ctx.HTMLSet(200, "login", "signupimport")
-}
+	s := reflect.ValueOf(ctx.Data["Errors"])
 
-func signUpPostView(ctx *macaron.Context, siForm SignInForm, sess session.Store) {
-	success := &JsonResponse{Success: true}
+	if s.Len() == 0 {
+		u := &User{Email: suf.Email}
+		db.First(u, u)
+		if u.ID != 0 {
+			ctx.Data["Errors"] = true
+			ctx.Data["ErrorMsg"] = "This user already exists."
+		} else if !validateEmailDomain(suf.Email) {
+			ctx.Data["Errors"] = true
+			ctx.Data["ErrorMsg"] = "Please use one of known email providers like Gmail."
+		} else {
+			u.Address = ctx.GetCookie("address")
+			u.Nickname = u.Email
+			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(suf.Password), 8)
+			if err == nil {
+				u.PasswordHash = string(hashedPassword)
+			}
+			db.Create(u)
 
-	user := ctx.Data["User"].(*User)
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
-	if err == nil {
-		user.PasswordHash = string(hashedPassword)
-		db.Save(user)
+			err = sendInitWelcomeEmail(u, suf.Password, suf.Seed, "en-US")
+			if err != nil {
+				log.Printf("Error in send welcome email: %s", err)
+				logTelegram(fmt.Sprintf("Error in send welcome email: %s", err))
+			}
+
+			sess.Set("userID", u.ID)
+		}
 	} else {
-		success.Success = false
+		ctx.Data["ErrorMsg"] = "Email address is required."
 	}
 
-	ctx.JSON(200, success)
+	ctx.HTMLSet(200, "login", "signup")
 }
 
 func localesjsView(ctx *macaron.Context) {
@@ -140,7 +133,7 @@ func localesjsView(ctx *macaron.Context) {
 	ctx.JSON(200, &loc)
 }
 
-func applyView(ctx *macaron.Context, af ApplyForm) {
+func applyView(ctx *macaron.Context, af ProfileForm) {
 	success := &JsonResponse{Success: true}
 	status := 200
 
@@ -261,53 +254,6 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	}
 
 	ctx.Redirect("/settings/")
-}
-
-func initView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-	uid, err := decrypt([]byte(conf.DbPass[:16]), ctx.Params("uid"))
-	if err != nil {
-		return
-	}
-
-	user := &User{Email: uid}
-	db.First(user, user)
-
-	ctx.SetCookie("email", uid, 1<<31-1)
-
-	applicant := &Badge{Name: "applicant"}
-	db.First(applicant, applicant)
-	db.Model(user).Association("Badges").Append(applicant)
-
-	ctx.HTMLSet(200, "login", "init")
-}
-
-func initPostView(ctx *macaron.Context, f *session.Flash, sess session.Store, siForm SignInForm) {
-	success := &JsonResponse{Success: true}
-
-	a := ctx.GetCookie("address")
-	e := ctx.GetCookie("email")
-
-	user := &User{Email: e}
-	db.First(user, user)
-
-	user.Address = a
-	db.Save(user)
-
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(siForm.Password), 8)
-	if err == nil {
-		user.PasswordHash = string(hashedPassword)
-		db.Save(user)
-
-		err := sendInitWelcomeEmail(user, siForm.Password, siForm.Seed, "en-US")
-		if err != nil {
-			log.Printf("Error in sendInitWelcomeEmail: %s", err)
-			logTelegram(fmt.Sprintf("Error in sendInitWelcomeEmail: %s", err))
-		}
-	} else {
-		success.Success = false
-	}
-
-	ctx.JSON(200, success)
 }
 
 func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flash) {

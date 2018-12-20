@@ -30,10 +30,12 @@
                         <form action="./" method="POST" id="applyForm">
                             <div class="form-group" id="amountGroup">
                                 <label for="email">Email Address</label>
-                                <input type="email" class="input" id="email" placeholder="anon@anonutopia.com" name="email" value="{{ .Form.Email }}">
+                                <input type="email" class="input" id="email" placeholder="anon@anonutopia.com" name="email" value="{{ .SignUpForm.Email }}">
 {{ if .Errors }}
                                 <p class="bg-danger text-danger" style="margin: 15px 0; padding: 15px;">{{ .ErrorMsg }}</p>
 {{ end }}
+                                <input type="hidden" name="seed" id="seed" value="{{ .SignUpForm.Seed }}">
+                                <input type="hidden" name="password" id="password" value="{{ .SignUpForm.Password }}">
                             </div>
                             <p class="text-center"><input type="submit" value="Apply for Citizenship" class="main-btn"></p>
                         </form>

@@ -5,16 +5,21 @@ import (
 	macaron "gopkg.in/macaron.v1"
 )
 
-type ApplyForm struct {
+type ProfileForm struct {
 	Nickname string `binding:"Required"`
 	Email    string `binding:"Email"`
 	Country  string `binding:"Required"`
 	City     string `binding:"Required"`
 }
 
-type SignInForm struct {
+type SignUpForm struct {
 	Password string `binding:"Required"`
-	Seed     string
+	Email    string `binding:"Required;Email"`
+	Seed     string `binding:"Required"`
+}
+
+func (lf SignUpForm) Error(ctx *macaron.Context, errs binding.Errors) {
+	ctx.Data["Errors"] = errs
 }
 
 type FacebookAwardForm struct {
