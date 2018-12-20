@@ -111,27 +111,25 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 			u.Address = suf.Address
 			u.Nickname = u.Email
 			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(suf.Password), 8)
-			if err == nil {
-				u.PasswordHash = string(hashedPassword)
-
-				if len(r) > 0 {
-					u.Referral = r
-				}
-				db.Create(u)
-
-				err = sendInitWelcomeEmail(u, suf.Password, suf.Seed, "en-US")
-				if err != nil {
-					log.Printf("Error in send welcome email: %s", err)
-					logTelegram(fmt.Sprintf("Error in send welcome email: %s", err))
-				}
-
-				sess.Set("userID", u.ID)
-
-				ctx.Data["Finished"] = true
-			} else {
-				ctx.Data["Errors"] = true
-				ctx.Data["ErrorMsg"] = "Something went wrong, please try again."
+			for err != nil {
+				time.Sleep(200 * time.Microsecond)
+				hashedPassword, err = bcrypt.GenerateFromPassword([]byte(suf.Password), 8)
 			}
+			u.PasswordHash = string(hashedPassword)
+			if len(r) > 0 {
+				u.Referral = r
+			}
+			db.Create(u)
+
+			err = sendInitWelcomeEmail(u, suf.Password, suf.Seed, "en-US")
+			if err != nil {
+				log.Printf("Error in send welcome email: %s", err)
+				logTelegram(fmt.Sprintf("Error in send welcome email: %s", err))
+			}
+
+			sess.Set("userID", u.ID)
+
+			ctx.Data["Finished"] = true
 		}
 	} else {
 		ctx.Data["ErrorMsg"] = "Email address is required."
