@@ -44,6 +44,8 @@ func (b *BitcoinAddressMonitor) checkAddresses() {
 
 			db.Save(u)
 		}
+
+		time.Sleep(time.Second)
 	}
 }
 
@@ -102,6 +104,8 @@ func (e *EthereumAddressMonitor) checkAddresses() {
 
 			db.Save(u)
 		}
+
+		time.Sleep(time.Second)
 	}
 }
 
