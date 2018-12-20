@@ -113,21 +113,25 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(suf.Password), 8)
 			if err == nil {
 				u.PasswordHash = string(hashedPassword)
-			}
-			if len(r) > 0 {
-				u.Referral = r
-			}
-			db.Create(u)
 
-			err = sendInitWelcomeEmail(u, suf.Password, suf.Seed, "en-US")
-			if err != nil {
-				log.Printf("Error in send welcome email: %s", err)
-				logTelegram(fmt.Sprintf("Error in send welcome email: %s", err))
+				if len(r) > 0 {
+					u.Referral = r
+				}
+				db.Create(u)
+
+				err = sendInitWelcomeEmail(u, suf.Password, suf.Seed, "en-US")
+				if err != nil {
+					log.Printf("Error in send welcome email: %s", err)
+					logTelegram(fmt.Sprintf("Error in send welcome email: %s", err))
+				}
+
+				sess.Set("userID", u.ID)
+
+				ctx.Data["Finished"] = true
+			} else {
+				ctx.Data["Errors"] = true
+				ctx.Data["ErrorMsg"] = "Something went wrong, please try again."
 			}
-
-			sess.Set("userID", u.ID)
-
-			ctx.Data["Finished"] = true
 		}
 	} else {
 		ctx.Data["ErrorMsg"] = "Email address is required."
@@ -151,9 +155,6 @@ func signInPostView(ctx *macaron.Context, sif SignInForm, sess session.Store) {
 	if s.Len() == 0 {
 		user := &User{Address: sif.Address}
 		db.First(user, user)
-
-		log.Println(user)
-		log.Println(sif.Address)
 
 		err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(sif.Password))
 		if err == nil {
@@ -252,8 +253,16 @@ func signInOldCleanPostView(ctx *macaron.Context, suf SignUpForm, sess session.S
 				ctx.Data["ErrorMsg"] = "Something is wrong with your seed (extra space or new line)."
 			}
 		} else {
-			ctx.Data["Errors"] = true
-			ctx.Data["ErrorMsg"] = "The user with this email doesn't exist."
+			u := &User{Address: suf.Address}
+			db.First(u, u)
+
+			if u.ID != 0 {
+				// sess.Set("userID", u.ID)
+				// ctx.Data["Finished"] = true
+			} else {
+				ctx.Data["Errors"] = true
+				ctx.Data["ErrorMsg"] = "The user with this email or address doesn't exist."
+			}
 		}
 	} else {
 		ctx.Data["ErrorMsg"] = "All fields are required."
