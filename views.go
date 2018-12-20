@@ -107,11 +107,15 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 			ctx.Data["Errors"] = true
 			ctx.Data["ErrorMsg"] = "Please use one of known email providers like Gmail."
 		} else {
+			r := ctx.GetCookie("referral")
 			u.Address = suf.Address
 			u.Nickname = u.Email
 			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(suf.Password), 8)
 			if err == nil {
 				u.PasswordHash = string(hashedPassword)
+			}
+			if len(r) > 0 {
+				u.Referral = r
 			}
 			db.Create(u)
 

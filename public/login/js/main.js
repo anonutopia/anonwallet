@@ -1,5 +1,6 @@
 var ref;
 var ttlSupply = -1;
+var wallet;
 
 (function($) {
 	"use strict"
@@ -155,7 +156,7 @@ var ttlSupply = -1;
 
 	// createWallet();
 
-	var wallet = new Wallet();
+	wallet = new Wallet();
 
 })(jQuery);
 

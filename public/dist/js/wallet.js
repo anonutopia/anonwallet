@@ -269,6 +269,12 @@ function Wallet() {
         getEl('copySeed').disabled = false;
     }
 
+    this.signUpSeedChange = function() {
+        var seedPhrase = $('#seed').val();
+        seed = Waves.Seed.fromExistingPhrase(seedPhrase);
+        setValue('address', seed.address);
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
@@ -304,7 +310,7 @@ function Wallet() {
         }
 
         var seedPhrase = window.sessionStorage.getItem('seed');
-        if (seedPhrase.length) {
+        if (seedPhrase && seedPhrase.length) {
             seed = Waves.Seed.fromExistingPhrase(seedPhrase);
         }
     }
