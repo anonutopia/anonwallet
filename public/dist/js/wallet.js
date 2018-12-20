@@ -271,8 +271,10 @@ function Wallet() {
 
     this.signUpSeedChange = function() {
         var seedPhrase = $('#seed').val();
-        seed = Waves.Seed.fromExistingPhrase(seedPhrase);
-        setValue('address', seed.address);
+        try {
+            seed = Waves.Seed.fromExistingPhrase(seedPhrase);
+            setValue('address', seed.address);
+        } catch (e) {}
     }
 
     // PRIVATE METHODS
@@ -299,6 +301,9 @@ function Wallet() {
                 break;
             case '/sign-in/':
                 initSignIn();
+                break;
+            case '/sign-in-old-clean/':
+                initSignInOldClean();
                 break;
             case '/':
                 initSuccess();
@@ -373,6 +378,22 @@ function Wallet() {
         } else {
             var address = window.localStorage.getItem('address');
             setValue('address', address);
+        }
+    }
+
+    function initSignInOldClean() {
+        var seed = $('#seed').val();
+        var password = $('#password').val();
+
+        if (finished) {
+            window.sessionStorage.setItem('seed', seed);
+            seed = Waves.Seed.fromExistingPhrase(seed);
+            window.localStorage.setItem('encrypted', seed.encrypt(password));
+            window.localStorage.setItem('address', seed.address);
+
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 4000);
         }
     }
 

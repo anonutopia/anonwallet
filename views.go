@@ -95,14 +95,14 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 
 	s := reflect.ValueOf(ctx.Data["Errors"])
 
-	log.Println(ctx.Data["Errors"])
-
 	if s.Len() == 0 {
 		u := &User{Email: suf.Email}
 		db.First(u, u)
 		if u.ID != 0 {
 			ctx.Data["Errors"] = true
 			ctx.Data["ErrorMsg"] = "This user already exists."
+
+			ctx.Data["OldUserWarning"] = true
 		} else if !validateEmailDomain(suf.Email) {
 			ctx.Data["Errors"] = true
 			ctx.Data["ErrorMsg"] = "Please use one of known email providers like Gmail."
@@ -216,6 +216,47 @@ func signInOldPostView(ctx *macaron.Context, siof SignInOldForm, f *session.Flas
 	}
 
 	ctx.HTMLSet(200, "login", "signinold")
+}
+
+func signInOldCleanView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Old Wallet Clean Sign In | "
+
+	ctx.HTMLSet(200, "login", "signinoldclean")
+}
+
+func signInOldCleanPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
+	ctx.Data["Title"] = "Old Wallet Clean Sign In | "
+	ctx.Data["SignUpForm"] = suf
+
+	s := reflect.ValueOf(ctx.Data["Errors"])
+
+	if s.Len() == 0 {
+		u := &User{Email: suf.Email}
+		db.First(u, u)
+		if u.ID != 0 {
+			if u.Address == suf.Address {
+				err := bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(suf.Password))
+				log.Println(err)
+				if err == nil {
+					sess.Set("userID", u.ID)
+					ctx.Data["Finished"] = true
+				} else {
+					ctx.Data["Errors"] = true
+					ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+				}
+			} else {
+				ctx.Data["Errors"] = true
+				ctx.Data["ErrorMsg"] = "Something is wrong with your seed (extra space or new line)."
+			}
+		} else {
+			ctx.Data["Errors"] = true
+			ctx.Data["ErrorMsg"] = "The user with this email doesn't exist."
+		}
+	} else {
+		ctx.Data["ErrorMsg"] = "All fields are required."
+	}
+
+	ctx.HTMLSet(200, "login", "signinoldclean")
 }
 
 func localesjsView(ctx *macaron.Context) {
