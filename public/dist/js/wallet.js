@@ -316,7 +316,7 @@ function Wallet() {
         var seedPhrase = window.sessionStorage.getItem('seed');
         if (seedPhrase && seedPhrase.length) {
             seed = Waves.Seed.fromExistingPhrase(seedPhrase);
-        } else if (window.location.href == '/' || window.location.href == '/profit/' || window.location.href == '/exchange/' || window.location.href == '/settings/') {
+        } else if (window.location.pathname == '/' || window.location.pathname == '/profit/' || window.location.pathname == '/exchange/' || window.location.pathname == '/settings/') {
             window.location.href = '/sign-out/'
         }
     }
