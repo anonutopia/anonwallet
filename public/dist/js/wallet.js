@@ -350,6 +350,14 @@ function Wallet() {
     function initSignIn() {
         var encrypted = window.localStorage.getItem('encrypted');
 
+        // this is for legacy users
+        var seedPhrase = window.localStorage.getItem('seed');
+        if (seedPhrase && seedPhrase.length > 0) {
+            window.localStorage.removeItem('seed');
+            var tempseed = Waves.Seed.fromExistingPhrase(seedPhrase);
+            window.localStorage.setItem('address', tempseed.address);
+        }
+
         if (!encrypted) {
             window.location.href = '/sign-up/';
         }

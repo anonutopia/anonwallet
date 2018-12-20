@@ -61,6 +61,7 @@ func main() {
 	m.Get("/sign-out/", newPageData, loginRequired, signOutView)
 	m.Get("/sign-up/", newPageData, signUpView)
 	m.Get("/sign-in/", newPageData, signInView)
+	m.Get("/sign-in-old/", newPageData, signInOldView)
 	m.Get("/locales.json", newPageData, localesjsView)
 	m.Get("/verify/:uid", newPageData, verifyView)
 
@@ -68,6 +69,7 @@ func main() {
 	m.Post("/settings/", binding.Bind(FacebookAwardForm{}), newPageData, initFbPostView)
 	m.Post("/sign-up/", binding.Bind(SignUpForm{}), newPageData, signUpPostView)
 	m.Post("/sign-in/", binding.Bind(SignInForm{}), newPageData, signInPostView)
+	m.Post("/sign-in-old/", binding.Bind(SignInOldForm{}), newPageData, signInOldPostView)
 
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)
 	log.Printf("Server is running on: %s", addr)

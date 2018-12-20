@@ -34,6 +34,13 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 		db.First(user, userID)
 		ctx.Data["User"] = user
 
+		// legacy users login
+		if user.ID != 0 {
+			if user.Email == user.Address && ctx.Req.URL.Path != "/sign-in-old/" {
+				ctx.Redirect("/sign-in-old/")
+			}
+		}
+
 		if !user.EmailVerified {
 			ctx.Data["Notification"] = true
 			ctx.Data["NotificationTitle"] = "Please Verify Your Email Address"

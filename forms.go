@@ -32,6 +32,14 @@ func (sif SignInForm) Error(ctx *macaron.Context, errs binding.Errors) {
 	ctx.Data["Errors"] = errs
 }
 
+type SignInOldForm struct {
+	Email string `binding:"Required;Email"`
+}
+
+func (siof SignInOldForm) Error(ctx *macaron.Context, errs binding.Errors) {
+	ctx.Data["Errors"] = errs
+}
+
 type FacebookAwardForm struct {
 	FbLink string `binding:"Required"`
 }
