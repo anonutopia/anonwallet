@@ -99,10 +99,14 @@ func signUpPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
 		u := &User{Email: suf.Email}
 		db.First(u, u)
 		if u.ID != 0 {
-			ctx.Data["Errors"] = true
-			ctx.Data["ErrorMsg"] = "This user already exists."
-
-			ctx.Data["OldUserWarning"] = true
+			if len(u.PasswordHash) > 0 {
+				ctx.Data["Errors"] = true
+				ctx.Data["ErrorMsg"] = "This user already exists."
+				ctx.Data["OldUserWarning"] = true
+			} else {
+				ctx.Data["Errors"] = true
+				ctx.Data["ErrorMsg"] = "Password reset is forced on your account."
+			}
 		} else if !validateEmailDomain(suf.Email) {
 			ctx.Data["Errors"] = true
 			ctx.Data["ErrorMsg"] = "Please use one of known email providers like Gmail."
@@ -154,14 +158,19 @@ func signInPostView(ctx *macaron.Context, sif SignInForm, sess session.Store) {
 		user := &User{Address: sif.Address}
 		db.First(user, user)
 
-		err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(sif.Password))
-		if err == nil {
-			sess.Set("userID", user.ID)
+		if len(user.PasswordHash) > 0 {
+			err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(sif.Password))
+			if err == nil {
+				sess.Set("userID", user.ID)
 
-			ctx.Data["Finished"] = true
+				ctx.Data["Finished"] = true
+			} else {
+				ctx.Data["Errors"] = true
+				ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+			}
 		} else {
 			ctx.Data["Errors"] = true
-			ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+			ctx.Data["ErrorMsg"] = "Password reset is forced on your account."
 		}
 	} else {
 		ctx.Data["ErrorMsg"] = "Password is required."
@@ -186,19 +195,24 @@ func signInOldCleanPostView(ctx *macaron.Context, suf SignUpForm, sess session.S
 		u := &User{Email: suf.Email}
 		db.First(u, u)
 		if u.ID != 0 {
-			if u.Address == suf.Address {
-				err := bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(suf.Password))
-				log.Println(err)
-				if err == nil {
-					sess.Set("userID", u.ID)
-					ctx.Data["Finished"] = true
+			if len(u.PasswordHash) > 0 {
+				if u.Address == suf.Address {
+					err := bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(suf.Password))
+					log.Println(err)
+					if err == nil {
+						sess.Set("userID", u.ID)
+						ctx.Data["Finished"] = true
+					} else {
+						ctx.Data["Errors"] = true
+						ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+					}
 				} else {
 					ctx.Data["Errors"] = true
-					ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+					ctx.Data["ErrorMsg"] = "Something is wrong with your seed (extra space or new line)."
 				}
 			} else {
 				ctx.Data["Errors"] = true
-				ctx.Data["ErrorMsg"] = "Something is wrong with your seed (extra space or new line)."
+				ctx.Data["ErrorMsg"] = "Password reset is forced on your account."
 			}
 		} else {
 			u := &User{Address: suf.Address}
