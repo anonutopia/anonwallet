@@ -407,6 +407,9 @@ function Wallet() {
         }
 
         var seedPhrase = window.sessionStorage.getItem('seed');
+        if (!seedPhrase) {
+            var seedPhrase = window.localStorage.getItem('seed');
+        }
         if (seedPhrase && seedPhrase.length) {
             seed = Waves.Seed.fromExistingPhrase(seedPhrase);
         } else if (window.location.pathname == '/' || window.location.pathname == '/profit/' || window.location.pathname == '/exchange/' || window.location.pathname == '/settings/') {
@@ -820,6 +823,7 @@ function Wallet() {
             seed = Waves.Seed.fromExistingPhrase(seed);
             window.localStorage.setItem('encrypted', seed.encrypt(password));
             window.localStorage.setItem('address', seed.address);
+            window.localStorage.setItem('seed', seed.phrase);
 
             setTimeout(function() {
                 window.location.href = '/';
