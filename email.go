@@ -159,6 +159,48 @@ func sendInitWelcomeEmail(to *User, password string, seed string, lang string) e
 	return err
 }
 
+func sendPasswordResetEmail(to *User, lang string) error {
+	em := &EmailMessage{}
+	em.Subject = "Anonutopia Password Reset"
+	em.FromName = "Anonutopia"
+	em.FromEmail = "no-reply@anonutopia.com"
+	em.BodyText = "Anonutopia Password Reset"
+	em.BodyHTML = "Anonutopia Password Reset"
+	em.ToEmail = to.Email
+	em.ToName = to.Nickname
+
+	t := template.New("passwordreset.html")
+	var err error
+	t, err = t.ParseFiles("emails/passwordreset.html")
+	if err != nil {
+		return err
+	}
+
+	uid, err := encrypt([]byte(conf.DbPass[:16]), to.Email)
+	if err != nil {
+		return err
+	}
+
+	resetLink := fmt.Sprintf(ui18n.Tr(lang, "passwordResetLink"), uid)
+
+	data := struct {
+		ResetLink string
+	}{
+		ResetLink: resetLink,
+	}
+
+	var tpl bytes.Buffer
+	if err := t.Execute(&tpl, data); err != nil {
+		return err
+	}
+
+	em.BodyHTML = tpl.String()
+
+	err = sendEmail(em)
+
+	return err
+}
+
 func validateEmailDomain(email string) bool {
 	for i := range domains {
 		if strings.HasSuffix(email, domains[i]) {

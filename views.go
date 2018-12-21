@@ -512,6 +512,8 @@ func passwordResetPostView(ctx *macaron.Context, form SignInOldForm) {
 		u := &User{Email: form.Email}
 		db.First(u, u)
 		if u.ID != 0 {
+			sendPasswordResetEmail(u, "en-US")
+			ctx.Data["Finished"] = true
 		} else {
 			ctx.Data["ShowSignUp"] = true
 
