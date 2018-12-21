@@ -809,7 +809,7 @@ function Wallet() {
         var seed = $('#seed').val();
         var password = $('#password').val();
         var address = $('#address').val();
-        if (seed.length == 0) {
+        if (seed.length == 0 || password.length == 0 || address.length == 0) {
             seed = Waves.Seed.create();
             password = createRandomString(12);
             $('#seed').val(seed.phrase);
