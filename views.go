@@ -271,6 +271,10 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	u := &User{Email: uid}
 	db.First(u, u)
 
+	if u.ID == 0 {
+		return
+	}
+
 	if !u.EmailVerified {
 		atr := &gowaves.AssetsTransferRequest{
 			Amount:    100000000,
