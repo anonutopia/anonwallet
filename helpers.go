@@ -30,7 +30,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	ctx.Data["NotificationMessage"] = ""
 
 	userID := sess.Get("userID")
-	if userID != nil && userID != 0 {
+	if userID != nil {
 		user := &User{}
 		db.First(user, userID)
 		ctx.Data["User"] = user
@@ -72,7 +72,10 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 			}
 			db.Save(user)
 		}
-		db.Model(user).Association("Badges").Find(&user.Badges)
+
+		if user.ID != 0 {
+			db.Model(user).Association("Badges").Find(&user.Badges)
+		}
 	}
 
 	ctx.Data["Anote"] = anote
