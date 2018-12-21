@@ -503,6 +503,7 @@ function Wallet() {
 
         if (seedPhrase && seedPhrase.length > 0) {
             $('#seed').val(seedPhrase);
+            $('#address').val(address);
         } else {
             $('#form2').fadeIn();
 
