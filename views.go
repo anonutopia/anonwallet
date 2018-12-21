@@ -276,7 +276,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 			Amount:    100000000,
 			AssetID:   "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf",
 			Fee:       100000,
-			Recipient: uid,
+			Recipient: u.Address,
 			Sender:    conf.NodeAddress,
 		}
 
