@@ -647,28 +647,6 @@ function Wallet() {
         return validates && validatesDomain;
     }
 
-    // Checks and validates field for password form
-    function validatePasswordField(password) {
-        var validates = true;
-
-        if (password.length == 0) {
-            $('#passwordGroup').addClass('has-error');
-            validates = false;
-        }
-
-        if (!validates) {
-            setHTML('required', allLocales.jsFieldEmpty);
-            $('#required').fadeIn(function() {
-                setTimeout(() => {
-                    $('#required').fadeOut();
-                    $('#passwordGroup').removeClass('has-error');
-                }, 2000);
-            });
-        }
-
-        return validates;
-    }
-
     // Checks and validates fields for exchange form
     function validateExchangeFields(selectedCurrency, amount) {
         var validates = true;
@@ -684,37 +662,6 @@ function Wallet() {
                 setTimeout(() => {
                     $('#errorMessageExchange').fadeOut();
                     $('#amountGroup').removeClass('has-error');
-                }, 2000);
-            });
-        }
-
-        return validates;
-    }
-
-    // Checks and validates fields for seed
-    function validateSeedField(seedTa, checkSeed) {
-        var validates = true;
-
-        if (seedTa.length == 0) {
-            $('#seedGroup').addClass('has-error');
-            validates = false;
-            setHTML('errorMessageSeed', allLocales.jsFieldEmpty);
-            $('#errorMessageSeed').fadeIn(function() {
-                setTimeout(() => {
-                    $('#errorMessageSeed').fadeOut();
-                    $('#seedGroup').removeClass('has-error');
-                }, 2000);
-            });
-        }
-
-        if (validates && checkSeed && seedTa != seed.phrase) {
-            $('#seedGroup').addClass('has-error');
-            validates = false;
-            setHTML('errorMessageSeed', allLocales.wrongSeed);
-            $('#errorMessageSeed').fadeIn(function() {
-                setTimeout(() => {
-                    $('#errorMessageSeed').fadeOut();
-                    $('#seedGroup').removeClass('has-error');
                 }, 2000);
             });
         }
