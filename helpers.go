@@ -30,7 +30,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	ctx.Data["NotificationMessage"] = ""
 
 	userID := sess.Get("userID")
-	if userID != nil {
+	if userID != nil && userID != 0 {
 		user := &User{}
 		db.First(user, userID)
 		ctx.Data["User"] = user
