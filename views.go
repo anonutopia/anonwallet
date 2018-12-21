@@ -318,7 +318,7 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 		return
 	}
 
-	u := &User{Address: uid}
+	u := &User{Email: uid}
 	db.First(u, u)
 
 	if !u.EmailVerified {
@@ -506,6 +506,13 @@ func passwordResetPostView(ctx *macaron.Context, form SignInOldForm) {
 	ctx.Data["Title"] = "Password Reset | "
 	ctx.Data["Form"] = form
 
+	uid, err := encrypt([]byte(conf.DbPass[:16]), form.Email)
+	if err != nil {
+		return
+	}
+
+	log.Println(uid)
+
 	s := reflect.ValueOf(ctx.Data["Errors"])
 
 	if s.Len() == 0 {
@@ -520,35 +527,64 @@ func passwordResetPostView(ctx *macaron.Context, form SignInOldForm) {
 			ctx.Data["Errors"] = true
 			ctx.Data["ErrorMsg"] = "We don't have this email in our database, please sign up again."
 		}
-		// 	if u.Address == suf.Address {
-		// 		err := bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(suf.Password))
-		// 		log.Println(err)
-		// 		if err == nil {
-		// 			sess.Set("userID", u.ID)
-		// 			ctx.Data["Finished"] = true
-		// 		} else {
-		// 			ctx.Data["Errors"] = true
-		// 			ctx.Data["ErrorMsg"] = "Wrong password, please try again."
-		// 		}
-		// 	} else {
-		// 		ctx.Data["Errors"] = true
-		// 		ctx.Data["ErrorMsg"] = "Something is wrong with your seed (extra space or new line)."
-		// 	}
-		// } else {
-		// 	u := &User{Address: suf.Address}
-		// 	db.First(u, u)
-
-		// 	if u.ID != 0 {
-		// 		// sess.Set("userID", u.ID)
-		// 		// ctx.Data["Finished"] = true
-		// 	} else {
-		// 		ctx.Data["Errors"] = true
-		// 		ctx.Data["ErrorMsg"] = "The user with this email or address doesn't exist."
-		// 	}
-		// }
 	} else {
 		ctx.Data["ErrorMsg"] = "Email field is required."
 	}
 
 	ctx.HTMLSet(200, "login", "passwordreset")
+}
+
+func passwordResetSignInView(ctx *macaron.Context, sess session.Store) {
+	ctx.Data["Title"] = "Password Reset | "
+
+	uid, err := decrypt([]byte(conf.DbPass[:16]), ctx.Params("uid"))
+	if err != nil {
+		return
+	}
+
+	u := &User{Email: uid}
+	db.First(u, u)
+
+	if u.ID == 0 {
+		return
+	}
+
+	sess.Set("userID", u.ID)
+
+	ctx.Redirect("/password-reset-finish/")
+}
+
+func passwordResetFinishView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Password Reset Finish | "
+
+	ctx.HTMLSet(200, "login", "passwordresetfinish")
+}
+
+func passwordResetFinishPostView(ctx *macaron.Context, form SignInForm) {
+	ctx.Data["Title"] = "Password Reset Finish | "
+	ctx.Data["Form"] = form
+	ctx.Data["ShowOnlyPass"] = true
+
+	s := reflect.ValueOf(ctx.Data["Errors"])
+
+	if s.Len() == 0 {
+		user := ctx.Data["User"].(*User)
+		if user.Address == form.Address {
+			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(form.Password), 8)
+			for err != nil {
+				time.Sleep(200 * time.Microsecond)
+				hashedPassword, err = bcrypt.GenerateFromPassword([]byte(form.Password), 8)
+			}
+			user.PasswordHash = string(hashedPassword)
+			db.Save(user)
+
+			ctx.Data["Finish"] = true
+		} else {
+			ctx.Data["ErrorMsg"] = "The address is wrong."
+		}
+	} else {
+		ctx.Data["ErrorMsg"] = "New password field is required."
+	}
+
+	ctx.HTMLSet(200, "login", "passwordresetfinish")
 }

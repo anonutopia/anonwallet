@@ -130,7 +130,7 @@ func sendInitWelcomeEmail(to *User, password string, seed string, lang string) e
 		return err
 	}
 
-	uid, err := encrypt([]byte(conf.DbPass[:16]), to.Address)
+	uid, err := encrypt([]byte(conf.DbPass[:16]), to.Email)
 	if err != nil {
 		return err
 	}

@@ -276,10 +276,100 @@ function Wallet() {
         } catch (e) {}
     }
 
+    this.checkPassword = function() {
+        $('#seed').val('');
+        $('#messageError').hide();
+        $('#messageSuccess').hide();
+
+        var password = $('#passwordold').val();
+        var encrypted = window.localStorage.getItem('encrypted');
+
+        try {
+            var seedPhrase = Waves.Seed.decryptSeedPhrase(encrypted, password);
+            seed = Waves.Seed.fromExistingPhrase(seedPhrase);
+            if (seed.address == address) {
+                $('#messageError').hide();
+                $('#messageSuccess').html("Success: The password is right.");
+                $('#messageSuccess').show();
+                $('#address').val(seed.address);
+                $('#seed').val(seed.phrase);
+            } else {
+                throw new Error('The address on this seed is not right.');
+            }
+        } catch (e) {
+            $('#messageSuccess').hide();
+            $('#messageError').html(e + '.');
+            $('#messageError').show();
+        }
+    }
+
+    this.checkSeed = function() {
+        $('#passwordold').val('');
+        $('#messageError').hide();
+        $('#messageSuccess').hide();
+
+        var seedPhrase = $('#seed').val();
+
+        try {
+            seed = Waves.Seed.fromExistingPhrase(seedPhrase);
+            console.log(address);
+            console.log(seed.address);
+            if (seed.address == address) {
+                $('#messageError').hide();
+                $('#messageSuccess').html("Success: The seed is right.");
+                $('#messageSuccess').show();
+                $('#address').val(seed.address);
+            } else {
+                throw new Error('The address on this seed is not right.');
+            }
+        } catch (e) {
+            $('#messageSuccess').hide();
+            $('#messageError').html(e + '.');
+            $('#messageError').show();
+        }
+    }
+
+    this.passwordReset = function() {
+        var password = $('#password').val();
+        var addr = $('#address').val();
+        if (password.length > 0) {
+            if (addr == address) {
+                var seedPhrase = $('#seed').val();
+
+                if (seedPhrase.length > 0) {
+                    seed = Waves.Seed.fromExistingPhrase(seedPhrase);
+                    window.localStorage.setItem('encrypted', seed.encrypt(password));
+                    window.localStorage.setItem('address', address);
+                    window.sessionStorage.setItem('seed', seedPhrase);
+
+                    return true;
+                }
+            } else {
+                $('#messageSuccess').hide();
+                $('#messageError').html('Something is wrong with your seed or password.');
+                $('#messageError').show();
+            }
+        } else {
+            $('#messageSuccess').hide();
+            $('#messageError').html("New password can't be empty.");
+            $('#messageError').show();
+        }
+
+        return false;
+    }
+
     // PRIVATE METHODS
 
     // Constructor method
     function constructor() {
+        if (address && address.length) {
+            window.localStorage.setItem('address', address);
+        }
+
+        if (email && email.length) {
+            window.localStorage.setItem('email', email);
+        }
+
         $(".sidebar-menu a").each(function() {
             if ($(this).attr('href') == window.location.pathname) {
                 $(this).parent().addClass('active');
@@ -303,6 +393,9 @@ function Wallet() {
                 break;
             case '/sign-in-old-clean/':
                 initSignInOldClean();
+                break;
+            case '/password-reset-finish/':
+                initPasswordResetFinish();
                 break;
             case '/':
                 initSuccess();
@@ -395,6 +488,34 @@ function Wallet() {
             setTimeout(function() {
                 window.location.href = '/';
             }, 4000);
+        }
+    }
+
+    function initPasswordResetFinish() {
+        var seedPhrase = window.sessionStorage.getItem('seed');
+        if (!seedPhrase) {
+            seedPhrase = window.localStorage.getItem('seed');
+        }
+        var encrypted = window.localStorage.getItem('encrypted');
+
+        if (seedPhrase && seedPhrase.length > 0) {
+            $('#seed').val(seedPhrase);
+        } else {
+            $('#form2').fadeIn();
+
+            if (encrypted) {
+                $('#form1').fadeIn();
+                $('#message1').fadeIn();
+                $('#message3').fadeIn();
+            } else {
+                $('#message1').fadeIn();
+            }
+        }
+
+        if (finished) {
+            setTimeout(function() {
+                window.location.href = '/';
+            }, 4000)
         }
     }
 

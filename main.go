@@ -66,6 +66,8 @@ func main() {
 	m.Get("/locales.json", newPageData, localesjsView)
 	m.Get("/verify/:uid", newPageData, verifyView)
 	m.Get("/password-reset/", newPageData, passwordResetView)
+	m.Get("/password-reset/:uid", newPageData, passwordResetSignInView)
+	m.Get("/password-reset-finish/", newPageData, loginRequired, passwordResetFinishView)
 
 	m.Post("/apply/", binding.Bind(ProfileForm{}), newPageData, loginRequired, applyView)
 	m.Post("/settings/", binding.Bind(FacebookAwardForm{}), newPageData, initFbPostView)
@@ -74,6 +76,7 @@ func main() {
 	m.Post("/sign-in-old/", binding.Bind(SignInOldForm{}), newPageData, signInOldPostView)
 	m.Post("/sign-in-old-clean/", binding.Bind(SignUpForm{}), newPageData, signInOldCleanPostView)
 	m.Post("/password-reset/", binding.Bind(SignInOldForm{}), newPageData, passwordResetPostView)
+	m.Post("/password-reset-finish/", binding.Bind(SignInForm{}), newPageData, loginRequired, passwordResetFinishPostView)
 
 	addr := fmt.Sprintf("0.0.0.0:%d", conf.Port)
 	log.Printf("Server is running on: %s", addr)
