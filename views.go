@@ -333,6 +333,10 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 		citizen := &Badge{Name: "citizen"}
 		db.First(citizen, citizen)
 		db.Model(u).Association("Badges").Append(citizen)
+	} else {
+		applicant := &Badge{Name: "applicant"}
+		db.First(applicant, applicant)
+		db.Model(u).Association("Badges").Append(applicant)
 	}
 
 	if balance >= (10000 * satInBtc) {
