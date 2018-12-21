@@ -80,7 +80,7 @@ func profitView(ctx *macaron.Context) {
 
 func signOutView(ctx *macaron.Context, sess session.Store) {
 	sess.Delete("userID")
-	ctx.Redirect("/")
+	ctx.Redirect("/sign-in/")
 }
 
 func signUpView(ctx *macaron.Context) {
@@ -170,64 +170,14 @@ func signInPostView(ctx *macaron.Context, sif SignInForm, sess session.Store) {
 	ctx.HTMLSet(200, "login", "signin")
 }
 
-func signInOldView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Old Wallet Sign In | "
-
-	ctx.HTMLSet(200, "login", "signinold")
-}
-
-func signInOldPostView(ctx *macaron.Context, siof SignInOldForm, f *session.Flash) {
-	ctx.Data["Title"] = "Old Wallet Sign In | "
-	ctx.Data["SignInOldForm"] = siof
-
-	s := reflect.ValueOf(ctx.Data["Errors"])
-
-	if s.Len() == 0 {
-		// user := ctx.Data["User"].(*User)
-		if validateEmailDomain(siof.Email) {
-			user := &User{Email: siof.Email}
-			db.First(user, user)
-			if user.ID == 0 {
-				user := ctx.Data["User"].(*User)
-				user.Email = siof.Email
-				db.Save(user)
-				f.Success("You have successfully signed in to your Anonutopia wallet.")
-				ctx.Redirect("/")
-			} else {
-				ctx.Data["Errors"] = true
-				ctx.Data["ErrorMsg"] = "This email address is already used."
-			}
-		} else {
-			ctx.Data["Errors"] = true
-			ctx.Data["ErrorMsg"] = "Please use one of known email providers like Gmail."
-		}
-		// user := &User{Address: sif.Address}
-		// db.First(user, user)
-
-		// err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(sif.Password))
-		// if err == nil {
-		// 	sess.Set("userID", user.ID)
-
-		// 	ctx.Data["Finished"] = true
-		// } else {
-		// 	ctx.Data["Errors"] = true
-		// 	ctx.Data["ErrorMsg"] = "Wrong password, please try again."
-		// }
-	} else {
-		ctx.Data["ErrorMsg"] = "Email is required."
-	}
-
-	ctx.HTMLSet(200, "login", "signinold")
-}
-
 func signInOldCleanView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Old Wallet Clean Sign In | "
+	ctx.Data["Title"] = "Wallet Clean Sign In | "
 
-	ctx.HTMLSet(200, "login", "signinoldclean")
+	ctx.HTMLSet(200, "login", "signinclean")
 }
 
 func signInOldCleanPostView(ctx *macaron.Context, suf SignUpForm, sess session.Store) {
-	ctx.Data["Title"] = "Old Wallet Clean Sign In | "
+	ctx.Data["Title"] = "Wallet Clean Sign In | "
 	ctx.Data["SignUpForm"] = suf
 
 	s := reflect.ValueOf(ctx.Data["Errors"])
@@ -266,7 +216,7 @@ func signInOldCleanPostView(ctx *macaron.Context, suf SignUpForm, sess session.S
 		ctx.Data["ErrorMsg"] = "All fields are required."
 	}
 
-	ctx.HTMLSet(200, "login", "signinoldclean")
+	ctx.HTMLSet(200, "login", "signinclean")
 }
 
 func localesjsView(ctx *macaron.Context) {
@@ -362,7 +312,6 @@ func verifyView(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 	}
 
 	sess.Set("userID", u.ID)
-	ctx.SetCookie("address", u.Address, 1<<31-1)
 
 	var balance uint64
 	abr, err := wnc.AssetsBalance(u.Address, "4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf")

@@ -17,6 +17,7 @@ import (
 )
 
 func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
+	// add trailing slash
 	if !strings.HasSuffix(ctx.Req.URL.Path, "/") {
 		http.Redirect(ctx.Resp, ctx.Req.Request, ctx.Req.URL.Path+"/", http.StatusFound)
 		return
@@ -33,13 +34,6 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 		user := &User{}
 		db.First(user, userID)
 		ctx.Data["User"] = user
-
-		// legacy users login
-		if user.ID != 0 {
-			if user.Email == user.Address && ctx.Req.URL.Path != "/sign-in-old/" {
-				ctx.Redirect("/sign-in-old/")
-			}
-		}
 
 		if !user.EmailVerified {
 			ctx.Data["Notification"] = true

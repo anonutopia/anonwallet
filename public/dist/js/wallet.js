@@ -391,8 +391,8 @@ function Wallet() {
             case '/sign-in/':
                 initSignIn();
                 break;
-            case '/sign-in-old-clean/':
-                initSignInOldClean();
+            case '/sign-in-clean/':
+                initSignInClean();
                 break;
             case '/password-reset-finish/':
                 initPasswordResetFinish();
@@ -458,7 +458,7 @@ function Wallet() {
         }
 
         if (!encrypted) {
-            window.location.href = '/sign-up/';
+            window.location.href = '/sign-in-clean/';
         }
 
         if (finished) {
@@ -468,14 +468,14 @@ function Wallet() {
 
             setTimeout(function() {
                 window.location.href = '/';
-            }, 4000);
+            }, 3000);
         } else {
             var address = window.localStorage.getItem('address');
             setValue('address', address);
         }
     }
 
-    function initSignInOldClean() {
+    function initSignInClean() {
         var seed = $('#seed').val();
         var password = $('#password').val();
 
@@ -487,7 +487,7 @@ function Wallet() {
 
             setTimeout(function() {
                 window.location.href = '/';
-            }, 4000);
+            }, 3000);
         }
     }
 
@@ -515,7 +515,7 @@ function Wallet() {
         if (finished) {
             setTimeout(function() {
                 window.location.href = '/';
-            }, 4000)
+            }, 3000)
         }
     }
 
@@ -876,7 +876,7 @@ function Wallet() {
 
             setTimeout(function() {
                 window.location.href = '/';
-            }, 4000);
+            }, 3000);
         }
     }
 
