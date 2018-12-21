@@ -495,3 +495,58 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 
 	ctx.HTML(200, "settings")
 }
+
+func passwordResetView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Password Reset | "
+
+	ctx.HTMLSet(200, "login", "passwordreset")
+}
+
+func passwordResetPostView(ctx *macaron.Context, form SignInOldForm) {
+	ctx.Data["Title"] = "Password Reset | "
+	ctx.Data["Form"] = form
+
+	s := reflect.ValueOf(ctx.Data["Errors"])
+
+	if s.Len() == 0 {
+		u := &User{Email: form.Email}
+		db.First(u, u)
+		if u.ID != 0 {
+		} else {
+			ctx.Data["ShowSignUp"] = true
+
+			ctx.Data["Errors"] = true
+			ctx.Data["ErrorMsg"] = "We don't have this email in our database, please sign up again."
+		}
+		// 	if u.Address == suf.Address {
+		// 		err := bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(suf.Password))
+		// 		log.Println(err)
+		// 		if err == nil {
+		// 			sess.Set("userID", u.ID)
+		// 			ctx.Data["Finished"] = true
+		// 		} else {
+		// 			ctx.Data["Errors"] = true
+		// 			ctx.Data["ErrorMsg"] = "Wrong password, please try again."
+		// 		}
+		// 	} else {
+		// 		ctx.Data["Errors"] = true
+		// 		ctx.Data["ErrorMsg"] = "Something is wrong with your seed (extra space or new line)."
+		// 	}
+		// } else {
+		// 	u := &User{Address: suf.Address}
+		// 	db.First(u, u)
+
+		// 	if u.ID != 0 {
+		// 		// sess.Set("userID", u.ID)
+		// 		// ctx.Data["Finished"] = true
+		// 	} else {
+		// 		ctx.Data["Errors"] = true
+		// 		ctx.Data["ErrorMsg"] = "The user with this email or address doesn't exist."
+		// 	}
+		// }
+	} else {
+		ctx.Data["ErrorMsg"] = "Email field is required."
+	}
+
+	ctx.HTMLSet(200, "login", "passwordreset")
+}

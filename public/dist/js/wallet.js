@@ -359,7 +359,7 @@ function Wallet() {
         // this is for legacy users
         var seedPhrase = window.localStorage.getItem('seed');
         if (seedPhrase && seedPhrase.length > 0) {
-            window.localStorage.removeItem('seed');
+            // window.localStorage.removeItem('seed');
             var tempseed = Waves.Seed.fromExistingPhrase(seedPhrase);
             window.localStorage.setItem('address', tempseed.address);
         }
