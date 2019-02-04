@@ -27,6 +27,7 @@
 
                     <div class="well">
                         <h3 class="text-center">Basic Citizenship Application</h3>
+                        <h5 class="text-center">Receive Up To 5 Free Anotes</h5>
 {{ if .Finished }}
                         <p class="bg-success text-success" style="margin: 15px 0; padding: 15px;">You have successfully finished the sign up process. Please wait a second and you will be redirected.</p>
                         <p class="text-center"><a href="/" class="main-btn">Open Wallet</a></p>
@@ -42,7 +43,7 @@
                         <form action="./" method="POST" id="applyForm">
                             <div class="form-group">
                                 <label for="email">Email Address</label>
-                                <input type="email" class="input" id="email" placeholder="anon@anonutopia.com" name="email" value="{{ .SignUpForm.Email }}">
+                                <input type="email" class="input" id="email" placeholder="Your Email Address" name="email" value="{{ .SignUpForm.Email }}">
 {{ if .Errors }}
                                 <p class="bg-danger text-danger" style="margin: 15px 0; padding: 15px;">{{ .ErrorMsg }}</p>
 {{ end }}
