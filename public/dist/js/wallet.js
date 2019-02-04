@@ -461,7 +461,7 @@ function Wallet() {
         }
 
         if (!encrypted) {
-            window.location.href = '/sign-in-clean/';
+            window.location.href = '/sign-up/';
         }
 
         if (finished) {
