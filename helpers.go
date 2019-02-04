@@ -28,6 +28,7 @@ func newPageData(ctx *macaron.Context, sess session.Store, f *session.Flash) {
 	ctx.Data["Notification"] = false
 	ctx.Data["NotificationTitle"] = ""
 	ctx.Data["NotificationMessage"] = ""
+	ctx.SetCookie("lang", "en-US")
 
 	userID := sess.Get("userID")
 	if userID != nil {
