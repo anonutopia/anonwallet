@@ -426,7 +426,7 @@ func initFbPostView(ctx *macaron.Context, faf FacebookAwardForm, f *session.Flas
 						}
 					} else if !containsLink || !containsAddress {
 						ctx.Data["Errors"] = true
-						ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link."
+						ctx.Data["ErrorMessage"] = "Pasted URL doesn't containt your referral link (the post has to be public)."
 					} else if !timeLimitAllowed {
 						ctx.Data["Errors"] = true
 						ctx.Data["ErrorMessage"] = "You have to wait at least 24 hours to do this again."
