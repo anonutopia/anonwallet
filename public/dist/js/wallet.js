@@ -70,6 +70,9 @@ function Wallet() {
                         transfer(addressTo, amount, '4fJ42MSLPXk9zwjfCdzXdUDAH8zQFCBdBz4sFSWZZY53', '', feeCurrency);
                     }
                     break;
+                case 4:
+                    transfer(addressTo, amount, 'Az4MsPQZn9RJm8adcya5RuztQ49rMGUW99Ebj56triWr', '', feeCurrency);
+                    break;
                 default:
                     transfer(addressTo, amount, '4zbprK67hsa732oSGLB6HzE8Yfdj3BcTcehCeTA1G5Lf', '', feeCurrency);
             }
@@ -446,9 +449,7 @@ function Wallet() {
         });
 
         Waves.API.Node.v1.assets.balance(address, "Az4MsPQZn9RJm8adcya5RuztQ49rMGUW99Ebj56triWr").then((balance) => {
-            console.log(balance);
             var eurBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**2)).toFixed(2);
-            console.log(eurBalance);
             setHTML('balanceEur', eurBalance);
             updateCounter();
         });
