@@ -446,6 +446,7 @@ function Wallet() {
         });
 
         Waves.API.Node.v1.assets.balance(address, "Az4MsPQZn9RJm8adcya5RuztQ49rMGUW99Ebj56triWr").then((balance) => {
+            console.log(balance);
             var eurBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(2);
             console.log(eurBalance);
             setHTML('balanceEur', eurBalance);
