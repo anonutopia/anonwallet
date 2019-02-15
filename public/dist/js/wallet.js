@@ -741,12 +741,18 @@ function Wallet() {
             var feeAmount = 30000000;
         }
 
+        if (assetId == 'Az4MsPQZn9RJm8adcya5RuztQ49rMGUW99Ebj56triWr') {
+            amount = parseInt(amount * 10**2);
+        } else {
+            amount = parseInt(amount * 10**8);
+        }
+
         $('#content').fadeOut(function() {
             $('#transactionInProgress').fadeIn(function() {
                 const transferData = {
                     recipient: addressTo,
                     assetId: assetId,
-                    amount: parseInt(amount * 10**8),
+                    amount: amount,
                     feeAssetId: feeAssetId,
                     fee: feeAmount,
                     attachment: attachment,
