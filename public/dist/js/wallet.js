@@ -445,6 +445,12 @@ function Wallet() {
             updateCounter();
         });
 
+        Waves.API.Node.v1.assets.balance(address, "Az4MsPQZn9RJm8adcya5RuztQ49rMGUW99Ebj56triWr").then((balance) => {
+            var eurBalance = parseFloat(parseFloat(balance.balance) / parseFloat(10**8)).toFixed(2);
+            setHTML('balanceEur', eurBalance);
+            updateCounter();
+        });
+
         timeout = setTimeout(initSuccess, 1000);
     }
 
